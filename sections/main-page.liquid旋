@@ -1,0 +1,17 @@
+{% schema %}
+{
+  "name": "Main Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Main Page"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="shopify-section-main-page">
+  {{ page.content }}
+</div>
