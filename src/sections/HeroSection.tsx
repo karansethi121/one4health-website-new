@@ -65,7 +65,7 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center">
-        <div className="section-container w-full py-20 lg:py-24 pt-24 lg:pt-28">
+        <div className="section-container w-full py-12 lg:py-16 pt-20 lg:pt-24">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left - Text Content */}
             <div className="max-w-xl order-2 lg:order-1">
@@ -146,11 +146,6 @@ export function HeroSection() {
                   />
                 </div>
 
-                {/* Floating badge */}
-                <div className="hero-float absolute -bottom-2 -left-2 lg:-bottom-4 lg:-left-4 bg-sage-700 rounded-xl lg:rounded-2xl px-3 py-2 lg:px-4 lg:py-3 shadow-fun hover-scale cursor-default z-20">
-                  <p className="text-xs text-sage-200">With BioPerine®</p>
-                  <p className="text-sm font-bold text-white">Enhanced Absorption</p>
-                </div>
               </div>
             </div>
           </div>
