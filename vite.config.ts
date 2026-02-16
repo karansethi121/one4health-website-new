@@ -12,4 +12,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: 'assets',
+    assetsDir: '',
+    rollupOptions: {
+      output: {
+        entryFileNames: 'bundle.js',
+        chunkFileNames: '[name].js',
+        assetFileNames: '[name].[ext]',
+      },
+    },
+    emptyOutDir: false,
+  },
 });
