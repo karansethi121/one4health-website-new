@@ -83,7 +83,7 @@
         "seller": {
           "@type": "Organization",
           "name": "One4Health"
-        }
+         }
       },
       "aggregateRating": {
         "@type": "AggregateRating",
@@ -118,12 +118,60 @@
       ]
     }
     </script>
-  <script type="module" crossorigin src="./assets/index-4yg8eD9p.js?v=4"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CmhkE4zf.css?v=1">
+  <script>
+    window.ShopifyAssetsUrl = "";
+  </script>
+  <script type="module" crossorigin src="./assets/index-4yg8eD9p.js?v=20"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CmhkE4zf.css?v=10">
 </head>
 
 <body>
   <div id="root"></div>
+  <script>
+    (function () {
+      function scrollToTop() {
+        console.log("Forcing scroll to top...");
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        setTimeout(() => {
+           window.scrollTo(0, 0);
+           document.documentElement.scrollTop = 0;
+        }, 100);
+        setTimeout(() => {
+           window.scrollTo(0, 0);
+           document.documentElement.scrollTop = 0;
+        }, 300);
+        setTimeout(() => {
+           window.scrollTo(0, 0);
+           document.documentElement.scrollTop = 0;
+        }, 600);
+      }
+
+      let lastPath = window.location.pathname;
+      setInterval(() => {
+        if (window.location.pathname !== lastPath) {
+          lastPath = window.location.pathname;
+          console.log("Path change detected:", lastPath);
+          scrollToTop();
+        }
+      }, 100);
+
+      const originalPushState = history.pushState;
+      history.pushState = function () {
+        originalPushState.apply(this, arguments);
+        scrollToTop();
+      };
+
+      const originalReplaceState = history.replaceState;
+      history.replaceState = function () {
+        originalReplaceState.apply(this, arguments);
+        scrollToTop();
+      };
+
+      window.addEventListener('popstate', scrollToTop);
+    })();
+  </script>
 </body>
 
 </html>
