@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Check, 
+import {
+  Check,
   Sparkles,
-  Truck, 
-  Shield, 
-  Minus, 
-  Plus, 
+  Truck,
+  Shield,
+  Minus,
+  Plus,
   ChevronRight,
   Leaf,
   Beaker,
@@ -41,7 +41,7 @@ export function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [purchaseType, setPurchaseType] = useState<PurchaseType>('onetime');
   const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('1month');
-  
+
   const product = mainProduct;
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export function ProductPage() {
   };
 
   const currentPrice = getCurrentPrice();
-  const savings = product.originalPrice 
+  const savings = product.originalPrice
     ? Math.round(((product.originalPrice - currentPrice) / product.originalPrice) * 100)
     : 0;
 
@@ -146,21 +146,19 @@ export function ProductPage() {
               <div className="flex gap-1">
                 <button
                   onClick={() => setPurchaseType('onetime')}
-                  className={`flex-1 py-2.5 px-3 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all ${
-                    purchaseType === 'onetime'
+                  className={`flex-1 py-2.5 px-3 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all ${purchaseType === 'onetime'
                       ? 'bg-white text-charcoal-900 shadow-sm'
                       : 'text-charcoal-500 hover:text-charcoal-700'
-                  }`}
+                    }`}
                 >
                   One-Time
                 </button>
                 <button
                   onClick={() => setPurchaseType('subscribe')}
-                  className={`flex-1 py-2.5 px-3 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all ${
-                    purchaseType === 'subscribe'
+                  className={`flex-1 py-2.5 px-3 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all ${purchaseType === 'subscribe'
                       ? 'bg-sage-700 text-white shadow-sm'
                       : 'text-charcoal-500 hover:text-charcoal-700'
-                  }`}
+                    }`}
                 >
                   Subscribe & Save
                 </button>
@@ -174,16 +172,14 @@ export function ProductPage() {
                 <div className="space-y-2">
                   <button
                     onClick={() => setSubscriptionDuration('1month')}
-                    className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${
-                      subscriptionDuration === '1month'
+                    className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '1month'
                         ? 'border-sage-700 bg-sage-50'
                         : 'border-charcoal-200 hover:border-sage-300'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2 lg:gap-3">
-                      <div className={`w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center ${
-                        subscriptionDuration === '1month' ? 'border-sage-700' : 'border-charcoal-300'
-                      }`}>
+                      <div className={`w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center ${subscriptionDuration === '1month' ? 'border-sage-700' : 'border-charcoal-300'
+                        }`}>
                         {subscriptionDuration === '1month' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
                       </div>
                       <div className="text-left">
@@ -199,16 +195,14 @@ export function ProductPage() {
 
                   <button
                     onClick={() => setSubscriptionDuration('3month')}
-                    className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${
-                      subscriptionDuration === '3month'
+                    className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '3month'
                         ? 'border-sage-700 bg-sage-50'
                         : 'border-charcoal-200 hover:border-sage-300'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2 lg:gap-3">
-                      <div className={`w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center ${
-                        subscriptionDuration === '3month' ? 'border-sage-700' : 'border-charcoal-300'
-                      }`}>
+                      <div className={`w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center ${subscriptionDuration === '3month' ? 'border-sage-700' : 'border-charcoal-300'
+                        }`}>
                         {subscriptionDuration === '3month' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
                       </div>
                       <div className="text-left">
@@ -319,7 +313,7 @@ export function ProductPage() {
             {/* FDA/FSSAI Disclaimer */}
             <div className="p-3 lg:p-4 bg-sage-50 rounded-xl">
               <p className="text-xs text-charcoal-400 leading-relaxed">
-                *These statements have not been evaluated by the Food and Drug Administration or FSSAI. 
+                *These statements have not been evaluated by the Food and Drug Administration or FSSAI.
                 This product is not intended to diagnose, treat, cure, or prevent any disease.
               </p>
             </div>
@@ -353,48 +347,13 @@ export function ProductPage() {
                 </div>
               ))}
             </div>
-            
-            {/* Why it works */}
-            <div className="mt-6 lg:mt-8 bg-sage-50 rounded-2xl lg:rounded-3xl p-5 lg:p-8">
-              <h3 className="text-lg lg:text-xl font-semibold text-charcoal-900 mb-4 lg:mb-6">
-                Why this formula works
-              </h3>
-              <div className="grid sm:grid-cols-3 gap-4 lg:gap-6">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Leaf className="w-4 h-4 lg:w-5 lg:h-5 text-sage-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-charcoal-900 text-sm lg:text-base">KSM-66®</p>
-                    <p className="text-xs lg:text-sm text-charcoal-500">300mg daily for stress response</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Sun className="w-4 h-4 lg:w-5 lg:h-5 text-sage-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-charcoal-900 text-sm lg:text-base">Vitamin D2</p>
-                    <p className="text-xs lg:text-sm text-charcoal-500">400 IU for mood & immune support</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-4 h-4 lg:w-5 lg:h-5 text-sage-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-charcoal-900 text-sm lg:text-base">BioPerine®</p>
-                    <p className="text-xs lg:text-sm text-charcoal-500">10mg for enhanced absorption</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+
 
             {/* Disclaimer */}
             <div className="mt-4 lg:mt-6 p-3 lg:p-4 bg-amber-50 rounded-xl flex items-start gap-2 lg:gap-3">
               <Info className="w-4 h-4 lg:w-5 lg:h-5 text-amber-600 flex-shrink-0 mt-0.5" />
               <p className="text-xs lg:text-sm text-amber-800">
-                *These statements have not been evaluated by the Food and Drug Administration or FSSAI. 
+                *These statements have not been evaluated by the Food and Drug Administration or FSSAI.
                 This product is not intended to diagnose, treat, cure, or prevent any disease.
               </p>
             </div>
@@ -413,8 +372,8 @@ export function ProductPage() {
                     </div>
                     <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
                       {idx === 0 ? <Leaf className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
-                       idx === 1 ? <Sun className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
-                       <Beaker className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" />}
+                        idx === 1 ? <Sun className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
+                          <Beaker className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" />}
                     </div>
                   </div>
                   <p className="text-charcoal-600 text-sm">{ingredient.description}</p>
@@ -434,7 +393,7 @@ export function ProductPage() {
           <TabsContent value="how-to-use" className="mt-0">
             <div className="bg-white rounded-2xl lg:rounded-3xl p-5 lg:p-8 shadow-soft">
               <h3 className="text-lg lg:text-xl font-semibold text-charcoal-900 mb-4 lg:mb-6">How to Use</h3>
-              
+
               {/* Dosage Instructions */}
               <div className="space-y-4 lg:space-y-6">
                 <div className="flex items-start gap-3 lg:gap-4">
@@ -543,7 +502,7 @@ export function ProductPage() {
                   *Individual results may vary. Consistency is key.
                 </p>
               </div>
-              
+
               {/* Safety Warnings */}
               <div className="mt-5 lg:mt-6 space-y-2">
                 <div className="p-3 lg:p-4 bg-amber-50 rounded-lg lg:rounded-xl flex items-start gap-2 lg:gap-3">

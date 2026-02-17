@@ -74,7 +74,7 @@ export function SubscriptionSection() {
             <p className="text-base lg:text-lg text-charcoal-500 mb-6">
               Consistency is key. Join our community and never miss your daily calm.
             </p>
-            
+
             {/* Key benefit */}
             <div className="bg-sage-100 rounded-2xl p-4 lg:p-5 mb-6 lg:mb-8">
               <p className="text-sm text-charcoal-600">
@@ -141,12 +141,6 @@ export function SubscriptionSection() {
                     <Package className="w-4 h-4 text-sage-600" />
                   </div>
                   <span className="text-charcoal-700 text-sm lg:text-base">1 jar (60 gummies, 30-day supply)</span>
-                </div>
-                <div className="flex items-center gap-2 lg:gap-3">
-                  <div className="w-8 h-8 bg-sage-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-4 h-4 text-sage-600" />
-                  </div>
-                  <span className="text-charcoal-700 text-sm lg:text-base">300mg KSM-66® per day</span>
                 </div>
                 <div className="flex items-center gap-2 lg:gap-3">
                   <div className="w-8 h-8 bg-sage-100 rounded-lg flex items-center justify-center flex-shrink-0">

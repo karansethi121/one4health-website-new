@@ -8,25 +8,25 @@ import { ScienceModal } from '@/components/ScienceModal';
 gsap.registerPlugin(ScrollTrigger);
 
 const differentiators = [
-  { 
-    label: '100% Root Extract', 
+  {
+    label: '100% Root Extract',
     desc: 'No leaves. No fillers. Just the pure root.',
     icon: '🌱'
   },
-  { 
-    label: 'Clinically Studied', 
-    desc: '24+ studies on KSM-66® efficacy.',
+  {
+    label: 'Clinically Studied',
+    desc: '24+ clinical studies on efficacy.',
     icon: '🔬'
   },
-  { 
-    label: 'Enhanced Absorption', 
+  {
+    label: 'Enhanced Absorption',
     desc: 'BioPerine® increases uptake by up to 30%.',
     icon: '⚡'
   },
 ];
 
 const stats = [
-  { number: '300mg', label: 'KSM-66® per day' },
+  { number: '300mg', label: 'Daily serving' },
   { number: '24+', label: 'Clinical studies' },
   { number: '100%', label: 'Root extract' },
 ];
@@ -108,8 +108,8 @@ export function ScienceSection() {
               </h2>
 
               <p className="text-lg text-white/80 leading-relaxed mb-8">
-                We chose KSM-66® for a reason. It's the most clinically studied 
-                full-spectrum root extract—shown to support stress response, 
+                We chose KSM-66® for a reason. It's the most clinically studied
+                full-spectrum root extract—shown to support stress response,
                 promote relaxation, and help maintain daily balance.
               </p>
 

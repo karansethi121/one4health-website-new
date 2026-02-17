@@ -14,22 +14,24 @@ import { ContactPage } from '@/pages/ContactPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 import { TermsPage } from '@/pages/TermsPage';
 import { Toaster } from '@/components/ui/sonner';
+import ScrollToTop from '@/components/ScrollToTop';
 import './App.css';
 
 function App() {
   return (
     <CartProvider>
       <Router>
+        <ScrollToTop />
         <div className="min-h-screen bg-sage-50">
           {/* Grain Overlay */}
           <div className="grain-overlay" />
-          
+
           {/* Navigation */}
           <Navigation />
-          
+
           {/* Cart Drawer */}
           <CartDrawer />
-          
+
           {/* Main Content */}
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -43,10 +45,10 @@ function App() {
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
           </Routes>
-          
+
           {/* Footer */}
           <Footer />
-          
+
           {/* Toast Notifications */}
           <Toaster position="bottom-right" />
         </div>
