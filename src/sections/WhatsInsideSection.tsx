@@ -7,23 +7,23 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const ingredients = [
-  { 
-    name: 'KSM-66® Ashwagandha', 
-    amount: '300mg', 
+  {
+    name: 'KSM-66® Ashwagandha',
+    amount: '300mg',
     desc: 'Full-spectrum root extract supports stress response & calm',
     icon: Leaf,
     highlight: '24+ clinical studies†'
   },
-  { 
-    name: 'Vitamin D2', 
-    amount: '400 IU', 
+  {
+    name: 'Vitamin D2',
+    amount: '400 IU',
     desc: 'Supports mood balance & healthy immune function',
     icon: Sun,
     highlight: 'Essential for indoor lifestyles'
   },
-  { 
-    name: 'BioPerine®', 
-    amount: '10mg', 
+  {
+    name: 'BioPerine®',
+    amount: '10mg',
     desc: 'Enhances nutrient absorption',
     icon: Sparkles,
     highlight: 'Patented black pepper extract'
@@ -166,7 +166,7 @@ export function WhatsInsideSection() {
               {/* Badges */}
               <div className="absolute -top-2 -right-2 lg:-top-4 lg:-right-4 bg-coral-100 text-coral-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium flex items-center gap-1.5">
                 <Cherry className="w-3.5 h-3.5" />
-                Natural berry flavor
+                Mixed berry flavor
               </div>
               <div className="absolute -bottom-2 -left-2 lg:-bottom-4 lg:-left-4 bg-sunshine-100 text-sunshine-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium flex items-center gap-1.5">
                 <Ban className="w-3.5 h-3.5" />

@@ -89,7 +89,7 @@ export function CleanFormulaSection() {
             <span className="relative inline-block">
               Just results.
               <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 140 12" fill="none">
-                <path d="M2 8C30 2 100 2 138 8" stroke="#F97066" strokeWidth="4" strokeLinecap="round"/>
+                <path d="M2 8C30 2 100 2 138 8" stroke="#F97066" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </span>
           </h2>
@@ -138,13 +138,7 @@ export function CleanFormulaSection() {
               ))}
             </div>
 
-            <div className="bg-sage-100 rounded-2xl p-5 mb-6">
-              <p className="text-sm text-charcoal-600">
-                <span className="font-semibold text-charcoal-900">Why this matters:</span>{' '}
-                When you support your body with Ashwagandha, you shouldn't have to 
-                worry about artificial additives working against you.
-              </p>
-            </div>
+
 
             <Link
               to="/science"

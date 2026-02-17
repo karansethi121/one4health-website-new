@@ -78,7 +78,7 @@ export function BenefitsSection() {
     >
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-sage-100/50 rounded-full blur-3xl -translate-y-1/2" />
-      
+
       <div className="section-container relative z-10">
         {/* Header */}
         <div className="benefits-title text-center max-w-2xl mx-auto mb-16">
@@ -88,12 +88,12 @@ export function BenefitsSection() {
             <span className="relative inline-block">
               taste
               <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 12" fill="none">
-                <path d="M2 8C20 3 50 3 98 8" stroke="#7A9B6A" strokeWidth="4" strokeLinecap="round"/>
+                <path d="M2 8C20 3 50 3 98 8" stroke="#7A9B6A" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </span>
           </h2>
           <p className="text-lg text-charcoal-500">
-            Our delicious berry-flavored gummies make wellness something you look forward to.
+            Our delicious mixed berry-flavored gummies make wellness something you look forward to.
           </p>
         </div>
 

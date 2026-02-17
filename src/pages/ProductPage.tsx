@@ -139,6 +139,7 @@ export function ProductPage() {
                 {product.name}
               </h1>
               <p className="text-base lg:text-lg text-charcoal-600">{product.subtitle}</p>
+              <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Mixed Berry</p>
             </div>
 
             {/* Purchase Type Toggle */}
@@ -147,8 +148,8 @@ export function ProductPage() {
                 <button
                   onClick={() => setPurchaseType('onetime')}
                   className={`flex-1 py-2.5 px-3 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all ${purchaseType === 'onetime'
-                      ? 'bg-white text-charcoal-900 shadow-sm'
-                      : 'text-charcoal-500 hover:text-charcoal-700'
+                    ? 'bg-white text-charcoal-900 shadow-sm'
+                    : 'text-charcoal-500 hover:text-charcoal-700'
                     }`}
                 >
                   One-Time
@@ -156,8 +157,8 @@ export function ProductPage() {
                 <button
                   onClick={() => setPurchaseType('subscribe')}
                   className={`flex-1 py-2.5 px-3 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all ${purchaseType === 'subscribe'
-                      ? 'bg-sage-700 text-white shadow-sm'
-                      : 'text-charcoal-500 hover:text-charcoal-700'
+                    ? 'bg-sage-700 text-white shadow-sm'
+                    : 'text-charcoal-500 hover:text-charcoal-700'
                     }`}
                 >
                   Subscribe & Save
@@ -173,8 +174,8 @@ export function ProductPage() {
                   <button
                     onClick={() => setSubscriptionDuration('1month')}
                     className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '1month'
-                        ? 'border-sage-700 bg-sage-50'
-                        : 'border-charcoal-200 hover:border-sage-300'
+                      ? 'border-sage-700 bg-sage-50'
+                      : 'border-charcoal-200 hover:border-sage-300'
                       }`}
                   >
                     <div className="flex items-center gap-2 lg:gap-3">
@@ -196,8 +197,8 @@ export function ProductPage() {
                   <button
                     onClick={() => setSubscriptionDuration('3month')}
                     className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '3month'
-                        ? 'border-sage-700 bg-sage-50'
-                        : 'border-charcoal-200 hover:border-sage-300'
+                      ? 'border-sage-700 bg-sage-50'
+                      : 'border-charcoal-200 hover:border-sage-300'
                       }`}
                   >
                     <div className="flex items-center gap-2 lg:gap-3">
@@ -328,7 +329,7 @@ export function ProductPage() {
             {['Benefits', 'Ingredients', 'How to Use', 'FAQ'].map((tab) => (
               <TabsTrigger
                 key={tab}
-                value={tab.toLowerCase().replace(' ', '-')}
+                value={tab.toLowerCase().replace(/\s+/g, '-')}
                 className="rounded-none border-b-2 border-transparent data-[state=active]:border-sage-700 data-[state=active]:bg-transparent data-[state=active]:shadow-none py-2.5 lg:py-3 px-3 lg:px-4 text-charcoal-600 data-[state=active]:text-charcoal-900 text-sm lg:text-base whitespace-nowrap"
               >
                 {tab}

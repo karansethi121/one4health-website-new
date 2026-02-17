@@ -88,8 +88,8 @@ export function HeroSection() {
 
               {/* Subheadline */}
               <p className="hero-desc text-base lg:text-lg text-charcoal-600 leading-relaxed mb-6">
-                Clinically studied KSM-66® Ashwagandha with Vitamin D2 & BioPerine®
-                to support your body's stress response and promote relaxation.
+                Clinically studied KSM-66® Mixed Berry Ashwagandha with Vitamin D2 & BioPerine®
+                for daily stress support and relaxation.
               </p>
 
               {/* Benefit pills */}

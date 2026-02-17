@@ -40,9 +40,7 @@ export function Footer() {
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-white mb-4">
             Start your daily ritual today.
           </h2>
-          <p className="text-white/80 mb-6 lg:mb-8 max-w-lg mx-auto text-sm lg:text-base">
-            Be among the first to experience One4Health. 300mg KSM-66® daily to support your stress response.
-          </p>
+          Be among the first to experience One4Health. 300mg KSM-66® support for your daily stress response.
           <Link
             to="/product/ashwagandha-gummies-ksm66"
             className="inline-flex items-center justify-center px-6 lg:px-8 py-3 lg:py-4 bg-white text-sage-700 font-semibold rounded-full hover:bg-sage-50 transition-all duration-300 hover:scale-105 text-sm lg:text-base"
@@ -58,16 +56,16 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="inline-block mb-4">
-              <img 
-                src="/images/logo_cropped.png" 
-                alt="One4Health" 
+              <img
+                src="/images/logo_cropped.png"
+                alt="One4Health"
                 className="h-10 lg:h-12 w-auto"
               />
             </Link>
             <p className="text-charcoal-400 text-sm mb-5 max-w-xs">
               Daily wellness, simplified. Clean, science-backed dietary supplements for modern life.
             </p>
-            
+
             {/* Contact Info */}
             <div className="space-y-2 mb-5">
               <a href="mailto:hello@one4health.com" className="flex items-center gap-2 text-sm text-charcoal-400 hover:text-white transition-colors">
@@ -173,12 +171,12 @@ export function Footer() {
           <div className="bg-charcoal-800/50 rounded-xl lg:rounded-2xl p-4 lg:p-6 mb-4 lg:mb-6">
             <p className="text-xs text-charcoal-400 leading-relaxed mb-3">
               <span className="font-medium text-charcoal-300">Disclaimer:</span>{' '}
-              *These statements have not been evaluated by the Food and Drug Administration or FSSAI. 
-              This product is not intended to diagnose, treat, cure, or prevent any disease. 
+              *These statements have not been evaluated by the Food and Drug Administration or FSSAI.
+              This product is not intended to diagnose, treat, cure, or prevent any disease.
               This is a dietary supplement, not a medicine. Individual results may vary.
             </p>
             <p className="text-xs text-charcoal-400 leading-relaxed mb-3">
-              Consult your healthcare provider before use if you are pregnant, nursing, taking medication, 
+              Consult your healthcare provider before use if you are pregnant, nursing, taking medication,
               or have a medical condition. Manufactured in a facility that follows GMP standards.
             </p>
           </div>
@@ -199,7 +197,7 @@ export function Footer() {
               </div>
             </div>
           </div>
-          
+
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-4">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 lg:gap-4 text-xs text-charcoal-500">
               <span>© 2026 One4Health. All rights reserved.</span>

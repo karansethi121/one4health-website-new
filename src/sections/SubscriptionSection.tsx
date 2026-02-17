@@ -79,7 +79,7 @@ export function SubscriptionSection() {
             <div className="bg-sage-100 rounded-2xl p-4 lg:p-5 mb-6 lg:mb-8">
               <p className="text-sm text-charcoal-600">
                 <span className="font-semibold text-charcoal-900">Daily support, delivered.</span>{' '}
-                300mg KSM-66® every day to help support your body's stress response.
+                300mg KSM-66® to help your body's stress response.
               </p>
             </div>
 
