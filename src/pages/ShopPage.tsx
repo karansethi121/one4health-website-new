@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, Check } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '@/context/CartContext';
@@ -113,15 +113,6 @@ export function ShopPage() {
 
               {/* Content */}
               <div className="p-6">
-                {/* Rating */}
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <span className="text-sm text-charcoal-500">2,847 reviews</span>
-                </div>
 
                 {/* Title */}
                 <Link to="/product/ashwagandha-gummies-ksm66">
