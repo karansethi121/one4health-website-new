@@ -30,6 +30,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 type PurchaseType = 'onetime' | 'subscribe';
 type SubscriptionDuration = '1month' | '3month';
+type PackSize = 1 | 2;
 
 export function ProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -38,6 +39,7 @@ export function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [purchaseType, setPurchaseType] = useState<PurchaseType>('onetime');
   const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('1month');
+  const [packSize, setPackSize] = useState<PackSize>(1);
 
   // Handle initial purchase type from navigation state
   useEffect(() => {
@@ -107,13 +109,25 @@ export function ProductPage() {
   }, [shopifyProduct]);
 
   const getCurrentPrice = () => {
-    // Starting with 799 as original price
+    // Starting with 799 as original price per jar
     const base = 79900;
     if (purchaseType === 'subscribe') {
-      return Math.round(base * 0.75); // 25% off
+      return Math.round(base * 0.75); // 25% off (20% + 5% extra)
     }
-    return Math.round(base * 0.80); // 20% off
+    // One-time purchase
+    if (packSize === 2) {
+      return Math.round(base * 0.75); // 25% off for 2 jars (extra 5% on top of 20%)
+    }
+    return Math.round(base * 0.80); // 20% off for 1 jar
   };
+  // Sync packSize with quantity for cart submission
+  useEffect(() => {
+    if (purchaseType === 'onetime') {
+      setQuantity(packSize);
+    } else {
+      setQuantity(1); // Subscriptions usually handle jar count differently or defaulted to 1
+    }
+  }, [packSize, purchaseType]);
 
   const handleAddToCart = async () => {
     if (!currentVariant) return;
@@ -123,6 +137,7 @@ export function ProductPage() {
       attributes['subscription'] = subscriptionDuration === '1month' ? '1 Month Supply' : '3 Month Supply';
     } else {
       attributes['purchase_type'] = 'One-time';
+      attributes['pack_size'] = `${packSize} Jar${packSize > 1 ? 's' : ''}`;
     }
 
     await addToCart(currentVariant.id, quantity, attributes);
@@ -186,7 +201,7 @@ export function ProductPage() {
               <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Mixed Berry</p>
             </div>
 
-            {/* Purchase Type Toggle */}
+            {/* Purchase Type Toggle - Always Visible */}
             <div className="bg-sage-50 rounded-xl lg:rounded-2xl p-1">
               <div className="flex gap-1">
                 <button
@@ -209,6 +224,57 @@ export function ProductPage() {
                 </button>
               </div>
             </div>
+
+            {/* Content based on selection */}
+            {purchaseType === 'onetime' && (
+              <div className="space-y-3 animate-fade-in pt-2">
+                <p className="text-xs lg:text-sm text-charcoal-500 font-medium">Select Pack Size:</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => setPackSize(1)}
+                    className={`relative p-3 lg:p-4 rounded-xl border-2 transition-all text-left ${packSize === 1
+                      ? 'border-sage-700 bg-sage-50'
+                      : 'border-charcoal-200 hover:border-sage-300'
+                      }`}
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 1 ? 'border-sage-700' : 'border-charcoal-300'}`}>
+                        {packSize === 1 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
+                      </div>
+                      <span className="font-semibold text-charcoal-900 text-sm lg:text-base">1 Jar</span>
+                    </div>
+                    <p className="text-xs text-charcoal-500 mb-2">30-day supply</p>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-sage-700">{formatPrice(63900)}</span>
+                      <span className="text-[10px] text-coral-600 font-medium tracking-tight">Save 20%</span>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => setPackSize(2)}
+                    className={`relative p-3 lg:p-4 rounded-xl border-2 transition-all text-left ${packSize === 2
+                      ? 'border-sage-700 bg-sage-50 shadow-soft-sm'
+                      : 'border-charcoal-200 hover:border-sage-300'
+                      }`}
+                  >
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap border border-amber-200 shadow-sm z-10">
+                      Best Value
+                    </div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 2 ? 'border-sage-700' : 'border-charcoal-300'}`}>
+                        {packSize === 2 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
+                      </div>
+                      <span className="font-semibold text-charcoal-900 text-sm lg:text-base">2 Jars</span>
+                    </div>
+                    <p className="text-xs text-charcoal-500 mb-2">60-day supply</p>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-sage-700">{formatPrice(119900)}</span>
+                      <span className="text-[10px] text-coral-600 font-medium tracking-tight">Save 25% (Best choice)</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Subscription Options */}
             {purchaseType === 'subscribe' && (
@@ -482,7 +548,7 @@ export function ProductPage() {
       </section>
 
       {/* Mobile Sticky Bottom Bar with WhatsApp */}
-      <MobileStickyBar productName={shopifyProduct.title} variantId={currentVariant?.id} />
+      <MobileStickyBar productName={shopifyProduct.title} variantId={currentVariant?.id} quantity={quantity} />
     </main>
   );
 }

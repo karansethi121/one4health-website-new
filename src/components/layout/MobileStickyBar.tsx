@@ -5,11 +5,13 @@ import { useCart } from '@/context/CartContext';
 interface MobileStickyBarProps {
   productName?: string;
   variantId?: number;
+  quantity?: number;
 }
 
 export function MobileStickyBar({
   productName = 'Ashwagandha Gummies',
-  variantId
+  variantId,
+  quantity = 1
 }: MobileStickyBarProps) {
   const { addToCart } = useCart();
   const [isVisible, setIsVisible] = useState(false);
@@ -27,7 +29,7 @@ export function MobileStickyBar({
 
   const handleAddToCart = () => {
     if (variantId) {
-      addToCart(variantId, 1);
+      addToCart(variantId, quantity);
     }
   };
 
