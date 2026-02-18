@@ -3,7 +3,7 @@ import type { Product, Testimonial, FAQ } from '@/types';
 export const mainProduct: Product = {
   id: 'ashwagandha-gummies-ksm66',
   name: 'Ashwagandha Gummies',
-  subtitle: 'KSM-66® Mixed Berry Gummies',
+  subtitle: 'KSM-66® Ashwagandha Gummies',
   description: 'Clinically studied KSM-66® Ashwagandha with Vitamin D2 and BioPerine® to support your body\'s stress response, promote relaxation, and help maintain daily balance.',
   price: 1299,
   originalPrice: 1599,
@@ -14,6 +14,7 @@ export const mainProduct: Product = {
   badge: 'New Launch',
   inStock: true,
   quantity: 100,
+  packageSize: '60 Gummies',
   servingSize: '2 Gummies',
   supplyDuration: '30-Day Supply',
   benefits: [

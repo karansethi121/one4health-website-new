@@ -81,24 +81,25 @@ export function ProblemSolutionSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-16 lg:py-24 bg-sage-50 overflow-hidden"
+      className="relative w-full section-padding-large bg-sage-50 overflow-hidden"
     >
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] lg:w-[800px] h-[300px] lg:h-[400px] bg-gradient-to-b from-sage-100/50 to-transparent rounded-full blur-3xl" />
 
       <div className="section-container relative z-10">
         {/* Header */}
-        <div className="ps-title text-center max-w-2xl mx-auto mb-10 lg:mb-14">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-sage-100 rounded-xl mb-4">
+        <div className="ps-title text-center max-w-3xl mx-auto mb-16 lg:mb-24">
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-sage-100 rounded-xl mb-6">
             <Target className="w-6 h-6 text-sage-700" />
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-4">
-            Modern life is demanding.
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-heading font-bold text-charcoal-900 leading-tight mb-6">
+            Stress doesn't wait.
             <br />
-            <span className="text-sage-700">Your wellness shouldn't be.</span>
+            <span className="text-sage-700">Neither should you.</span>
           </h2>
-          <p className="text-base lg:text-lg text-charcoal-500">
-            Four common challenges. One simple daily ritual.
+          <p className="text-lg lg:text-xl text-charcoal-500 leading-relaxed">
+            Modern high-performance life demands a resilient mind. We've combined the world's most
+            awarded Ashwagandha with active Vitamin D2 to create the ultimate daily ritual.
           </p>
         </div>
 

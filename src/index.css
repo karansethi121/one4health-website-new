@@ -41,6 +41,7 @@
   body {
     @apply bg-sage-50 text-charcoal-900 font-body antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    line-height: 1.6;
   }
 
   h1,
@@ -59,12 +60,17 @@ img {
 }
 
 .logo-main {
-  height: 64px !important;
+  height: 7rem !important;
+  margin-top: -1.5rem !important;
+  margin-bottom: -1.5rem !important;
+  object-fit: contain;
 }
 
 @media (min-width: 1024px) {
   .logo-main {
-    height: 96px !important;
+    height: 10rem !important;
+    margin-top: -2rem !important;
+    margin-bottom: -2rem !important;
   }
 }
 
@@ -97,7 +103,7 @@ img {
   /* Soft Card */
   .card-soft {
     @apply bg-white rounded-3xl;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0.125rem 1.25rem rgba(0, 0, 0, 0.04);
   }
 
   /* Highlight Pill */
@@ -107,7 +113,16 @@ img {
 
   /* Section Container */
   .section-container {
-    @apply w-full px-6 sm:px-8 lg:px-12 xl:px-16 max-w-7xl mx-auto;
+    @apply w-full px-6 sm:px-8 lg:px-12 xl:px-16 max-w-[1280px] mx-auto;
+  }
+
+  /* Section Spacing */
+  .section-padding {
+    @apply py-24 lg:py-32;
+  }
+
+  .section-padding-large {
+    @apply py-32 lg:py-40;
   }
 
   /* Text Balance */
@@ -232,6 +247,22 @@ img {
     animation: pulse-soft 3s ease-in-out infinite;
   }
 
+  /* Marquee Animation */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 25s linear infinite;
+  }
+
+
   /* Slide Up Animation */
   @keyframes slide-up {
     from {
@@ -277,7 +308,7 @@ img {
 
   .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.08);
   }
 
   /* Fun Scale on Hover */
@@ -300,23 +331,28 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4E0D0;
+  background: #D9E3D3;
+  /* sage-200 */
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B8CBB2;
+  background: #BDD1B3;
+  /* sage-300 */
 }
 
 /* Selection color */
 ::selection {
-  background: rgba(47, 93, 80, 0.15);
-  color: #101010;
+  background: rgba(74, 107, 62, 0.15);
+  /* sage-700 with opacity */
+  color: #171717;
+  /* charcoal-900 */
 }
 
 /* Focus visible styles */
 :focus-visible {
-  outline: 2px solid #2F5D50;
+  outline: 2px solid #4A6B3E;
+  /* sage-700 */
   outline-offset: 2px;
 }
 

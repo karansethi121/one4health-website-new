@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScienceModal } from '@/components/ScienceModal';
+import { ScienceModal } from '@/components/shared/ScienceModal';
 
 gsap.registerPlugin(ScrollTrigger);
 

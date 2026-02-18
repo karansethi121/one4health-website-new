@@ -29,7 +29,7 @@ import { useCart } from '@/context/CartContext';
 import { mainProduct, faqs } from '@/data/products';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MobileStickyBar } from '@/components/MobileStickyBar';
+import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -87,7 +87,7 @@ export function ProductPage() {
   };
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    addToCart(product, quantity, purchaseType === 'subscribe', purchaseType === 'subscribe' ? subscriptionDuration : undefined);
   };
 
   const currentPrice = getCurrentPrice();
@@ -98,13 +98,13 @@ export function ProductPage() {
   return (
     <main className="w-full pt-20 lg:pt-24">
       {/* Breadcrumb */}
-      <div className="section-container py-3 lg:py-4">
+      <div className="section-container pt-4 pb-2 lg:pt-6 lg:pb-4">
         <nav className="flex items-center gap-2 text-xs lg:text-sm text-charcoal-500">
           <Link to="/" className="hover:text-sage-700">Home</Link>
           <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
           <Link to="/shop" className="hover:text-sage-700">Shop</Link>
           <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
-          <span className="text-charcoal-900">{product.name}</span>
+          <span className="text-charcoal-900" aria-current="page">{product.name}</span>
         </nav>
       </div>
 
@@ -295,7 +295,7 @@ export function ProductPage() {
                 onClick={handleAddToCart}
                 className="w-full bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-[1.02] text-sm lg:text-base min-h-[52px] lg:min-h-[56px]"
               >
-                {purchaseType === 'subscribe' ? 'Subscribe Now' : 'Add to Cart'} — {formatPrice(currentPrice * quantity)}
+                {purchaseType === 'subscribe' ? 'Subscribe Now' : 'Add to Cart'}
               </button>
             </div>
 
@@ -546,7 +546,7 @@ export function ProductPage() {
       </section>
 
       {/* Mobile Sticky Bottom Bar with WhatsApp */}
-      <MobileStickyBar price={currentPrice} productName={product.name} />
+      <MobileStickyBar productName={product.name} />
     </main>
   );
 }

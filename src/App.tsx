@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from '@/context/CartContext';
-import { Navigation } from '@/components/Navigation';
-import { CartDrawer } from '@/components/CartDrawer';
-import { Footer } from '@/components/Footer';
+import { Navigation } from '@/components/layout/Navigation';
+import { CartDrawer } from '@/components/cart/CartDrawer';
+import { Footer } from '@/components/layout/Footer';
 import { HomePage } from '@/pages/HomePage';
 import { ShopPage } from '@/pages/ShopPage';
 import { ProductPage } from '@/pages/ProductPage';
@@ -14,7 +14,7 @@ import { ContactPage } from '@/pages/ContactPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 import { TermsPage } from '@/pages/TermsPage';
 import { Toaster } from '@/components/ui/sonner';
-import ScrollToTop from '@/components/ScrollToTop';
+import ScrollToTop from '@/components/layout/ScrollToTop';
 import './App.css';
 
 function App() {

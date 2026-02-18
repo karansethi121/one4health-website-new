@@ -54,33 +54,34 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-sage-50"
+      className="relative min-h-screen w-full overflow-hidden bg-white"
     >
+
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-sage-100/50 via-transparent to-sunshine-100/30" />
+      <div className="absolute inset-0 bg-gradient-to-br from-sage-50 via-white to-sage-50/50" />
 
       {/* Decorative elements */}
-      <div className="absolute top-20 right-10 w-48 h-48 lg:w-64 lg:h-64 bg-sage-200/30 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 left-5 w-32 h-32 lg:w-48 lg:h-48 bg-sunshine-200/30 rounded-full blur-3xl" />
+      <div className="absolute top-20 right-10 w-48 h-48 lg:w-64 lg:h-64 bg-sage-100/40 rounded-full blur-3xl animate-pulse-soft" />
+      <div className="absolute bottom-20 left-5 w-32 h-32 lg:w-48 lg:h-48 bg-sage-200/20 rounded-full blur-3xl animate-pulse-soft" />
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center">
-        <div className="section-container w-full py-12 lg:py-16 pt-20 lg:pt-24">
+        <div className="section-container w-full py-12 lg:py-16 pt-12 lg:pt-20">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left - Text Content */}
             <div className="max-w-xl order-2 lg:order-1">
               {/* Launch Badge */}
-              <div className="hero-badge flex flex-wrap gap-2 mb-5">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-coral-100 text-coral-700 rounded-full text-xs font-medium">
+              <div className="hero-badge flex flex-wrap gap-2 mb-6">
+                <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-sage-50 text-sage-700 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-widest border border-sage-100">
                   <Sparkles className="w-3.5 h-3.5" />
-                  New Launch
+                  New Launch Special
                 </span>
               </div>
 
               {/* Headline */}
-              <h1 className="hero-title text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-heading font-bold text-charcoal-900 leading-[1.1] mb-5">
+              <h1 className="hero-title text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-charcoal-900 leading-[1.05] mb-6">
                 <span className="inline-block">Stay</span>{' '}
-                <span className="inline-block">calm.</span>
+                <span className="inline-block text-sage-700">calm.</span>
                 <br />
                 <span className="inline-block">Stay</span>{' '}
                 <span className="inline-block text-sage-700">sharp.</span>
@@ -88,7 +89,7 @@ export function HeroSection() {
 
               {/* Subheadline */}
               <p className="hero-desc text-base lg:text-lg text-charcoal-600 leading-relaxed mb-6">
-                Clinically studied KSM-66® Mixed Berry Ashwagandha with Vitamin D2 & BioPerine®
+                Clinically studied KSM-66® Ashwagandha with Vitamin D2 & BioPerine®
                 for daily stress support and relaxation.
               </p>
 
@@ -110,7 +111,7 @@ export function HeroSection() {
                   to="/product/ashwagandha-gummies-ksm66"
                   className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-6 lg:px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-base min-h-[56px]"
                 >
-                  Buy Now — ₹1,199
+                  Buy Now | Save 15%
                   <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
@@ -128,10 +129,11 @@ export function HeroSection() {
               </div>
 
               {/* FDA Disclaimer */}
-              <p className="hero-float mt-4 text-xs text-charcoal-400 leading-relaxed">
+              <p className="hero-float mt-4 text-[10px] text-charcoal-400 leading-relaxed max-w-sm">
                 *These statements have not been evaluated by the Food and Drug Administration or FSSAI.
                 This product is not intended to diagnose, treat, cure, or prevent any disease.
               </p>
+
             </div>
 
             {/* Right - Product Image */}

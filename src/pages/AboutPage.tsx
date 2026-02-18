@@ -57,51 +57,73 @@ export function AboutPage() {
   return (
     <main className="w-full pt-24 pb-16">
       {/* Hero */}
-      <section ref={heroRef} className="section-container mb-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <section ref={heroRef} className="section-container section-padding pb-0">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="about-animate">
-            <span className="inline-block px-4 py-1.5 bg-sage-100 text-sage-700 rounded-full text-sm font-medium mb-6">
-              Our Story
+            <span className="inline-block px-4 py-1.5 bg-sage-100 text-sage-700 rounded-full text-xs font-bold uppercase tracking-widest mb-8">
+              The One4Health Story
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal-900 leading-[1.1] mb-6">
-              Daily wellness,{' '}
-              <span className="text-sage-700">simplified.</span>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-bold text-charcoal-900 leading-[1.05] mb-8">
+              Daily wellness, <span className="text-sage-700">for the driven.</span>
             </h1>
-            <p className="text-lg text-charcoal-600 leading-relaxed mb-6">
-              One4Health was born from a simple belief: wellness shouldn't be complicated. 
-              In a world of overwhelming choices and conflicting advice, we set out to create 
-              something different—clean, effective supplements that fit seamlessly into your life.
-            </p>
-            <p className="text-lg text-charcoal-600 leading-relaxed">
-              We're a team of health enthusiasts, scientists, and everyday people who understand 
-              the challenges of modern life. Stress, poor sleep, and low energy affect us all. 
-              That's why we created our first product: Ashwagandha Gummies with KSM-66®.
-            </p>
+            <div className="space-y-6 text-lg text-charcoal-600 leading-relaxed">
+              <p>
+                One4Health began with a simple observation: in the pursuit of modern success, our internal
+                balance is often the first thing we sacrifice. We found ourselves constantly navigating
+                a world of overpromise and under-delivery—where "wellness" was either too complicated
+                to maintain or too diluted to actually work.
+              </p>
+              <p>
+                As entrepreneurs, creators, and health enthusiasts, we needed a solution that was
+                as high-performing as we were. We didn't want a dozen different pills or a complex
+                morning ritual. We wanted the best of science and nature, distilled into a single,
+                simple habit.
+              </p>
+              <p>
+                That search led us to the world's most awarded Ashwagandha—KSM-66®. By combining this
+                clinically-mastered root extract with active Vitamin D2 and BioPerine®, we created
+                more than just a gummy; we created a ritual for resilience.
+              </p>
+            </div>
           </div>
-          <div className="about-animate">
-            <div className="rounded-3xl overflow-hidden shadow-soft">
+          <div className="about-animate relative">
+            <div className="rounded-[40px] overflow-hidden shadow-2xl skew-y-1 lg:skew-y-0 lg:-rotate-2 hover:rotate-0 transition-transform duration-700">
               <img
                 src="/images/about_lifestyle.jpg"
-                alt="One4Health team"
-                className="w-full h-[400px] lg:h-[500px] object-cover"
+                alt="Mindful living with One4Health"
+                className="w-full h-[500px] lg:h-[700px] object-cover scale-110"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Mission */}
-      <section className="bg-sage-100 py-20 mb-20">
+      {/* Mission / Our Why */}
+      <section className="section-padding-large bg-sage-100/50 mt-20 lg:mt-32">
         <div className="section-container">
-          <div className="max-w-3xl mx-auto text-center about-animate">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-charcoal-900 mb-6">
-              Our Mission
-            </h2>
-            <p className="text-xl text-charcoal-700 leading-relaxed">
-              To make premium wellness accessible to everyone. We believe that when you feel 
-              your best, you can do your best. Our goal is to help ambitious, health-conscious 
-              individuals find balance without adding complexity to their lives.
-            </p>
+          <div className="max-w-4xl mx-auto text-center about-animate">
+            <h2 className="text-sm uppercase tracking-[0.2em] font-bold text-sage-700 mb-8">Guided by Purpose</h2>
+            <h3 className="text-3xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal-900 mb-10 leading-tight">
+              Our mission is to empower a million high-performers to find their center.
+            </h3>
+            <div className="grid md:grid-cols-2 gap-10 text-left mt-16">
+              <div className="space-y-4">
+                <p className="font-bold text-charcoal-900 text-xl">Standard Without Compromise</p>
+                <p className="text-charcoal-600 leading-relaxed">
+                  We don't settle for "good enough" ingredients. If it's not clinically studied,
+                  third-party verified, and environmentally conscious, it doesn't make it into
+                  our jars. Quality is our baseline, not our marketing.
+                </p>
+              </div>
+              <div className="space-y-4">
+                <p className="font-bold text-charcoal-900 text-xl">Simplicity is Mastery</p>
+                <p className="text-charcoal-600 leading-relaxed">
+                  The most effective routines are the ones we actually stick to. We replace
+                  complexity with clarity, giving you the focus you need to pursue your
+                  ambitions without the mental load of complex supplement stacks.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -144,7 +166,7 @@ export function AboutPage() {
             This is just the beginning.
           </h2>
           <p className="text-lg text-white/80 max-w-2xl mx-auto mb-8">
-            We're working on new products to support your wellness journey. 
+            We're working on new products to support your wellness journey.
             Stay tuned for sleep support, immunity boosters, and more.
           </p>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-white/90">

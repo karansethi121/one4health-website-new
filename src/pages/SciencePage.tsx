@@ -46,65 +46,109 @@ export function SciencePage() {
             <span className="text-sage-700">Powered by nature.</span>
           </h1>
           <p className="text-lg text-charcoal-600 leading-relaxed">
-            Every ingredient in our formula is carefully selected based on clinical evidence 
+            Every ingredient in our formula is carefully selected based on clinical evidence
             and traditional wisdom. We believe in transparency—no hidden ingredients, no compromises.
           </p>
         </div>
       </section>
 
       {/* KSM-66 Section */}
-      <section className="section-container mb-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <section className="section-container section-padding pb-0">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="science-animate">
-            <div className="rounded-3xl overflow-hidden shadow-soft">
-              <img
-                src="/images/ashwagandha_plant.jpg"
-                alt="Ashwagandha plant"
-                className="w-full h-[400px] object-cover"
-              />
+            <div className="relative">
+              <div className="absolute -inset-4 bg-sage-100 rounded-[40px] -rotate-2" />
+              <div className="relative rounded-[32px] overflow-hidden shadow-xl">
+                <img
+                  src="/images/ashwagandha_plant.jpg"
+                  alt="Ashwagandha plant"
+                  className="w-full h-[500px] object-cover"
+                />
+              </div>
             </div>
           </div>
           <div className="science-animate">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sage-100 rounded-full text-sage-700 text-sm font-medium mb-6">
-              <Leaf className="w-4 h-4" />
-              Star Ingredient
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sage-100 rounded-full text-sage-700 text-[10px] font-bold uppercase tracking-widest mb-8">
+              <Leaf className="w-3.5 h-3.5" />
+              The Gold Standard
             </div>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-charcoal-900 mb-4">
-              What is KSM-66®?
+            <h2 className="text-3xl md:text-5xl font-heading font-bold text-charcoal-900 mb-8 leading-tight">
+              Why KSM-66® Is <br /><span className="text-sage-700">The Gold Standard</span>
             </h2>
-            <p className="text-lg text-charcoal-600 leading-relaxed mb-6">
-              KSM-66® is the highest concentration, full-spectrum root extract of ashwagandha 
-              available on the market today. It's produced using a unique extraction process 
-              that preserves the natural balance of the herb's beneficial compounds.
+            <p className="text-lg text-charcoal-600 leading-relaxed mb-8">
+              KSM-66® is the highest concentration, full-spectrum root extract of ashwagandha
+              available on the market today. It's produced using a unique extraction process
+              that took 14 years of R&D to refine, preserving the natural balance of the herb's
+              beneficial compounds.
             </p>
-            <ul className="space-y-3">
+            <div className="space-y-4">
               {[
-                'Backed by 24+ clinical studies',
-                'Full-spectrum root extract (no leaves)',
-                'Produced using green chemistry',
-                'Highest concentration available',
+                { title: 'Full Spectrum Root', desc: 'Uses only the root, maintaining the precise ratios found in nature.' },
+                { title: 'Pure Extraction', desc: 'A "Green Chemistry" process without the use of alcohol or harsh solvents.' },
+                { title: 'Certified Safe', desc: 'Over 24+ clinical studies verifying safety and efficacy.' }
               ].map((item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-sage-100 rounded-full flex items-center justify-center">
-                    <Check className="w-3 h-3 text-sage-700" />
+                <div key={item.title} className="flex gap-4 p-4 rounded-2xl bg-white shadow-soft-sm hover:shadow-soft transition-shadow">
+                  <div className="w-10 h-10 bg-sage-50 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-5 h-5 text-sage-700" />
                   </div>
-                  <span className="text-charcoal-700">{item}</span>
-                </li>
+                  <div>
+                    <h4 className="font-bold text-charcoal-900 text-sm mb-1">{item.title}</h4>
+                    <p className="text-sm text-charcoal-500 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Clinical Study Results */}
+      <section className="section-container section-padding-large">
+        <div className="bg-charcoal-900 rounded-[48px] p-8 md:p-16 text-white overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-sage-700/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+
+          <div className="relative z-10 max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-white/90 text-[10px] font-bold uppercase tracking-widest mb-8">
+              <Beaker className="w-3.5 h-3.5" />
+              Published Research
+            </div>
+            <h2 className="text-3xl md:text-5xl font-heading font-bold mb-12">
+              Clinically Proven Results.
+            </h2>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { label: 'Cortisol Levels', value: '-27.9%', desc: 'Reduction in serum cortisol levels (the stress hormone).' },
+                { label: 'Anxiety Scores', value: '-44.0%', desc: 'Improvement in self-assessed stress and anxiety scores.' },
+                { label: 'Sleep Efficiency', value: '+15.2%', desc: 'Increase in overall sleep quality and time spent asleep.' },
+                { label: 'Muscle Strength', value: '+1.5x', desc: 'Increase in muscle mass and strength compared to placebo.' },
+                { label: 'Mental Clarity', value: '+30%', desc: 'Increase in focus and cognitive task performance.' },
+                { label: 'Daily Recovery', value: '2x', desc: 'Faster recovery rates from exercise and physical stress.' },
+              ].map((stat) => (
+                <div key={stat.label} className="group">
+                  <p className="text-sage-400 text-4xl lg:text-5xl font-bold mb-4 group-hover:scale-110 origin-left transition-transform duration-500">{stat.value}</p>
+                  <p className="text-white font-bold text-lg mb-2">{stat.label}</p>
+                  <p className="text-charcoal-400 text-sm leading-relaxed">{stat.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-16 text-xs text-charcoal-500 leading-relaxed italic">
+              *Results based on double-blind, randomized, placebo-controlled trials. Detailed studies available on PubMed (IDs: 23439798, 26609282).
+            </p>
           </div>
         </div>
       </section>
 
       {/* Ingredients Breakdown */}
-      <section className="bg-sage-100 py-20 mb-20">
+      <section className="bg-sage-50 section-padding">
         <div className="section-container">
-          <div className="text-center mb-12 science-animate">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-charcoal-900 mb-4">
-              Complete Ingredient Breakdown
+          <div className="text-center mb-16 science-animate">
+            <h2 className="text-3xl md:text-5xl font-heading font-bold text-charcoal-900 mb-6">
+              Distilled to Essentials.
             </h2>
-            <p className="text-lg text-charcoal-600 max-w-2xl mx-auto">
-              Every ingredient serves a purpose. Here's what's in each gummy.
+            <p className="text-lg text-charcoal-500 max-w-2xl mx-auto">
+              Effective formulas aren't about how much you can add, but what you can't afford to leave out.
             </p>
           </div>
 
@@ -116,8 +160,8 @@ export function SciencePage() {
               >
                 <div className="w-14 h-14 bg-sage-100 rounded-2xl flex items-center justify-center mb-6">
                   {idx === 0 ? <Leaf className="w-7 h-7 text-sage-700" /> :
-                   idx === 1 ? <Sun className="w-7 h-7 text-sage-700" /> :
-                   <Beaker className="w-7 h-7 text-sage-700" />}
+                    idx === 1 ? <Sun className="w-7 h-7 text-sage-700" /> :
+                      <Beaker className="w-7 h-7 text-sage-700" />}
                 </div>
                 <h3 className="text-xl font-semibold text-charcoal-900 mb-2">
                   {ingredient.name}
@@ -151,8 +195,8 @@ export function SciencePage() {
                 Why BioPerine®?
               </h2>
               <p className="text-lg text-white/80 leading-relaxed mb-6">
-                BioPerine® is a patented extract from black pepper fruit that has been 
-                clinically shown to enhance nutrient absorption by up to 30%. This means 
+                BioPerine® is a patented extract from black pepper fruit that has been
+                clinically shown to enhance nutrient absorption by up to 30%. This means
                 you get more benefit from every gummy.
               </p>
               <ul className="space-y-3">
@@ -177,8 +221,8 @@ export function SciencePage() {
               The Science of Absorption
             </h3>
             <p className="text-charcoal-600 leading-relaxed mb-6">
-              Many supplements pass through your body without being fully absorbed. 
-              BioPerine® addresses this by inhibiting certain enzymes that break down 
+              Many supplements pass through your body without being fully absorbed.
+              BioPerine® addresses this by inhibiting certain enzymes that break down
               nutrients, allowing more of the active compounds to reach your bloodstream.
             </p>
             <div className="bg-sage-50 rounded-2xl p-6">
@@ -192,7 +236,7 @@ export function SciencePage() {
                 </div>
               </div>
               <p className="text-sm text-charcoal-600">
-                Studies show BioPerine® can increase the bioavailability of various 
+                Studies show BioPerine® can increase the bioavailability of various
                 nutrients, making your supplement more effective.
               </p>
             </div>

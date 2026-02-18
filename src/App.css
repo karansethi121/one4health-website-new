@@ -22,7 +22,8 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #2F5D50;
+  outline: 2px solid #4A6B3E;
+  /* sage-700 */
   outline-offset: 2px;
 }
 
@@ -44,16 +45,19 @@ button,
 }
 
 ::-webkit-scrollbar-track {
-  background: #F6F6F2;
+  background: #F8F9F6;
+  /* sage-50 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #B8CBB2;
+  background: #BDD1B3;
+  /* sage-300 */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9AB592;
+  background: #9BB88E;
+  /* sage-400 */
 }
 
 /* Reduced motion */

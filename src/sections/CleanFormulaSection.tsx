@@ -88,8 +88,8 @@ export function CleanFormulaSection() {
             No junk.{' '}
             <span className="relative inline-block">
               Just results.
-              <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 140 12" fill="none">
-                <path d="M2 8C30 2 100 2 138 8" stroke="#F97066" strokeWidth="4" strokeLinecap="round" />
+              <svg className="absolute -bottom-2 left-0 w-full text-sage-600" viewBox="0 0 140 12" fill="none">
+                <path d="M2 8C30 2 100 2 138 8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </span>
           </h2>

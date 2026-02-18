@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Moon, Heart, Beaker } from 'lucide-react';
+import { Moon, Sparkles, Zap, Shield } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -7,25 +7,22 @@ gsap.registerPlugin(ScrollTrigger);
 
 const benefits = [
   {
-    icon: Heart,
+    icon: Zap,
     title: 'Relax without drowsiness',
     description: 'Feel calm and centered throughout your day',
     color: 'bg-coral-100 text-coral-600',
-    emoji: '💆',
   },
   {
     icon: Moon,
     title: 'Sleep better',
     description: 'Wake up refreshed and ready to go',
     color: 'bg-lavender-100 text-lavender-600',
-    emoji: '😴',
   },
   {
-    icon: Beaker,
+    icon: Shield,
     title: 'Clinically studied',
     description: 'KSM-66® Ashwagandha, the gold standard',
     color: 'bg-sage-100 text-sage-700',
-    emoji: '🔬',
   },
 ];
 
@@ -35,33 +32,17 @@ export function BenefitsSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.benefits-title',
+        '.benefit-card',
         { y: 40, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.7,
+          duration: 0.6,
+          stagger: 0.1,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 75%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-
-      gsap.fromTo(
-        '.benefit-card',
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.12,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 65%',
             toggleActions: 'play none none reverse',
           },
         }
@@ -82,13 +63,13 @@ export function BenefitsSection() {
       <div className="section-container relative z-10">
         {/* Header */}
         <div className="benefits-title text-center max-w-2xl mx-auto mb-16">
-          <span className="inline-block text-4xl mb-4">✨</span>
+          <Sparkles className="w-10 h-10 text-sage-600 mx-auto mb-4" />
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-4">
             Stress relief you can{' '}
             <span className="relative inline-block">
               taste
-              <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 12" fill="none">
-                <path d="M2 8C20 3 50 3 98 8" stroke="#7A9B6A" strokeWidth="4" strokeLinecap="round" />
+              <svg className="absolute -bottom-2 left-0 w-full text-sage-500" viewBox="0 0 100 12" fill="none">
+                <path d="M2 8C20 3 50 3 98 8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </span>
           </h2>
@@ -105,7 +86,7 @@ export function BenefitsSection() {
               className="benefit-card group bg-white rounded-3xl p-8 hover-lift cursor-default"
             >
               <div className={`w-14 h-14 ${benefit.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <span className="text-2xl">{benefit.emoji}</span>
+                <benefit.icon className="w-7 h-7" />
               </div>
               <h3 className="text-xl font-semibold text-charcoal-900 mb-2">
                 {benefit.title}

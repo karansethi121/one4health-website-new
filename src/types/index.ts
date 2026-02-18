@@ -10,6 +10,7 @@ export interface Product {
   badge?: string;
   inStock: boolean;
   quantity: number;
+  packageSize: string;
   servingSize: string;
   supplyDuration: string;
   benefits: string[];
@@ -29,6 +30,8 @@ export interface Ingredient {
 export interface CartItem {
   product: Product;
   quantity: number;
+  isSubscription?: boolean;
+  subscriptionLevel?: '1month' | '3month';
 }
 
 export interface Testimonial {

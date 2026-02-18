@@ -110,14 +110,14 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        xs: "calc(var(--radius) - 6px)",
+        xs: "calc(var(--radius) - 0.375rem)",
       },
       boxShadow: {
-        xs: "0 1px 2px 0 rgb(0 0 0 / 0.03)",
-        'soft': '0 4px 24px rgba(0, 0, 0, 0.04)',
-        'soft-lg': '0 8px 40px rgba(0, 0, 0, 0.06)',
-        'card': '0 2px 16px rgba(0, 0, 0, 0.04)',
-        'fun': '0 8px 32px rgba(47, 93, 80, 0.12)',
+        xs: "0 0.0625rem 0.125rem 0 rgb(0 0 0 / 0.03)",
+        'soft': '0 0.25rem 1.5rem rgba(0, 0, 0, 0.04)',
+        'soft-lg': '0 0.5rem 2.5rem rgba(0, 0, 0, 0.06)',
+        'card': '0 0.125rem 1rem rgba(0, 0, 0, 0.04)',
+        'fun': '0 0.5rem 2rem rgba(47, 93, 80, 0.12)',
       },
       keyframes: {
         "accordion-down": {

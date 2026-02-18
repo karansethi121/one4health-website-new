@@ -7,7 +7,7 @@ interface CartContextType {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addToCart: (product: Product, quantity?: number) => void;
+  addToCart: (product: Product, quantity?: number, isSubscription?: boolean, subscriptionLevel?: '1month' | '3month') => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -25,17 +25,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const closeCart = useCallback(() => setIsOpen(false), []);
   const toggleCart = useCallback(() => setIsOpen(prev => !prev), []);
 
-  const addToCart = useCallback((product: Product, quantity = 1) => {
+  const addToCart = useCallback((product: Product, quantity = 1, isSubscription = false, subscriptionLevel?: '1month' | '3month') => {
     setItems(prev => {
-      const existingItem = prev.find(item => item.product.id === product.id);
+      const existingItem = prev.find(item =>
+        item.product.id === product.id &&
+        item.isSubscription === isSubscription &&
+        item.subscriptionLevel === subscriptionLevel
+      );
       if (existingItem) {
         return prev.map(item =>
-          item.product.id === product.id
+          item === existingItem
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { product, quantity }];
+      return [...prev, { product, quantity, isSubscription, subscriptionLevel }];
     });
     setIsOpen(true);
   }, []);
@@ -61,8 +65,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+
   const totalPrice = items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
+    (sum, item) => {
+      let price = item.product.price;
+      if (item.isSubscription) {
+        if (item.subscriptionLevel === '1month') {
+          price = Math.round(item.product.price * 0.85);
+        } else if (item.subscriptionLevel === '3month') {
+          price = Math.round(item.product.price * 0.80);
+        }
+      }
+      return sum + price * item.quantity;
+    },
     0
   );
 
