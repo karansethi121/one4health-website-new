@@ -107,14 +107,12 @@ export function ProductPage() {
   }, [shopifyProduct]);
 
   const getCurrentPrice = () => {
-    if (!currentVariant) return 0;
-
-    let price = currentVariant.price;
+    // Starting with 799 as original price
+    const base = 79900;
     if (purchaseType === 'subscribe') {
-      // 25% off original price (which is 20% off + 5% extra)
-      price = Math.round(originalPrice * 0.75);
+      return Math.round(base * 0.75); // 25% off
     }
-    return price;
+    return Math.round(base * 0.80); // 20% off
   };
 
   const handleAddToCart = async () => {
@@ -139,7 +137,7 @@ export function ProductPage() {
   }
 
   const currentPrice = getCurrentPrice();
-  const originalPrice = currentVariant?.compare_at_price || currentVariant?.price * 1.25; // Fallback if no compare_at
+  const originalPrice = 79900; // Fixed original price as per request
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
@@ -235,7 +233,7 @@ export function ProductPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(originalPrice * 0.75))}</p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}</p>
                       <p className="text-xs text-coral-600">Save 25%</p>
                     </div>
                   </button>
@@ -258,7 +256,7 @@ export function ProductPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(originalPrice * 0.75))}<span className="text-xs font-normal text-charcoal-500">/mo</span></p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}<span className="text-xs font-normal text-charcoal-500">/mo</span></p>
                       <p className="text-xs text-coral-600">Save 25%</p>
                     </div>
                   </button>

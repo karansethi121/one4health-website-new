@@ -71,8 +71,9 @@ export function ShopPage() {
     );
   }
 
-  const originalPrice = currentVariant?.compare_at_price || currentVariant?.price * 1.25;
-  const savings = Math.round(((originalPrice - currentVariant.price) / originalPrice) * 100);
+  const originalPrice = 79900;
+  const currentPrice = 63900;
+  const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
     <main className="w-full pt-24 pb-16">
@@ -125,7 +126,7 @@ export function ShopPage() {
                 {/* Price */}
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-2xl font-bold text-sage-700">
-                    {formatPrice(currentVariant.price)}
+                    {formatPrice(currentPrice)}
                   </span>
                   {originalPrice && (
                     <span className="text-lg text-charcoal-400 line-through">

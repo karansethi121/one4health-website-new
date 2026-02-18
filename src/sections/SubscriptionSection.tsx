@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const benefits = [
-  { icon: Zap, text: 'Save 25% every month', desc: '₹749 instead of ₹999' },
+  { icon: Zap, text: 'Save 25% every month', desc: '₹599 instead of ₹799' },
   { icon: Truck, text: 'Free shipping', desc: 'Always free, no minimum' },
   { icon: Pause, text: 'Pause or cancel anytime', desc: 'No commitments' },
 ];
@@ -126,8 +126,8 @@ export function SubscriptionSection() {
             <div className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-soft">
               {/* Price comparison */}
               <div className="flex items-baseline gap-2 lg:gap-3 mb-5 lg:mb-6 flex-wrap">
-                <span className="text-3xl lg:text-4xl font-bold text-sage-700">₹749</span>
-                <span className="text-lg lg:text-xl text-charcoal-400 line-through">₹999</span>
+                <span className="text-3xl lg:text-4xl font-bold text-sage-700">₹599</span>
+                <span className="text-lg lg:text-xl text-charcoal-400 line-through">₹799</span>
                 <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-xs font-medium">
                   Save 25%
                 </span>
