@@ -1,9 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Check } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { mainProduct } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,6 +10,9 @@ gsap.registerPlugin(ScrollTrigger);
 export function ShopPage() {
   const { addToCart } = useCart();
   const heroRef = useRef<HTMLDivElement>(null);
+
+  // Get dynamic Shopify product data
+  const shopifyProduct = window.ShopifyData?.all_products?.["ashwagandha-gummies-ksm66"];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -40,13 +42,24 @@ export function ShopPage() {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(price / 100);
   };
 
-  const product = mainProduct;
-  const savings = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0;
+  const currentVariant = useMemo(() => {
+    if (!shopifyProduct) return null;
+    return shopifyProduct.variants[0];
+  }, [shopifyProduct]);
+
+  if (!shopifyProduct) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-charcoal-500 animate-pulse">Loading products...</p>
+      </div>
+    );
+  }
+
+  const originalPrice = currentVariant?.compare_at_price || currentVariant?.price * 1.25;
+  const savings = Math.round(((originalPrice - currentVariant.price) / originalPrice) * 100);
 
   return (
     <main className="w-full pt-24 pb-16">
@@ -71,15 +84,13 @@ export function ShopPage() {
               {/* Image */}
               <Link to="/product/ashwagandha-gummies-ksm66" className="block relative">
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={shopifyProduct.featured_image || "/images/product_transparent.png"}
+                  alt={shopifyProduct.title}
                   className="w-full aspect-square object-cover"
                 />
-                {product.badge && (
-                  <span className="absolute top-4 left-4 px-3 py-1.5 bg-sage-700 text-white rounded-full text-sm font-medium">
-                    {product.badge}
-                  </span>
-                )}
+                <span className="absolute top-4 left-4 px-3 py-1.5 bg-sage-700 text-white rounded-full text-sm font-medium">
+                  {shopifyProduct.type || 'New Launch'}
+                </span>
                 {savings > 0 && (
                   <span className="absolute top-4 right-4 px-3 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
                     Save {savings}%
@@ -102,19 +113,19 @@ export function ShopPage() {
                 {/* Title */}
                 <Link to="/product/ashwagandha-gummies-ksm66">
                   <h3 className="text-xl font-semibold text-charcoal-900 mb-1 hover:text-sage-700 transition-colors">
-                    {product.name}
+                    {shopifyProduct.title}
                   </h3>
                 </Link>
-                <p className="text-sm text-charcoal-500 mb-4">{product.subtitle}</p>
+                <p className="text-sm text-charcoal-500 mb-4">Flavor: Mixed Berry</p>
 
                 {/* Price */}
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-2xl font-bold text-sage-700">
-                    {formatPrice(product.price)}
+                    {formatPrice(currentVariant.price)}
                   </span>
-                  {product.originalPrice && (
+                  {originalPrice && (
                     <span className="text-lg text-charcoal-400 line-through">
-                      {formatPrice(product.originalPrice)}
+                      {formatPrice(originalPrice)}
                     </span>
                   )}
                 </div>
@@ -138,7 +149,7 @@ export function ShopPage() {
                 {/* CTAs */}
                 <div className="space-y-2">
                   <button
-                    onClick={() => addToCart(product)}
+                    onClick={() => addToCart(currentVariant.id)}
                     className="w-full btn-primary py-3"
                   >
                     Add to Cart

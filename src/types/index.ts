@@ -56,6 +56,7 @@ declare global {
   interface Window {
     ShopifyData: {
       product: any;
+      all_products: Record<string, any>;
       cart: any;
       routes: {
         root: string;

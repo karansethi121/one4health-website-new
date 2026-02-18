@@ -23,6 +23,9 @@
       
       window.ShopifyData = {
         product: {{ product | json }},
+        all_products: {
+          "ashwagandha-gummies-ksm66": {{ all_products['ashwagandha-gummies-ksm66'] | json }}
+        },
         cart: {{ cart | json }},
         routes: {
           root: "{{ routes.root_url }}",
