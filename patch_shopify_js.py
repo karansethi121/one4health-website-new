@@ -15,14 +15,11 @@ def patch_file(filepath):
     
     # Simple regex to find /images/... inside quotes
     # Pattern: "/images/([^"'>\s]+)"
-    pattern = r'\"/images/([^\"\'>\s]+)\"'
-    replacement = r'window.ShopifyAssetsUrl + "\1"'
+    # Handle both double and single quotes, and potentially escaped characters in minified JS
+    pattern = r'[\"\']\/images\/([^\"\'+?&%]+)[\"\']'
+    replacement = r'(window.ShopifyAssetsUrl || "/images/") + "\1"'
     
     new_content = re.sub(pattern, replacement, content)
-    
-    # Also handle single quotes
-    pattern_sq = r"\'/images/([^\"\'>\s]+)\'"
-    new_content = re.sub(pattern_sq, replacement, new_content)
 
     if new_content != content:
         with open(filepath, 'w') as f:
