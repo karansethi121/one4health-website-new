@@ -29,7 +29,7 @@ import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
 gsap.registerPlugin(ScrollTrigger);
 
 type PurchaseType = 'onetime' | 'subscribe';
-type SubscriptionDuration = '1month' | '3month';
+type SubscriptionDuration = '15days' | '1month';
 type PackSize = 1 | 2;
 
 export function ProductPage() {
@@ -38,7 +38,7 @@ export function ProductPage() {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [purchaseType, setPurchaseType] = useState<PurchaseType>('onetime');
-  const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('1month');
+  const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('15days');
   const [packSize, setPackSize] = useState<PackSize>(1);
 
   // Handle initial purchase type from navigation state
@@ -112,7 +112,10 @@ export function ProductPage() {
     // Starting with 799 as original price per jar
     const base = 79900;
     if (purchaseType === 'subscribe') {
-      return Math.round(base * 0.75); // 25% off (20% + 5% extra)
+      if (subscriptionDuration === '15days') {
+        return Math.round(base * 0.75); // 25% off
+      }
+      return Math.round(base * 0.70); // 30% off (As requested: 1 month supply = 30% off)
     }
     // One-time purchase
     if (packSize === 2) {
@@ -134,7 +137,7 @@ export function ProductPage() {
 
     const attributes: Record<string, string> = {};
     if (purchaseType === 'subscribe') {
-      attributes['subscription'] = subscriptionDuration === '1month' ? '1 Month Supply' : '3 Month Supply';
+      attributes['subscription'] = subscriptionDuration === '15days' ? '15 Days Supply' : '1 Month Supply';
     } else {
       attributes['purchase_type'] = 'One-time';
       attributes['pack_size'] = `${packSize} Jar${packSize > 1 ? 's' : ''}`;
@@ -278,13 +281,36 @@ export function ProductPage() {
 
             {/* Subscription Options */}
             {purchaseType === 'subscribe' && (
-              <div className="space-y-2 lg:space-y-3 animate-fade-in">
-                <p className="text-xs lg:text-sm text-charcoal-500">Choose your plan:</p>
+              <div className="space-y-2 lg:space-y-3 animate-fade-in pt-2">
+                <p className="text-xs lg:text-sm text-charcoal-500 font-medium">Choose your plan:</p>
                 <div className="space-y-2">
+                  <button
+                    onClick={() => setSubscriptionDuration('15days')}
+                    className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '15days'
+                      ? 'border-sage-700 bg-sage-50 shadow-soft-sm'
+                      : 'border-charcoal-200 hover:border-sage-300'
+                      }`}
+                  >
+                    <div className="flex items-center gap-2 lg:gap-3">
+                      <div className={`w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center ${subscriptionDuration === '15days' ? 'border-sage-700' : 'border-charcoal-300'
+                        }`}>
+                        {subscriptionDuration === '15days' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
+                      </div>
+                      <div className="text-left">
+                        <p className="font-semibold text-charcoal-900 text-sm lg:text-base">15 Days Supply</p>
+                        <p className="text-xs text-charcoal-500">Delivered every 15 days</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}</p>
+                      <p className="text-xs text-coral-600 font-medium">Save 25%</p>
+                    </div>
+                  </button>
+
                   <button
                     onClick={() => setSubscriptionDuration('1month')}
                     className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '1month'
-                      ? 'border-sage-700 bg-sage-50'
+                      ? 'border-sage-700 bg-sage-50 shadow-soft-sm'
                       : 'border-charcoal-200 hover:border-sage-300'
                       }`}
                   >
@@ -294,36 +320,13 @@ export function ProductPage() {
                         {subscriptionDuration === '1month' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
                       </div>
                       <div className="text-left">
-                        <p className="font-medium text-charcoal-900 text-sm lg:text-base">1 Month Supply</p>
+                        <p className="font-semibold text-charcoal-900 text-sm lg:text-base">1 Month Supply</p>
                         <p className="text-xs text-charcoal-500">Delivered monthly</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}</p>
-                      <p className="text-xs text-coral-600">Save 25%</p>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setSubscriptionDuration('3month')}
-                    className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '3month'
-                      ? 'border-sage-700 bg-sage-50'
-                      : 'border-charcoal-200 hover:border-sage-300'
-                      }`}
-                  >
-                    <div className="flex items-center gap-2 lg:gap-3">
-                      <div className={`w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center ${subscriptionDuration === '3month' ? 'border-sage-700' : 'border-charcoal-300'
-                        }`}>
-                        {subscriptionDuration === '3month' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
-                      </div>
-                      <div className="text-left">
-                        <p className="font-medium text-charcoal-900 text-sm lg:text-base">3 Month Supply</p>
-                        <p className="text-xs text-charcoal-500">Best value</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}<span className="text-xs font-normal text-charcoal-500">/mo</span></p>
-                      <p className="text-xs text-coral-600">Save 25%</p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(55900)}</p>
+                      <p className="text-xs text-coral-600 font-medium">Save 30%</p>
                     </div>
                   </button>
                 </div>
@@ -352,7 +355,7 @@ export function ProductPage() {
               )}
               {purchaseType === 'subscribe' && (
                 <span className="px-2 py-1 bg-sage-100 text-sage-700 rounded-full text-xs font-medium">
-                  {subscriptionDuration === '1month' ? '25% off + Free Shipping' : '25% off + Free Shipping'}
+                  {subscriptionDuration === '15days' ? '25% off + Free Shipping' : '30% off + Free Shipping'}
                 </span>
               )}
             </div>
