@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && python3 patch_shopify_js.py",
     "lint": "eslint .",
     "preview": "vite preview"
   },
