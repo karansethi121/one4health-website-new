@@ -122,7 +122,7 @@ export function HeroSection() {
                   }}
                   className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-6 lg:px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-base min-h-[56px]"
                 >
-                  Buy Now | Save 15%
+                  Buy Now | Save 20%
                   <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <Link

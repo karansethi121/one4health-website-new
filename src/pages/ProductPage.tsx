@@ -111,11 +111,8 @@ export function ProductPage() {
 
     let price = currentVariant.price;
     if (purchaseType === 'subscribe') {
-      if (subscriptionDuration === '1month') {
-        price = Math.round(price * 0.85); // 15% off
-      } else {
-        price = Math.round(price * 0.80); // 20% off for 3 month
-      }
+      // 25% off original price (which is 20% off + 5% extra)
+      price = Math.round(originalPrice * 0.75);
     }
     return price;
   };
@@ -125,7 +122,7 @@ export function ProductPage() {
 
     const attributes: Record<string, string> = {};
     if (purchaseType === 'subscribe') {
-      attributes['subscription'] = subscriptionDuration === '1month' ? 'Monthly' : '3-Month Plan';
+      attributes['subscription'] = subscriptionDuration === '1month' ? '1 Month Supply' : '3 Month Supply';
     } else {
       attributes['purchase_type'] = 'One-time';
     }
@@ -233,13 +230,13 @@ export function ProductPage() {
                         {subscriptionDuration === '1month' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
                       </div>
                       <div className="text-left">
-                        <p className="font-medium text-charcoal-900 text-sm lg:text-base">1 Month</p>
+                        <p className="font-medium text-charcoal-900 text-sm lg:text-base">1 Month Supply</p>
                         <p className="text-xs text-charcoal-500">Delivered monthly</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(currentVariant.price * 0.85))}</p>
-                      <p className="text-xs text-coral-600">Save 15%</p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(originalPrice * 0.75))}</p>
+                      <p className="text-xs text-coral-600">Save 25%</p>
                     </div>
                   </button>
 
@@ -256,13 +253,13 @@ export function ProductPage() {
                         {subscriptionDuration === '3month' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
                       </div>
                       <div className="text-left">
-                        <p className="font-medium text-charcoal-900 text-sm lg:text-base">3 Months</p>
+                        <p className="font-medium text-charcoal-900 text-sm lg:text-base">3 Month Supply</p>
                         <p className="text-xs text-charcoal-500">Best value</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(currentVariant.price * 0.80))}<span className="text-xs font-normal text-charcoal-500">/mo</span></p>
-                      <p className="text-xs text-coral-600">Save 20%</p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(originalPrice * 0.75))}<span className="text-xs font-normal text-charcoal-500">/mo</span></p>
+                      <p className="text-xs text-coral-600">Save 25%</p>
                     </div>
                   </button>
                 </div>
@@ -291,7 +288,7 @@ export function ProductPage() {
               )}
               {purchaseType === 'subscribe' && (
                 <span className="px-2 py-1 bg-sage-100 text-sage-700 rounded-full text-xs font-medium">
-                  {subscriptionDuration === '1month' ? '15% off + Free Shipping' : '20% off + Free Shipping'}
+                  {subscriptionDuration === '1month' ? '25% off + Free Shipping' : '25% off + Free Shipping'}
                 </span>
               )}
             </div>
