@@ -2,8 +2,10 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Sparkles, Leaf, Zap } from 'lucide-react';
 import { gsap } from 'gsap';
+import { useCart } from '@/context/CartContext';
 
 export function HeroSection() {
+  const { addToCart } = useCart();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -107,13 +109,22 @@ export function HeroSection() {
 
               {/* Primary CTA */}
               <div className="hero-cta flex flex-col sm:flex-row gap-3 mb-5">
-                <Link
-                  to="/product/ashwagandha-gummies-ksm66"
+                <button
+                  onClick={() => {
+                    const shopifyProduct = window.ShopifyData?.all_products?.["ashwagandha-gummies-ksm66"];
+                    const variantId = shopifyProduct?.variants?.[0]?.id;
+                    if (variantId) {
+                      addToCart(variantId, 1);
+                    } else {
+                      // Fallback to navigating if data isn't loaded yet
+                      window.location.href = "/product/ashwagandha-gummies-ksm66";
+                    }
+                  }}
                   className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-6 lg:px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-base min-h-[56px]"
                 >
                   Buy Now | Save 15%
                   <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                </button>
                 <Link
                   to="/science"
                   className="bg-white border-2 border-charcoal-200 text-charcoal-900 font-semibold px-6 lg:px-8 py-4 rounded-full hover:border-sage-300 hover:bg-sage-50 transition-all flex items-center justify-center min-h-[56px]"

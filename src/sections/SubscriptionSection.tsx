@@ -105,6 +105,7 @@ export function SubscriptionSection() {
             <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
               <Link
                 to="/product/ashwagandha-gummies-ksm66"
+                state={{ purchaseType: 'subscribe' }}
                 className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-6 lg:px-8 py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-sm lg:text-base"
               >
                 Start subscription
@@ -112,6 +113,7 @@ export function SubscriptionSection() {
               </Link>
               <Link
                 to="/product/ashwagandha-gummies-ksm66"
+                state={{ purchaseType: 'onetime' }}
                 className="bg-white border-2 border-charcoal-200 text-charcoal-900 font-semibold px-6 lg:px-8 py-3.5 lg:py-4 rounded-full hover:border-sage-300 hover:bg-sage-50 transition-all flex items-center justify-center text-sm lg:text-base"
               >
                 Buy once

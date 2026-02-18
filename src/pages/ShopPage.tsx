@@ -12,7 +12,20 @@ export function ShopPage() {
   const heroRef = useRef<HTMLDivElement>(null);
 
   // Get dynamic Shopify product data
-  const shopifyProduct = window.ShopifyData?.all_products?.["ashwagandha-gummies-ksm66"];
+  const shopifyProduct = useMemo(() => {
+    // 1. Try by handle
+    if (window.ShopifyData?.all_products?.["ashwagandha-gummies-ksm66"]) {
+      return window.ShopifyData.all_products["ashwagandha-gummies-ksm66"];
+    }
+    // 2. Fallback to first product
+    if (window.ShopifyData?.all_products) {
+      const handles = Object.keys(window.ShopifyData.all_products);
+      if (handles.length > 0) {
+        return window.ShopifyData.all_products[handles[0]];
+      }
+    }
+    return null;
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import {
   Check,
   Sparkles,
@@ -32,13 +32,41 @@ type PurchaseType = 'onetime' | 'subscribe';
 type SubscriptionDuration = '1month' | '3month';
 
 export function ProductPage() {
+  const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [purchaseType, setPurchaseType] = useState<PurchaseType>('onetime');
   const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('1month');
 
-  // Use dynamic Shopify product data if available, fallback to null (or we could keep local as fallback)
-  const shopifyProduct = window.ShopifyData?.product;
+  // Handle initial purchase type from navigation state
+  useEffect(() => {
+    if (location.state?.purchaseType) {
+      setPurchaseType(location.state.purchaseType);
+    }
+  }, [location.state]);
+
+  // Use dynamic Shopify product data if available
+  const shopifyProduct = useMemo(() => {
+    // 1. Try to find by handle in all_products (most reliable for client-side navigation)
+    if (id && window.ShopifyData?.all_products?.[id]) {
+      return window.ShopifyData.all_products[id];
+    }
+    // 2. Try the global product (present if on Shopify product page)
+    if (window.ShopifyData?.product && (!id || window.ShopifyData.product.handle === id)) {
+      return window.ShopifyData.product;
+    }
+    // 3. Last resort: just use the first available product in all_products if we are on a product-like path
+    if (window.ShopifyData?.all_products) {
+      const handles = Object.keys(window.ShopifyData.all_products);
+      if (handles.length > 0) {
+        // If we have a handle like "ashwagandha-gummies-ksm66" but it's not found exactly, 
+        // we might still want to show the primary product.
+        return window.ShopifyData.all_products[handles[0]];
+      }
+    }
+    return null;
+  }, [id]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
