@@ -1,85 +1,143 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import type { Product, CartItem } from '@/types';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 interface CartContextType {
-  items: CartItem[];
+  items: any[]; // Changed to any[] to accommodate Shopify's cart item structure
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addToCart: (product: Product, quantity?: number, isSubscription?: boolean, subscriptionLevel?: '1month' | '3month') => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  clearCart: () => void;
+  addToCart: (variantId: number, quantity?: number, attributes?: Record<string, string>) => Promise<void>;
+  removeFromCart: (key: string) => Promise<void>;
+  updateQuantity: (key: string, quantity: number) => Promise<void>;
+  clearCart: () => Promise<void>;
   totalItems: number;
   totalPrice: number;
+  loading: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const refreshCart = useCallback(async () => {
+    try {
+      const response = await fetch('/cart.js');
+      const cart = await response.json();
+      setItems(cart.items);
+      setTotalItems(cart.item_count);
+      setTotalPrice(cart.total_price);
+    } catch (error) {
+      console.error('Failed to fetch Shopify cart:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Initial fetch
+    if (window.ShopifyData?.cart) {
+      setItems(window.ShopifyData.cart.items);
+      setTotalItems(window.ShopifyData.cart.item_count);
+      setTotalPrice(window.ShopifyData.cart.total_price);
+    } else {
+      refreshCart();
+    }
+  }, [refreshCart]);
 
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
   const toggleCart = useCallback(() => setIsOpen(prev => !prev), []);
 
-  const addToCart = useCallback((product: Product, quantity = 1, isSubscription = false, subscriptionLevel?: '1month' | '3month') => {
-    setItems(prev => {
-      const existingItem = prev.find(item =>
-        item.product.id === product.id &&
-        item.isSubscription === isSubscription &&
-        item.subscriptionLevel === subscriptionLevel
-      );
-      if (existingItem) {
-        return prev.map(item =>
-          item === existingItem
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      return [...prev, { product, quantity, isSubscription, subscriptionLevel }];
-    });
-    setIsOpen(true);
-  }, []);
+  const addToCart = useCallback(async (variantId: number, quantity = 1, attributes?: Record<string, string>) => {
+    setLoading(true);
+    try {
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: [{
+            id: variantId,
+            quantity: quantity,
+            properties: attributes
+          }]
+        })
+      });
 
-  const removeFromCart = useCallback((productId: string) => {
-    setItems(prev => prev.filter(item => item.product.id !== productId));
-  }, []);
+      if (!response.ok) throw new Error('Failed to add to cart');
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
+      await refreshCart();
+      setIsOpen(true);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    } finally {
+      setLoading(false);
     }
-    setItems(prev =>
-      prev.map(item =>
-        item.product.id === productId ? { ...item, quantity } : item
-      )
-    );
-  }, [removeFromCart]);
+  }, [refreshCart]);
 
-  const clearCart = useCallback(() => {
-    setItems([]);
-  }, []);
+  const removeFromCart = useCallback(async (key: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: key,
+          quantity: 0
+        })
+      });
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+      if (!response.ok) throw new Error('Failed to remove from cart');
 
-  const totalPrice = items.reduce(
-    (sum, item) => {
-      let price = item.product.price;
-      if (item.isSubscription) {
-        if (item.subscriptionLevel === '1month') {
-          price = Math.round(item.product.price * 0.85);
-        } else if (item.subscriptionLevel === '3month') {
-          price = Math.round(item.product.price * 0.80);
-        }
-      }
-      return sum + price * item.quantity;
-    },
-    0
-  );
+      await refreshCart();
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [refreshCart]);
+
+  const updateQuantity = useCallback(async (key: string, quantity: number) => {
+    setLoading(true);
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: key,
+          quantity: quantity
+        })
+      });
+
+      if (!response.ok) throw new Error('Failed to update quantity');
+
+      await refreshCart();
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [refreshCart]);
+
+  const clearCart = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/cart/clear.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!response.ok) throw new Error('Failed to clear cart');
+
+      await refreshCart();
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [refreshCart]);
 
   return (
     <CartContext.Provider
@@ -95,6 +153,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         clearCart,
         totalItems,
         totalPrice,
+        loading,
       }}
     >
       {children}

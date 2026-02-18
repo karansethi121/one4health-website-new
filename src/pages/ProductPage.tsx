@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Check,
@@ -14,19 +14,14 @@ import {
   Info,
   Heart,
   RefreshCw,
-  Lightbulb,
   Clock,
   Moon,
   Sun as SunIcon,
-  Thermometer,
-  Package,
-  TrendingUp,
-  AlertCircle
 } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '@/context/CartContext';
-import { mainProduct, faqs } from '@/data/products';
+import { faqs } from '@/data/products';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
@@ -42,7 +37,8 @@ export function ProductPage() {
   const [purchaseType, setPurchaseType] = useState<PurchaseType>('onetime');
   const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('1month');
 
-  const product = mainProduct;
+  // Use dynamic Shopify product data if available, fallback to null (or we could keep local as fallback)
+  const shopifyProduct = window.ShopifyData?.product;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -72,28 +68,54 @@ export function ProductPage() {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(price / 100);
   };
+
+  const currentVariant = useMemo(() => {
+    if (!shopifyProduct) return null;
+    // For this implementation, we assume the first variant is the main one.
+    // In a more complex setup, we'd match against selected options.
+    return shopifyProduct.variants[0];
+  }, [shopifyProduct]);
 
   const getCurrentPrice = () => {
+    if (!currentVariant) return 0;
+
+    let price = currentVariant.price;
     if (purchaseType === 'subscribe') {
       if (subscriptionDuration === '1month') {
-        return Math.round(product.price * 0.85); // 15% off
+        price = Math.round(price * 0.85); // 15% off
       } else {
-        return Math.round(product.price * 0.80); // 20% off for 3 month
+        price = Math.round(price * 0.80); // 20% off for 3 month
       }
     }
-    return product.price;
+    return price;
   };
 
-  const handleAddToCart = () => {
-    addToCart(product, quantity, purchaseType === 'subscribe', purchaseType === 'subscribe' ? subscriptionDuration : undefined);
+  const handleAddToCart = async () => {
+    if (!currentVariant) return;
+
+    const attributes: Record<string, string> = {};
+    if (purchaseType === 'subscribe') {
+      attributes['subscription'] = subscriptionDuration === '1month' ? 'Monthly' : '3-Month Plan';
+    } else {
+      attributes['purchase_type'] = 'One-time';
+    }
+
+    await addToCart(currentVariant.id, quantity, attributes);
   };
+
+  if (!shopifyProduct) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-charcoal-500 animate-pulse">Loading product...</p>
+      </div>
+    );
+  }
 
   const currentPrice = getCurrentPrice();
-  const savings = product.originalPrice
-    ? Math.round(((product.originalPrice - currentPrice) / product.originalPrice) * 100)
-    : 0;
+  const originalPrice = currentVariant?.compare_at_price || currentVariant?.price * 1.25; // Fallback if no compare_at
+  const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
     <main className="w-full pt-20 lg:pt-24">
@@ -104,7 +126,7 @@ export function ProductPage() {
           <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
           <Link to="/shop" className="hover:text-sage-700">Shop</Link>
           <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
-          <span className="text-charcoal-900" aria-current="page">{product.name}</span>
+          <span className="text-charcoal-900" aria-current="page">{shopifyProduct.title}</span>
         </nav>
       </div>
 
@@ -114,10 +136,9 @@ export function ProductPage() {
           {/* Left - Images */}
           <div className="product-animate flex items-center justify-center">
             <div className="relative">
-              {/* Transparent product image - no background box */}
               <img
-                src="/images/product_transparent.png"
-                alt={product.name}
+                src={shopifyProduct.featured_image || "/images/product_transparent.png"}
+                alt={shopifyProduct.title}
                 className="w-64 sm:w-72 lg:w-96 xl:w-[28rem] h-auto drop-shadow-2xl"
               />
             </div>
@@ -136,9 +157,9 @@ export function ProductPage() {
             {/* Title */}
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-charcoal-900 mb-2">
-                {product.name}
+                {shopifyProduct.title}
               </h1>
-              <p className="text-base lg:text-lg text-charcoal-600">{product.subtitle}</p>
+              <p className="text-base lg:text-lg text-charcoal-600">{shopifyProduct.type}</p>
               <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Mixed Berry</p>
             </div>
 
@@ -189,7 +210,7 @@ export function ProductPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(product.price * 0.85))}</p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(currentVariant.price * 0.85))}</p>
                       <p className="text-xs text-coral-600">Save 15%</p>
                     </div>
                   </button>
@@ -212,7 +233,7 @@ export function ProductPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(product.price * 0.80))}<span className="text-xs font-normal text-charcoal-500">/mo</span></p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(Math.round(currentVariant.price * 0.80))}<span className="text-xs font-normal text-charcoal-500">/mo</span></p>
                       <p className="text-xs text-coral-600">Save 20%</p>
                     </div>
                   </button>
@@ -230,10 +251,10 @@ export function ProductPage() {
               <span className="text-2xl lg:text-3xl font-bold text-sage-700">
                 {formatPrice(currentPrice)}
               </span>
-              {purchaseType === 'onetime' && product.originalPrice && (
+              {purchaseType === 'onetime' && originalPrice && (
                 <>
                   <span className="text-lg lg:text-xl text-charcoal-400 line-through">
-                    {formatPrice(product.originalPrice)}
+                    {formatPrice(originalPrice)}
                   </span>
                   <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-xs font-medium">
                     Save {savings}%
@@ -247,25 +268,15 @@ export function ProductPage() {
               )}
             </div>
 
-            {/* Key benefits */}
-            <div className="flex flex-wrap gap-2">
-              {product.benefits.slice(0, 3).map((benefit) => (
-                <span key={benefit} className="text-xs lg:text-sm text-charcoal-600 bg-sage-50 px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                  <Check className="w-3.5 h-3.5 text-sage-600" />
-                  {benefit}
-                </span>
-              ))}
-            </div>
-
-            {/* Supply Info */}
+            {/* Supply Info - Keep mostly same as UI, but we could pull from metafields if needed later */}
             <div className="flex items-center gap-3 lg:gap-4 text-xs lg:text-sm text-charcoal-600 flex-wrap">
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700" />
-                {product.supplyDuration}
+                30-Day Supply
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700" />
-                {product.servingSize} daily
+                2 Gummies daily
               </span>
             </div>
 
@@ -293,9 +304,10 @@ export function ProductPage() {
             <div className="space-y-2 lg:space-y-3">
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-[1.02] text-sm lg:text-base min-h-[52px] lg:min-h-[56px]"
+                disabled={!currentVariant || !currentVariant.available}
+                className="w-full bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-[1.02] text-sm lg:text-base min-h-[52px] lg:min-h-[56px] disabled:bg-charcoal-200"
               >
-                {purchaseType === 'subscribe' ? 'Subscribe Now' : 'Add to Cart'}
+                {!currentVariant?.available ? 'Out of Stock' : (purchaseType === 'subscribe' ? 'Subscribe Now' : 'Add to Cart')}
               </button>
             </div>
 
@@ -322,7 +334,7 @@ export function ProductPage() {
         </div>
       </section>
 
-      {/* Product Details Tabs */}
+      {/* Product Details Tabs - Mostly static content from Shopify would go here, currently using snippets from data/products.ts */}
       <section className="section-container py-8 lg:py-12">
         <Tabs defaultValue="benefits" className="w-full">
           <TabsList className="w-full justify-start bg-transparent border-b border-charcoal-200 rounded-none h-auto p-0 mb-6 lg:mb-8 overflow-x-auto">
@@ -339,7 +351,8 @@ export function ProductPage() {
 
           <TabsContent value="benefits" className="mt-0">
             <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
-              {product.benefits.map((benefit, idx) => (
+              {/* Fallback to static data as Shopify product body is usually HTML, but the UI expects an array */}
+              {["Supports a healthy stress response", "Promotes relaxation and calm", "Helps maintain daily balance", "Supports mood and well-being", "Enhanced absorption with BioPerine®"].map((benefit, idx) => (
                 <div key={idx} className="bg-white rounded-xl lg:rounded-2xl p-4 lg:p-6 shadow-soft-sm flex items-start gap-3 lg:gap-4">
                   <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
                     <Heart className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" />
@@ -362,7 +375,11 @@ export function ProductPage() {
 
           <TabsContent value="ingredients" className="mt-0">
             <div className="space-y-4 lg:space-y-6">
-              {product.ingredients.map((ingredient, idx) => (
+              {[
+                { name: 'Ashwagandha (KSM-66®)', amount: '150 mg', dailyAmount: '300 mg', description: 'Full-spectrum root extract supports stress response and promotes calm' },
+                { name: 'Vitamin D2', amount: '200 IU', dailyAmount: '400 IU', description: 'Supports mood balance and healthy immune function' },
+                { name: 'BioPerine® (Black Pepper Extract)', amount: '5 mg', dailyAmount: '10 mg', description: 'Enhances nutrient absorption by up to 30%' }
+              ].map((ingredient, idx) => (
                 <div key={idx} className="bg-white rounded-xl lg:rounded-2xl p-4 lg:p-6 shadow-soft-sm">
                   <div className="flex items-start justify-between mb-3">
                     <div>
@@ -378,14 +395,6 @@ export function ProductPage() {
                     </div>
                   </div>
                   <p className="text-charcoal-600 text-sm">{ingredient.description}</p>
-                  {idx === 1 && (
-                    <div className="mt-3 p-3 bg-sage-50 rounded-lg">
-                      <p className="text-xs lg:text-sm text-sage-700 flex items-start gap-2">
-                        <Lightbulb className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                        <span>We use Vitamin D2 (Ergocalciferol) — a 100% plant-based form suitable for vegans, unlike typical animal-derived D3.</span>
-                      </p>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -428,102 +437,6 @@ export function ProductPage() {
                     </div>
                   </div>
                 </div>
-
-                <div className="flex items-start gap-3 lg:gap-4">
-                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-sage-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Package className="w-5 h-5 lg:w-6 lg:h-6 text-sage-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-charcoal-900 text-sm lg:text-base mb-1">How to Consume</h4>
-                    <p className="text-charcoal-600 text-sm">Chew thoroughly before swallowing. <span className="font-semibold text-coral-600">Do not exceed recommended dosage of 2 gummies per day.</span></p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 lg:gap-4">
-                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-sage-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Thermometer className="w-5 h-5 lg:w-6 lg:h-6 text-sage-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-charcoal-900 text-sm lg:text-base mb-1">Storage Instructions</h4>
-                    <p className="text-charcoal-600 text-sm">Store in a cool, dry place away from direct sunlight. Keep bottle tightly closed.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 lg:gap-4">
-                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-sage-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <TrendingUp className="w-5 h-5 lg:w-6 lg:h-6 text-sage-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-charcoal-900 text-sm lg:text-base mb-1">Duration for Results</h4>
-                    <p className="text-charcoal-600 text-sm">For best results, use consistently for at least 4 weeks. Individual results may vary.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Tips */}
-              <div className="mt-6 lg:mt-8 pt-5 lg:pt-6 border-t border-charcoal-100">
-                <h4 className="font-semibold text-charcoal-900 mb-3 lg:mb-4 text-sm lg:text-base flex items-center gap-2">
-                  <Lightbulb className="w-4 h-4 lg:w-5 lg:h-5 text-sunshine-600" />
-                  Quick Tips for Best Results
-                </h4>
-                <ul className="space-y-2 text-sm text-charcoal-600">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-sage-600 flex-shrink-0 mt-0.5" />
-                    <span>Make the evening gummy part of your nightly wind-down routine — pair with light stretching or meditation.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-sage-600 flex-shrink-0 mt-0.5" />
-                    <span>The morning gummy helps support calm energy throughout your day.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-sage-600 flex-shrink-0 mt-0.5" />
-                    <span>Consistency is key — take at the same time each day for optimal results.</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Timeline */}
-              <div className="mt-6 lg:mt-8 pt-5 lg:pt-6 border-t border-charcoal-100">
-                <h4 className="font-medium text-charcoal-900 mb-3 lg:mb-4 text-sm lg:text-base">What to Expect</h4>
-                <div className="flex flex-wrap gap-3 lg:gap-4">
-                  <div className="bg-sage-50 rounded-lg lg:rounded-xl px-3 py-2 lg:px-4 lg:py-3">
-                    <p className="text-xs text-charcoal-400 uppercase">Week 1</p>
-                    <p className="text-xs lg:text-sm text-charcoal-700">Feeling more balanced</p>
-                  </div>
-                  <div className="bg-sage-50 rounded-lg lg:rounded-xl px-3 py-2 lg:px-4 lg:py-3">
-                    <p className="text-xs text-charcoal-400 uppercase">Week 2</p>
-                    <p className="text-xs lg:text-sm text-charcoal-700">Improved relaxation</p>
-                  </div>
-                  <div className="bg-sage-50 rounded-lg lg:rounded-xl px-3 py-2 lg:px-4 lg:py-3">
-                    <p className="text-xs text-charcoal-400 uppercase">Week 4+</p>
-                    <p className="text-xs lg:text-sm text-charcoal-700">Consistent daily support</p>
-                  </div>
-                </div>
-                <p className="text-xs text-charcoal-400 mt-3 lg:mt-4">
-                  *Individual results may vary. Consistency is key.
-                </p>
-              </div>
-
-              {/* Safety Warnings */}
-              <div className="mt-5 lg:mt-6 space-y-2">
-                <div className="p-3 lg:p-4 bg-amber-50 rounded-lg lg:rounded-xl flex items-start gap-2 lg:gap-3">
-                  <Info className="w-4 h-4 lg:w-5 lg:h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-xs lg:text-sm text-amber-800">
-                    Consult your healthcare provider before use if you are pregnant, nursing, taking medication, or have a medical condition.
-                  </p>
-                </div>
-                <div className="p-3 lg:p-4 bg-red-50 rounded-lg lg:rounded-xl flex items-start gap-2 lg:gap-3">
-                  <AlertCircle className="w-4 h-4 lg:w-5 lg:h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                  <div className="text-xs lg:text-sm text-red-800">
-                    <p className="font-medium">Important Safety Information:</p>
-                    <ul className="mt-1 space-y-1">
-                      <li>• Keep out of reach of children</li>
-                      <li>• Do not exceed recommended dosage of 2 gummies per day</li>
-                      <li>• For adults 18 years and older only</li>
-                      <li>• This is a dietary supplement, not a medicine</li>
-                    </ul>
-                  </div>
-                </div>
               </div>
             </div>
           </TabsContent>
@@ -546,7 +459,7 @@ export function ProductPage() {
       </section>
 
       {/* Mobile Sticky Bottom Bar with WhatsApp */}
-      <MobileStickyBar productName={product.name} />
+      <MobileStickyBar productName={shopifyProduct.title} variantId={currentVariant?.id} />
     </main>
   );
 }

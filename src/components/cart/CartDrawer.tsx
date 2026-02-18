@@ -1,17 +1,22 @@
-import { Minus, Plus, X, ShoppingBag, Leaf, Sparkles, Shield } from 'lucide-react';
+import { Minus, Plus, X, ShoppingBag, Leaf, Sparkles, Shield, Loader2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice } = useCart();
+  const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice, loading } = useCart();
 
   const formatPrice = (price: number) => {
+    // Shopify prices are in cents
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(price / 100);
+  };
+
+  const handleCheckout = () => {
+    window.location.href = '/checkout';
   };
 
   return (
@@ -21,6 +26,7 @@ export function CartDrawer() {
           <SheetTitle className="flex items-center gap-3 text-xl font-heading">
             <ShoppingBag className="w-6 h-6 text-sage-600" />
             Your Cart ({items.length})
+            {loading && <Loader2 className="w-4 h-4 animate-spin text-sage-600" />}
           </SheetTitle>
         </SheetHeader>
 
@@ -45,32 +51,33 @@ export function CartDrawer() {
             <div className="flex-1 overflow-auto py-4 space-y-4">
               {items.map((item) => (
                 <div
-                  key={item.product.id}
+                  key={item.key}
                   className="flex gap-4 p-4 bg-white rounded-2xl shadow-soft"
                 >
                   <img
-                    src={item.product.image}
-                    alt={item.product.name}
+                    src={item.image}
+                    alt={item.product_title}
                     className="w-20 h-20 object-cover rounded-xl"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="font-semibold text-charcoal-900 text-sm truncate">
-                          {item.product.name}
+                          {item.product_title}
                         </h4>
                         <p className="text-xs text-charcoal-500 mt-0.5">
-                          {item.product.packageSize}
+                          {item.variant_title !== 'Default Title' ? item.variant_title : ''}
                         </p>
-                        {item.isSubscription && (
+                        {item.properties?.subscription && (
                           <p className="text-[10px] font-bold text-sage-600 uppercase tracking-tight mt-0.5">
-                            Subscription ({item.subscriptionLevel === '1month' ? '15%' : '20%'} Off)
+                            Subscription ({item.properties.subscription})
                           </p>
                         )}
                       </div>
                       <button
-                        onClick={() => removeFromCart(item.product.id)}
-                        className="p-1.5 hover:bg-sage-100 rounded-full transition-colors"
+                        onClick={() => removeFromCart(item.key)}
+                        disabled={loading}
+                        className="p-1.5 hover:bg-sage-100 rounded-full transition-colors disabled:opacity-50"
                         aria-label="Remove item"
                       >
                         <X className="w-4 h-4 text-charcoal-400" />
@@ -79,8 +86,9 @@ export function CartDrawer() {
                     <div className="flex justify-between items-center mt-3">
                       <div className="flex items-center gap-2 bg-sage-50 rounded-full px-2 py-1">
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors"
+                          onClick={() => updateQuantity(item.key, item.quantity - 1)}
+                          disabled={loading}
+                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors disabled:opacity-50"
                           aria-label="Decrease quantity"
                         >
                           <Minus className="w-3 h-3" />
@@ -89,25 +97,16 @@ export function CartDrawer() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors"
+                          onClick={() => updateQuantity(item.key, item.quantity + 1)}
+                          disabled={loading}
+                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors disabled:opacity-50"
                           aria-label="Increase quantity"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
                       </div>
                       <span className="font-semibold text-sage-700">
-                        {(() => {
-                          let price = item.product.price;
-                          if (item.isSubscription) {
-                            if (item.subscriptionLevel === '1month') {
-                              price = Math.round(item.product.price * 0.85);
-                            } else if (item.subscriptionLevel === '3month') {
-                              price = Math.round(item.product.price * 0.80);
-                            }
-                          }
-                          return formatPrice(price * item.quantity);
-                        })()}
+                        {formatPrice(item.final_line_price)}
                       </span>
                     </div>
                   </div>
@@ -138,8 +137,12 @@ export function CartDrawer() {
               </div>
 
               {/* Checkout Button */}
-              <Button className="w-full bg-sage-700 hover:bg-sage-800 text-white font-bold py-6 rounded-xl transition-all duration-300 hover:shadow-lg text-base">
-                <Sparkles className="w-5 h-5 mr-3" />
+              <Button
+                onClick={handleCheckout}
+                disabled={loading}
+                className="w-full bg-sage-700 hover:bg-sage-800 text-white font-bold py-6 rounded-xl transition-all duration-300 hover:shadow-lg text-base"
+              >
+                {loading ? <Loader2 className="w-5 h-5 animate-spin mr-3" /> : <Sparkles className="w-5 h-5 mr-3" />}
                 Proceed to Checkout
               </Button>
 

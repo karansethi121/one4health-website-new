@@ -20,6 +20,19 @@
 
     <script>
       window.ShopifyAssetsUrl = "{{ 'bundle.js' | asset_url | split: 'bundle.js' | first }}";
+      
+      window.ShopifyData = {
+        product: {{ product | json }},
+        cart: {{ cart | json }},
+        routes: {
+          root: "{{ routes.root_url }}",
+          cart_add_url: "{{ routes.cart_add_url }}",
+          cart_change_url: "{{ routes.cart_change_url }}",
+          cart_update_url: "{{ routes.cart_update_url }}",
+          cart_url: "{{ routes.cart_url }}",
+          predictive_search_url: "{{ routes.predictive_search_url }}"
+        }
+      };
     </script>
 
     {{ content_for_header }}

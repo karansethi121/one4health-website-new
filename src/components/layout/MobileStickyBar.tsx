@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { MessageCircle, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-import { mainProduct } from '@/data/products';
 
 interface MobileStickyBarProps {
   productName?: string;
+  variantId?: number;
 }
 
 export function MobileStickyBar({
-  productName = 'Ashwagandha Gummies'
+  productName = 'Ashwagandha Gummies',
+  variantId
 }: MobileStickyBarProps) {
   const { addToCart } = useCart();
   const [isVisible, setIsVisible] = useState(false);
@@ -25,7 +26,9 @@ export function MobileStickyBar({
   }, []);
 
   const handleAddToCart = () => {
-    addToCart(mainProduct, 1);
+    if (variantId) {
+      addToCart(variantId, 1);
+    }
   };
 
   const handleWhatsApp = () => {
