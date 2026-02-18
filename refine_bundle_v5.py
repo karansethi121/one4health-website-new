@@ -1,6 +1,6 @@
 import os
 
-bundle_path = "/Users/karansethi/Downloads/app/dist/assets/index-4yg8eD9p.js"
+bundle_path = "/Users/karansethi/Downloads/app/assets/bundle.js"
 
 if not os.path.exists(bundle_path):
     print(f"Error: {bundle_path} not found")
