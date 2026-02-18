@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     question: 'How do subscriptions work?',
-    answer: 'Subscriptions are flexible and worry-free. You save 15% on every order, and we\'ll automatically ship your gummies every 30 days. You can pause, skip, or cancel your subscription at any time through your account portal—no hidden fees, no commitments.',
+    answer: 'Subscriptions are flexible and worry-free. You save on every order, and we\'ll automatically ship your gummies based on your chosen frequency (every 15 or 30 days). You can pause, skip, or cancel your subscription at any time—no hidden fees, no commitments.',
   },
   {
     question: 'What\'s the recommended dosage?',
@@ -48,7 +48,7 @@ const faqs = [
   },
   {
     question: 'Is Cash on Delivery (COD) available?',
-    answer: 'Yes! We offer Cash on Delivery (COD) across India for orders above ₹499. While prepaid orders are processed faster, we understand the need for COD. A small processing fee of ₹49 applies for COD orders.',
+    answer: 'Yes! We offer Cash on Delivery (COD) across India for all orders. While prepaid orders are processed faster, we understand the need for COD. A small processing fee of ₹49 applies for COD orders.',
   },
   {
     question: 'What\'s your return policy?',

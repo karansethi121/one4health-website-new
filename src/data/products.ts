@@ -14,9 +14,9 @@ export const mainProduct: Product = {
   badge: 'New Launch',
   inStock: true,
   quantity: 100,
-  packageSize: '60 Gummies',
+  packageSize: '30 Gummies',
   servingSize: '2 Gummies',
-  supplyDuration: '30-Day Supply',
+  supplyDuration: '15-Day Supply',
   benefits: [
     'Supports a healthy stress response',
     'Promotes relaxation and calm',
@@ -130,7 +130,7 @@ export const shippingFAQs: FAQ[] = [
   },
   {
     question: 'Do you offer free shipping?',
-    answer: 'Yes! We offer free standard shipping on all orders above ₹999. For orders below that, a flat shipping fee of ₹99 applies.',
+    answer: 'Yes! We offer free standard shipping on all orders across India, with no minimum purchase required.',
   },
   {
     question: 'Can I track my order?',

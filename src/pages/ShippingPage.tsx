@@ -10,8 +10,8 @@ const shippingMethods = [
     icon: Truck,
     title: 'Standard Shipping',
     duration: '3-5 business days',
-    price: '₹99',
-    freeThreshold: 'Free on orders over ₹999',
+    price: 'Free',
+    freeThreshold: 'Free on all orders',
   },
   {
     icon: Package,
@@ -179,12 +179,12 @@ export function ShippingPage() {
                   Delivery Coverage
                 </h3>
                 <p className="text-charcoal-600 mb-6">
-                  We currently deliver to all major cities and towns across India. 
+                  We currently deliver to all major cities and towns across India.
                   Check if we deliver to your pincode during checkout.
                 </p>
                 <div className="bg-sage-50 rounded-xl p-4">
                   <p className="text-sm text-charcoal-600">
-                    <span className="font-medium">Note:</span> Delivery times may vary 
+                    <span className="font-medium">Note:</span> Delivery times may vary
                     for remote locations. We'll keep you updated every step of the way.
                   </p>
                 </div>

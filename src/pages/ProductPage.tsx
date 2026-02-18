@@ -109,19 +109,19 @@ export function ProductPage() {
   }, [shopifyProduct]);
 
   const getCurrentPrice = () => {
-    // Starting with 799 as original price per jar
-    const base = 79900;
+    // Starting with 499 as original base price for 1 pack of 30 gummies
     if (purchaseType === 'subscribe') {
       if (subscriptionDuration === '15days') {
-        return Math.round(base * 0.75); // 25% off
+        return 29900; // Special subscription price for 15 days
       }
-      return Math.round(base * 0.70); // 30% off (As requested: 1 month supply = 30% off)
+      return 54900; // Special subscription price for 1 month (2 packs)
     }
+
     // One-time purchase
     if (packSize === 2) {
-      return Math.round(base * 0.75); // 25% off for 2 jars (extra 5% on top of 20%)
+      return 59900; // Bundle price for 2 packs (60 gummies)
     }
-    return Math.round(base * 0.80); // 20% off for 1 jar
+    return 34900; // Standard price for 1 pack (30 gummies) after discount
   };
   // Sync packSize with quantity for cart submission
   useEffect(() => {
@@ -137,13 +137,15 @@ export function ProductPage() {
 
     const attributes: Record<string, string> = {};
     if (purchaseType === 'subscribe') {
-      attributes['subscription'] = subscriptionDuration === '15days' ? '15 Days Supply' : '1 Month Supply';
+      attributes['subscription'] = subscriptionDuration === '15days' ? '15 Days Supply (1 Pack)' : '1 Month Supply (2 Packs)';
+      // For 1 month supply subscription, we actually want to add 2 packs
+      const subQuantity = subscriptionDuration === '1month' ? 2 : 1;
+      await addToCart(currentVariant.id, subQuantity, attributes);
     } else {
       attributes['purchase_type'] = 'One-time';
-      attributes['pack_size'] = `${packSize} Jar${packSize > 1 ? 's' : ''}`;
+      attributes['pack_size'] = `${packSize} Pack${packSize > 1 ? 's' : ''} (${packSize * 30} Gummies)`;
+      await addToCart(currentVariant.id, quantity, attributes);
     }
-
-    await addToCart(currentVariant.id, quantity, attributes);
   };
 
   if (!shopifyProduct) {
@@ -155,7 +157,7 @@ export function ProductPage() {
   }
 
   const currentPrice = getCurrentPrice();
-  const originalPrice = 79900; // Fixed original price as per request
+  const originalPrice = packSize === 2 || (purchaseType === 'subscribe' && subscriptionDuration === '1month') ? 99800 : 49900;
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
@@ -248,8 +250,8 @@ export function ProductPage() {
                     </div>
                     <p className="text-xs text-charcoal-500 mb-2">30-day supply</p>
                     <div className="flex flex-col">
-                      <span className="font-bold text-sage-700">{formatPrice(63900)}</span>
-                      <span className="text-[10px] text-coral-600 font-medium tracking-tight">Save 20%</span>
+                      <span className="font-bold text-sage-700">{formatPrice(34900)}</span>
+                      <span className="text-[10px] text-coral-600 font-medium tracking-tight">After Discount</span>
                     </div>
                   </button>
 
@@ -267,12 +269,12 @@ export function ProductPage() {
                       <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 2 ? 'border-sage-700' : 'border-charcoal-300'}`}>
                         {packSize === 2 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
                       </div>
-                      <span className="font-semibold text-charcoal-900 text-sm lg:text-base">2 Jars</span>
+                      <span className="font-semibold text-charcoal-900 text-sm lg:text-base">2 Packs</span>
                     </div>
-                    <p className="text-xs text-charcoal-500 mb-2">60-day supply</p>
+                    <p className="text-xs text-charcoal-500 mb-2">60 gummies (1 month)</p>
                     <div className="flex flex-col">
-                      <span className="font-bold text-sage-700">{formatPrice(119900)}</span>
-                      <span className="text-[10px] text-coral-600 font-medium tracking-tight">Save 25% (Best choice)</span>
+                      <span className="font-bold text-sage-700">{formatPrice(59900)}</span>
+                      <span className="text-[10px] text-coral-600 font-medium tracking-tight">Save 40% total</span>
                     </div>
                   </button>
                 </div>
@@ -298,12 +300,12 @@ export function ProductPage() {
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-charcoal-900 text-sm lg:text-base">15 Days Supply</p>
-                        <p className="text-xs text-charcoal-500">Delivered every 15 days</p>
+                        <p className="text-xs text-charcoal-500">30 gummies every 15 days</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}</p>
-                      <p className="text-xs text-coral-600 font-medium">Save 25%</p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(29900)}</p>
+                      <p className="text-xs text-coral-600 font-medium tracking-tight">Special Rate</p>
                     </div>
                   </button>
 
@@ -321,12 +323,12 @@ export function ProductPage() {
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-charcoal-900 text-sm lg:text-base">1 Month Supply</p>
-                        <p className="text-xs text-charcoal-500">Delivered monthly</p>
+                        <p className="text-xs text-charcoal-500">60 gummies monthly</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(55900)}</p>
-                      <p className="text-xs text-coral-600 font-medium">Save 30%</p>
+                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(54900)}</p>
+                      <p className="text-xs text-coral-600 font-medium tracking-tight">Max Saving</p>
                     </div>
                   </button>
                 </div>
@@ -364,7 +366,7 @@ export function ProductPage() {
             <div className="flex items-center gap-3 lg:gap-4 text-xs lg:text-sm text-charcoal-600 flex-wrap">
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700" />
-                30-Day Supply
+                15-Day Supply
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700" />
@@ -407,7 +409,7 @@ export function ProductPage() {
             <div className="flex flex-wrap gap-3 lg:gap-4 text-xs text-charcoal-500">
               <span className="flex items-center gap-1.5">
                 <Truck className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                {purchaseType === 'subscribe' ? 'Free shipping always' : 'Free shipping over ₹999'}
+                Free shipping on all orders
               </span>
               <span className="flex items-center gap-1.5">
                 <Shield className="w-3.5 h-3.5 lg:w-4 lg:h-4" />

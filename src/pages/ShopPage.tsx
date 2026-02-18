@@ -71,8 +71,8 @@ export function ShopPage() {
     );
   }
 
-  const originalPrice = 79900;
-  const currentPrice = 63900;
+  const originalPrice = 49900;
+  const currentPrice = 34900;
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (

@@ -7,8 +7,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const benefits = [
-  { icon: Zap, text: 'Save up to 30% every month', desc: '₹559 instead of ₹799' },
-  { icon: Truck, text: 'Free shipping', desc: 'Always free, no minimum' },
+  { icon: Zap, text: 'Save on every delivery', desc: 'Starting at ₹299' },
+  { icon: Truck, text: 'Free shipping', desc: 'On all orders, no minimum' },
   { icon: Pause, text: 'Pause or cancel anytime', desc: 'No commitments' },
 ];
 
@@ -126,10 +126,10 @@ export function SubscriptionSection() {
             <div className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-soft">
               {/* Price comparison */}
               <div className="flex items-baseline gap-2 lg:gap-3 mb-5 lg:mb-6 flex-wrap">
-                <span className="text-3xl lg:text-4xl font-bold text-sage-700">₹559</span>
-                <span className="text-lg lg:text-xl text-charcoal-400 line-through">₹799</span>
+                <span className="text-3xl lg:text-4xl font-bold text-sage-700">₹299</span>
+                <span className="text-lg lg:text-xl text-charcoal-400 line-through">₹499</span>
                 <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-xs font-medium">
-                  Save 30%
+                  Special Rate
                 </span>
               </div>
 
@@ -142,7 +142,7 @@ export function SubscriptionSection() {
                   <div className="w-8 h-8 bg-sage-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Package className="w-4 h-4 text-sage-600" />
                   </div>
-                  <span className="text-charcoal-700 text-sm lg:text-base">1 jar (60 gummies, 30-day supply)</span>
+                  <span className="text-charcoal-700 text-sm lg:text-base">1 pack (30 gummies, 15-day supply)</span>
                 </div>
                 <div className="flex items-center gap-2 lg:gap-3">
                   <div className="w-8 h-8 bg-sage-100 rounded-lg flex items-center justify-center flex-shrink-0">

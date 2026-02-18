@@ -2,8 +2,8 @@ import { Tag, Truck, Clock, Leaf } from 'lucide-react';
 
 export function PromoMarquee() {
     const promoMessages = [
-        { text: "SAVE 20% OFF WITH CODE:", highlight: "HEALTH20", Icon: Tag },
-        { text: "FREE SHIPPING ON ORDERS OVER", highlight: "₹999", Icon: Truck },
+        { text: "SAVE 30% OFF WITH CODE:", highlight: "HEALTH30", Icon: Tag },
+        { text: "FREE SHIPPING ON ALL ORDERS", highlight: "ACROSS INDIA", Icon: Truck },
         { text: "LIMITED TIME OFFER", highlight: "ENDS SUNDAY", Icon: Clock },
         { text: "NATURE BLESSED,", highlight: "SCIENCE BACKED", Icon: Leaf },
     ];

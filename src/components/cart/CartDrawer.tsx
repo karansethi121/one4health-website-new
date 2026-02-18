@@ -118,10 +118,10 @@ export function CartDrawer() {
             <div className="border-t border-charcoal-200 pt-6 pb-6 space-y-4 px-2">
               {/* Trust Badges */}
               <div className="flex items-center justify-center gap-4 text-[10px] text-charcoal-500 uppercase tracking-widest font-bold">
-                <span className="flex items-center gap-1.5">
-                  <Leaf className="w-3 h-3 text-sage-600" />
-                  Free shipping
-                </span>
+                <div className="flex items-center gap-2 text-sage-700">
+                  <Leaf className="w-4 h-4" />
+                  <span className="text-sm font-medium">Free shipping on all orders</span>
+                </div>
                 <span className="flex items-center gap-1.5">
                   <Shield className="w-3 h-3 text-sage-600" />
                   30-day guarantee
