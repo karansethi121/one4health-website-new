@@ -1,0 +1,37 @@
+# Ignore all non-Shopify theme files
+# Shopify only supports: assets/, config/, layout/, locales/, sections/, snippets/, templates/
+
+# React source files
+src/
+dist/
+node_modules/
+public/
+
+# Build config
+vite.config.ts
+tsconfig.json
+tsconfig.app.json
+tsconfig.node.json
+tailwind.config.js
+postcss.config.js
+components.json
+eslint.config.js
+package.json
+package-lock.json
+
+# Python patch scripts
+*.py
+
+# Agent and workflow files
+.agent/
+
+# Misc
+README.md
+info.md
+*.local
+.DS_Store
+
+# Assets that are not valid Shopify asset types
+assets/index.html
+assets/index.css
+assets/_redirects
