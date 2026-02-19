@@ -104,8 +104,9 @@ export function CleanFormulaSection() {
             <div className="relative rounded-3xl overflow-hidden shadow-soft-lg">
               <img
                 src="/images/clean_formula_gummies.jpg"
-                alt="Clean formula"
+                alt="Close-up of premium, natural berry flavored Ashwagandha gummies without artificial dyes"
                 className="w-full h-80 lg:h-96 object-cover"
+                loading="lazy"
               />
             </div>
             {/* Floating badge */}

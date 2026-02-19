@@ -1,0 +1,52 @@
+{%- layout none -%}
+# robots.txt for {{ shop.domain }}
+User-agent: *
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkout
+Disallow: /5432174/checkouts
+Disallow: /5432174/orders
+Disallow: /carts
+Disallow: /account
+Disallow: /collections/*sort_by*
+Disallow: /*/collections/*sort_by*
+Disallow: /collections/*+*
+Disallow: /collections/*%2b*
+Disallow: /collections/*%2B*
+Disallow: /*/collections/*+*
+Disallow: /*/collections/*%2b*
+Disallow: /*/collections/*%2B*
+Disallow: /blogs/*+*
+Disallow: /blogs/*%2b*
+Disallow: /blogs/*%2B*
+Disallow: /*/blogs/*+*
+Disallow: /*/blogs/*%2b*
+Disallow: /*/blogs/*%2B*
+Disallow: /*?*last_viewed*
+Disallow: /*?*view*
+Disallow: /*?*q*
+Disallow: /*?*f_*
+
+# Googlebot
+User-agent: Googlebot
+Disallow: /collections/*sort_by*
+Disallow: /*/collections/*sort_by*
+Disallow: /collections/*+*
+Disallow: /collections/*%2b*
+Disallow: /collections/*%2B*
+Disallow: /*/collections/*+*
+Disallow: /*/collections/*%2b*
+Disallow: /*/collections/*%2B*
+Disallow: /blogs/*+*
+Disallow: /blogs/*%2b*
+Disallow: /blogs/*%2B*
+Disallow: /*/blogs/*+*
+Disallow: /*/blogs/*%2b*
+Disallow: /*/blogs/*%2B*
+Disallow: /*?*last_viewed*
+Disallow: /*?*view*
+Disallow: /*?*q*
+Disallow: /*?*f_*
+
+Sitemap: {{ shop.url }}/sitemap.xml
