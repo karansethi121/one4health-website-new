@@ -159,7 +159,9 @@ export function ProductPage() {
   }
 
   const currentPrice = getCurrentPrice();
-  const originalPrice = packSize === 2 || (purchaseType === 'subscribe' && subscriptionDuration === '1month') ? 99800 : 49900;
+  const originalPrice = purchaseType === 'onetime'
+    ? (packSize === 2 ? 99800 : 49900)
+    : (subscriptionDuration === '1month' ? 99800 : 49900);
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
