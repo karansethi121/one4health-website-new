@@ -237,7 +237,7 @@ export function ShippingPage() {
               </div>
               <h4 className="font-semibold text-charcoal-900 mb-2">Contact Us</h4>
               <p className="text-sm text-charcoal-600">
-                Email us at support@oneforhealth.com within 30 days of purchase.
+                Email us at info@one4health.com within 30 days of purchase.
               </p>
             </div>
             <div className="text-center">

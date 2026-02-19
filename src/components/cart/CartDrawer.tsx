@@ -105,9 +105,21 @@ export function CartDrawer() {
                           <Plus className="w-3 h-3" />
                         </button>
                       </div>
-                      <span className="font-semibold text-sage-700">
-                        {formatPrice(item.final_line_price)}
-                      </span>
+                      <div className="text-right">
+                        {item.original_line_price > item.final_line_price && (
+                          <p className="text-[10px] text-charcoal-400 line-through">
+                            {formatPrice(item.original_line_price)}
+                          </p>
+                        )}
+                        <span className="font-semibold text-sage-700">
+                          {formatPrice(item.final_line_price)}
+                        </span>
+                        {item.original_line_price > item.final_line_price && (
+                          <p className="text-[8px] font-bold text-coral-600 uppercase tracking-tight">
+                            Save {Math.round(((item.original_line_price - item.final_line_price) / item.original_line_price) * 100)}%
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -117,13 +129,13 @@ export function CartDrawer() {
             {/* Cart Footer */}
             <div className="border-t border-charcoal-200 pt-6 pb-6 space-y-4 px-2">
               {/* Trust Badges */}
-              <div className="flex items-center justify-center gap-4 text-[10px] text-charcoal-500 uppercase tracking-widest font-bold">
-                <div className="flex items-center gap-2 text-sage-700">
-                  <Leaf className="w-4 h-4" />
-                  <span className="text-sm font-medium">Free shipping on all orders</span>
+              <div className="flex items-center justify-center gap-4 text-[9px] text-charcoal-500 uppercase tracking-widest font-bold">
+                <div className="flex items-center gap-1.5 text-sage-700">
+                  <Leaf className="w-3.5 h-3.5" />
+                  <span className="text-[11px] font-semibold">Free shipping on all orders</span>
                 </div>
-                <span className="flex items-center gap-1.5">
-                  <Shield className="w-3 h-3 text-sage-600" />
+                <span className="flex items-center gap-1.5 opacity-80">
+                  <Shield className="w-2.5 h-2.5 text-sage-600" />
                   30-day guarantee
                 </span>
               </div>

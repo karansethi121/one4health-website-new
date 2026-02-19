@@ -33,7 +33,7 @@ const socialLinks = [
   { icon: Instagram, href: '#', label: 'Instagram' },
   { icon: Twitter, href: '#', label: 'Twitter' },
   { icon: Youtube, href: '#', label: 'YouTube' },
-  { icon: Mail, href: 'mailto:hello@one4health.com', label: 'Email' },
+  { icon: Mail, href: 'mailto:info@one4health.com', label: 'Email' },
 ];
 
 export const Footer = memo(function Footer() {
@@ -143,8 +143,10 @@ export const Footer = memo(function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-8 text-xs text-charcoal-400">
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-sage-500" />
-              <span>FSSAI Lic. No. 12345678901234</span>
+              <span>FSSAI Lic. No. 12725998000541</span>
             </div>
+            <span className="hidden lg:inline">•</span>
+            <span>GST No. 09ACPPS5217E1ZB</span>
             <span className="hidden lg:inline">•</span>
             <span>GMP Certified</span>
             <span className="hidden lg:inline">•</span>

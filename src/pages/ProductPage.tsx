@@ -123,28 +123,30 @@ export function ProductPage() {
     }
     return 34900; // Standard price for 1 pack (30 gummies) after discount
   };
-  // Sync packSize with quantity for cart submission
+  // Sync quantity for cart submission - always 1 for bundles/subscriptions as requested
   useEffect(() => {
-    if (purchaseType === 'onetime') {
-      setQuantity(packSize);
-    } else {
-      setQuantity(1); // Subscriptions usually handle jar count differently or defaulted to 1
-    }
-  }, [packSize, purchaseType]);
+    setQuantity(1);
+  }, [packSize, purchaseType, subscriptionDuration]);
 
   const handleAddToCart = async () => {
     if (!currentVariant) return;
 
     const attributes: Record<string, string> = {};
     if (purchaseType === 'subscribe') {
-      attributes['subscription'] = subscriptionDuration === '15days' ? '15 Days Supply (1 Pack)' : '1 Month Supply (2 Packs)';
-      // For 1 month supply subscription, we actually want to add 2 packs
-      const subQuantity = subscriptionDuration === '1month' ? 2 : 1;
-      await addToCart(currentVariant.id, subQuantity, attributes);
+      // Find subscription variant if it exists, otherwise use main and add properties
+      // Note: In real Shopify, we'd use selling_plan_id
+      attributes['subscription'] = subscriptionDuration === '15days' ? '15 Days Supply (1 Jar)' : '1 Month Supply (2 Jars)';
+      attributes['_is_subscription'] = 'true';
+      attributes['_selling_plan_id'] = subscriptionDuration === '15days' ? '15_day_plan' : '30_day_plan';
+
+      await addToCart(currentVariant.id, 1, attributes);
     } else {
       attributes['purchase_type'] = 'One-time';
-      attributes['pack_size'] = `${packSize} Pack${packSize > 1 ? 's' : ''} (${packSize * 30} Gummies)`;
-      await addToCart(currentVariant.id, quantity, attributes);
+      attributes['pack_size'] = packSize === 1 ? '1 Jar' : '2 Jars (Bundle)';
+
+      // For bundle, we use quantity 1 but ensure attributes reflect it's a bundle
+      // If there was a specific Variant ID for the 2-pack, we would select it here
+      await addToCart(currentVariant.id, 1, attributes);
     }
   };
 
@@ -345,31 +347,26 @@ export function ProductPage() {
               <span className="text-2xl lg:text-3xl font-bold text-sage-700">
                 {formatPrice(currentPrice)}
               </span>
-              {purchaseType === 'onetime' && originalPrice && (
+              {originalPrice && (
                 <>
                   <span className="text-lg lg:text-xl text-charcoal-400 line-through">
                     {formatPrice(originalPrice)}
                   </span>
-                  <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-xs font-medium">
+                  <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wider">
                     Save {savings}%
                   </span>
                 </>
               )}
-              {purchaseType === 'subscribe' && (
-                <span className="px-2 py-1 bg-sage-100 text-sage-700 rounded-full text-xs font-medium">
-                  {subscriptionDuration === '15days' ? '25% off + Free Shipping' : '30% off + Free Shipping'}
-                </span>
-              )}
             </div>
 
-            {/* Supply Info - Keep mostly same as UI, but we could pull from metafields if needed later */}
+            {/* Supply Info */}
             <div className="flex items-center gap-3 lg:gap-4 text-xs lg:text-sm text-charcoal-600 flex-wrap">
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700" />
-                15-Day Supply
+              <span className="flex items-center gap-1.5 px-2.5 py-1 bg-sage-50 rounded-lg text-sage-700 font-medium">
+                <Clock className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                {(purchaseType === 'onetime' && packSize === 2) || (purchaseType === 'subscribe' && subscriptionDuration === '1month') ? '30-Day Supply' : '15-Day Supply'}
               </span>
               <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700" />
+                <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700 font-bold" />
                 2 Gummies daily
               </span>
             </div>

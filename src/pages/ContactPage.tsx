@@ -14,19 +14,19 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email Us',
-    content: 'hello@oneforhealth.com',
+    content: 'info@one4health.com',
     description: 'We reply within 24 hours',
   },
   {
     icon: Phone,
     title: 'Call Us',
-    content: '+91 98765 43210',
+    content: '+91 7767-968-079',
     description: 'Mon-Sat, 10am-6pm IST',
   },
   {
     icon: MapPin,
     title: 'Visit Us',
-    content: 'Mumbai, India',
+    content: 'Lucknow, India',
     description: 'By appointment only',
   },
 ];
@@ -68,15 +68,15 @@ export function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     toast({
       title: 'Message sent!',
       description: 'We\'ll get back to you within 24 hours.',
     });
-    
+
     setFormData({ name: '', email: '', subject: '', message: '' });
     setIsSubmitting(false);
   };
@@ -91,7 +91,7 @@ export function ContactPage() {
             Get in Touch
           </h1>
           <p className="text-lg text-charcoal-600">
-            Have a question or feedback? We'd love to hear from you. 
+            Have a question or feedback? We'd love to hear from you.
             Our team is here to help.
           </p>
         </div>
