@@ -263,6 +263,7 @@ export function SciencePage() {
               { title: 'Third-Party Tested', desc: 'Every batch verified for purity and potency' },
               { title: 'GMP Certified', desc: 'Manufactured in FDA-registered facilities' },
               { title: 'Vegan Friendly', desc: 'No animal products or byproducts' },
+              { title: 'ISO Certified', desc: 'Quality Management System certified' },
               { title: 'Gluten Free', desc: 'Safe for those with gluten sensitivities' },
             ].map((item) => (
               <div key={item.title} className="text-center">

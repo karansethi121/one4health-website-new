@@ -152,6 +152,8 @@ export const Footer = memo(function Footer() {
             <span className="hidden lg:inline">•</span>
             <span>Made in India</span>
             <span className="hidden lg:inline">•</span>
+            <span>ISO Certified</span>
+            <span className="hidden lg:inline">•</span>
             <span>Dietary Supplement</span>
           </div>
         </div>

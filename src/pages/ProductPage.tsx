@@ -412,8 +412,12 @@ export function ProductPage() {
                 Free shipping on all orders
               </span>
               <span className="flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                <Shield className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-600" />
                 30-day guarantee
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-600" />
+                ISO 9001 Certified
               </span>
             </div>
 

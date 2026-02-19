@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Sparkles, Leaf, Zap } from 'lucide-react';
+import { ArrowRight, Shield, Sparkles, Leaf, Zap, Check } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
 
@@ -133,10 +133,16 @@ export function HeroSection() {
                 </Link>
               </div>
 
-              {/* Money back guarantee */}
-              <div className="hero-float flex items-center gap-2 text-sm text-charcoal-600">
-                <Shield className="w-4 h-4 text-sage-600" />
-                <span>30-Day Money Back Guarantee</span>
+              {/* Money back guarantee & ISO */}
+              <div className="hero-float flex flex-wrap items-center gap-4 lg:gap-6 text-xs lg:text-sm text-charcoal-600">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-sage-600" />
+                  <span>30-Day Money Back Guarantee</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-sage-600" />
+                  <span>ISO 9001:2015 Certified</span>
+                </div>
               </div>
 
               {/* FDA Disclaimer */}
