@@ -16,8 +16,8 @@ export function PrivacyPage() {
 
         <div className="prose prose-lg max-w-none text-charcoal-600">
           <p>
-            At One4Health, we take your privacy seriously. This Privacy Policy explains 
-            how we collect, use, disclose, and safeguard your information when you visit 
+            At One4Health, we take your privacy seriously. This Privacy Policy explains
+            how we collect, use, disclose, and safeguard your information when you visit
             our website or make a purchase.
           </p>
 
@@ -54,7 +54,7 @@ export function PrivacyPage() {
             Information Sharing
           </h2>
           <p>
-            We do not sell, trade, or rent your personal information to third parties. 
+            We do not sell, trade, or rent your personal information to third parties.
             We may share your information with:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -68,8 +68,8 @@ export function PrivacyPage() {
             Data Security
           </h2>
           <p>
-            We implement appropriate technical and organizational measures to protect 
-            your personal information against unauthorized access, alteration, disclosure, 
+            We implement appropriate technical and organizational measures to protect
+            your personal information against unauthorized access, alteration, disclosure,
             or destruction.
           </p>
 
@@ -93,8 +93,8 @@ export function PrivacyPage() {
           <p>
             If you have any questions about this Privacy Policy, please contact us at:
             <br />
-            <a href="mailto:privacy@oneforhealth.com" className="text-sage-700 hover:underline">
-              privacy@oneforhealth.com
+            <a href="mailto:info@one4health.com" className="text-sage-700 hover:underline">
+              info@one4health.com
             </a>
           </p>
         </div>
