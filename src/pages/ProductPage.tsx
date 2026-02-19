@@ -183,8 +183,9 @@ export function ProductPage() {
             <div className="relative">
               <img
                 src={shopifyProduct.featured_image || "/images/product_transparent.png"}
-                alt={shopifyProduct.title}
+                alt={`${shopifyProduct.title} Bottle - Premium KSM-66 Ashwagandha Stress Support Gummies (30 Day Supply)`}
                 className="w-64 sm:w-72 lg:w-96 xl:w-[28rem] h-auto drop-shadow-2xl"
+                loading="eager"
               />
             </div>
           </div>

@@ -61,8 +61,9 @@ export function SciencePage() {
               <div className="relative rounded-[32px] overflow-hidden shadow-xl">
                 <img
                   src="/images/ashwagandha_plant.jpg"
-                  alt="Ashwagandha plant"
+                  alt="High-quality Ashwagandha (Withania somnifera) root being prepared for clinical-grade KSM-66 extraction"
                   className="w-full h-[500px] object-cover"
+                  loading="lazy"
                 />
               </div>
             </div>
