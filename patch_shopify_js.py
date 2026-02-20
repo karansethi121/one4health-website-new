@@ -1,5 +1,6 @@
 import re
 import os
+import shutil
 
 def patch_file(filepath):
     if not os.path.exists(filepath):
@@ -10,12 +11,6 @@ def patch_file(filepath):
         content = f.read()
 
     # Replace /images/filename.ext with window.ShopifyAssetsUrl + "filename.ext"
-    # We look for patterns like "/images/[anything but quotes or whitespace]"
-    # We want to catch instances in JS like src:"/images/logo.png" or "/images/logo.png"
-    
-    # Simple regex to find /images/... inside quotes
-    # Pattern: "/images/([^"'>\s]+)"
-    # Handle both double and single quotes, and potentially escaped characters in minified JS
     pattern = r'[\"\']\/images\/([^\"\'+?&%]+)[\"\']'
     replacement = r'(window.ShopifyAssetsUrl || "/images/") + "\1"'
     
@@ -28,13 +23,28 @@ def patch_file(filepath):
     else:
         print(f"No changes made to {filepath}")
 
+def flatten_images():
+    # Flatten images directory: Shopify doesn't support subdirectories in assets/
+    assets_images = "/Users/karansethi/Downloads/app/assets/images"
+    assets_root = "/Users/karansethi/Downloads/app/assets"
+    
+    if os.path.exists(assets_images):
+        for f in os.listdir(assets_images):
+            src = os.path.join(assets_images, f)
+            dst = os.path.join(assets_root, f)
+            if os.path.isfile(src):
+                shutil.copy2(src, dst)
+                print(f"Flattened: {f} -> assets/")
+
 if __name__ == "__main__":
-    # Patch the main Shopify assembly
+    # 1. Flatten images first so they are in assets/ root
+    flatten_images()
+    
+    # 2. Patch the main Shopify assembly
     patch_file("/Users/karansethi/Downloads/app/assets/bundle.js")
-    # Also patch the dist one just in case
-    # Find the current js file in dist/assets
-    dist_assets = "/Users/karansethi/Downloads/app/dist/assets"
-    if os.path.exists(dist_assets):
-        for f in os.listdir(dist_assets):
-            if f.endswith(".js"):
-                patch_file(os.path.join(dist_assets, f))
+    
+    # 3. Patch any other JS files in assets
+    assets_root = "/Users/karansethi/Downloads/app/assets"
+    for f in os.listdir(assets_root):
+        if f.endswith(".js") and f != "bundle.js":
+            patch_file(os.path.join(assets_root, f))

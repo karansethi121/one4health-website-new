@@ -4,7 +4,7 @@ export function TrustBar() {
     { image: '/images/cert_gmp.png', alt: 'GMP Certified' },
     { image: '/images/cert_labtested.png', alt: 'Lab Tested' },
     { image: '/images/cert_vegan.png', alt: '100% Vegan' },
-    { image: '/images/cert_iso.png', alt: 'ISO Certified' },
+    { image: '/images/cert_iso_clean.svg', alt: 'ISO Certified' },
     { image: '/images/cert_madeinindia.png', alt: 'Made in India' },
   ];
 

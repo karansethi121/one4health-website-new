@@ -35,8 +35,8 @@ const faqs = [
     answer: 'For optimal results, we recommend taking 2 gummies daily. While you can take them at any time, many of our customers prefer incorporating them into their morning ritual or as a mid-afternoon reset. Do not exceed the recommended dose of 2 gummies per day.',
   },
   {
-    question: 'Are these gummies sugar-free?',
-    answer: 'Yes! Our gummies are 100% sugar-free. We use natural sweeteners like Stevia and Erythritol to give them a delicious mixed-berry taste without the glucose spike. They are also vegan-friendly and gluten-free.',
+    question: 'Are these gummies no added sugar?',
+    answer: 'Yes! Our gummies have 100% no added sugar. We use natural sweeteners like Stevia and Erythritol to give them a delicious mixed-berry taste without the glucose spike. They are also vegan-friendly and gluten-free.',
   },
   {
     question: 'What\'s the difference between Vitamin D2 and D3?',
