@@ -48,11 +48,6 @@ export default defineConfig({
         entryFileNames: 'bundle.js',
         chunkFileNames: '[name].js',
         assetFileNames: '[name].[ext]',
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-gsap': ['gsap'],
-          'vendor-ui': ['@radix-ui/react-accordion', '@radix-ui/react-tabs', '@radix-ui/react-dialog', '@radix-ui/react-slot'],
-        },
       },
     },
     emptyOutDir: false,
