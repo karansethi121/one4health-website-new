@@ -1,10 +1,9 @@
 <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="60" cy="60" r="56" fill="none" stroke="#4A6B3E" stroke-width="4"/>
-  <!-- Milk glass -->
-  <rect x="42" y="34" width="36" height="44" rx="4" fill="#4A6B3E" opacity="0.15"/>
-  <rect x="42" y="34" width="36" height="44" rx="4" fill="none" stroke="#4A6B3E" stroke-width="3"/>
-  <rect x="42" y="34" width="36" height="12" rx="2" fill="#4A6B3E" opacity="0.2"/>
-  <!-- Cross-out -->
-  <line x1="28" y1="28" x2="92" y2="92" stroke="#C23A2D" stroke-width="5" stroke-linecap="round"/>
-  <text x="60" y="108" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#4A6B3E" text-anchor="middle" letter-spacing="0.5">DAIRY FREE</text>
+  <circle cx="60" cy="60" r="56" fill="#F0F4EE" stroke="#4A6B3E" stroke-width="3"/>
+  <!-- Milk bottle outline -->
+  <path d="M50 32 L50 40 Q38 44 38 56 L38 74 Q38 78 42 78 L78 78 Q82 78 82 74 L82 56 Q82 44 70 40 L70 32 Z" fill="#4A6B3E" opacity="0.18"/>
+  <path d="M50 32 L50 40 Q38 44 38 56 L38 74 Q38 78 42 78 L78 78 Q82 78 82 74 L82 56 Q82 44 70 40 L70 32 Z" fill="none" stroke="#4A6B3E" stroke-width="2.5" stroke-linejoin="round"/>
+  <rect x="50" y="28" width="20" height="8" rx="2" fill="none" stroke="#4A6B3E" stroke-width="2"/>
+  <line x1="38" y1="58" x2="82" y2="58" stroke="#4A6B3E" stroke-width="2" opacity="0.4"/>
+  <text x="60" y="96" font-family="Arial, sans-serif" font-weight="700" font-size="9.5" fill="#4A6B3E" text-anchor="middle" letter-spacing="0.5">DAIRY FREE</text>
 </svg>

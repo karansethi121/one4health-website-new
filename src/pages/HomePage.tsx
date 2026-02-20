@@ -17,7 +17,6 @@ export function HomePage() {
       <PromoMarquee />
       <HeroSection />
       <TrustBar />
-      <AllergenBar />
       <div id="benefits">
         <ProblemSolutionSection />
       </div>
@@ -28,6 +27,7 @@ export function HomePage() {
 
       <ScienceSection />
       <CleanFormulaSection />
+      <AllergenBar />
       <SubscriptionSection />
       <FAQSection />
     </main>
