@@ -160,7 +160,7 @@ export function WhatsInsideSection() {
             <div className="relative">
               <img
                 src="/images/product_transparent.png"
-                alt="One4Health Ashwagandha Gummies bottle - Zero sugar, vegan, and mixed berry flavored"
+                alt="One4Health Ashwagandha Gummies bottle - No added sugar, vegan, and mixed berry flavored"
                 className="w-64 sm:w-72 lg:w-80 xl:w-96 h-auto drop-shadow-2xl"
                 loading="lazy"
               />
@@ -171,7 +171,7 @@ export function WhatsInsideSection() {
               </div>
               <div className="absolute -bottom-2 -left-2 lg:-bottom-4 lg:-left-4 bg-sunshine-100 text-sunshine-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium flex items-center gap-1.5">
                 <Ban className="w-3.5 h-3.5" />
-                Zero sugar
+                No added sugar
               </div>
             </div>
           </div>
