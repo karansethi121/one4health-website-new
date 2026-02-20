@@ -54,11 +54,11 @@
       <meta property="og:image:width" content="1200">
       <meta property="og:image:height" content="630">
     {%- elsif template.name == 'collection' -%}
-      <meta property="og:image" content="http:{{ collection.image | default: product_lifestyle_new.png | image_url: width: 1200 }}">
-      <meta property="og:image:secure_url" content="https:{{ collection.image | default: product_lifestyle_new.png | image_url: width: 1200 }}">
+      <meta property="og:image" content="http:{{ collection.image | default: product_transparent.png | image_url: width: 1200 }}">
+      <meta property="og:image:secure_url" content="https:{{ collection.image | default: product_transparent.png | image_url: width: 1200 }}">
     {%- else -%}
-      <meta property="og:image" content="http:{{ 'product_lifestyle_new.png' | asset_url }}">
-      <meta property="og:image:secure_url" content="https:{{ 'product_lifestyle_new.png' | asset_url }}">
+      <meta property="og:image" content="http:{{ 'product_transparent.png' | asset_url }}">
+      <meta property="og:image:secure_url" content="https:{{ 'product_transparent.png' | asset_url }}">
     {%- endif -%}
 
     <!-- Twitter -->
@@ -68,9 +68,9 @@
     {%- if template.name == 'product' -%}
       <meta name="twitter:image" content="https:{{ product.featured_media | image_url: width: 1200 }}">
     {%- elsif template.name == 'collection' -%}
-      <meta name="twitter:image" content="https:{{ collection.image | default: product_lifestyle_new.png | image_url: width: 1200 }}">
+      <meta name="twitter:image" content="https:{{ collection.image | default: product_transparent.png | image_url: width: 1200 }}">
     {%- else -%}
-      <meta name="twitter:image" content="https:{{ 'product_lifestyle_new.png' | asset_url }}">
+      <meta name="twitter:image" content="https:{{ 'product_transparent.png' | asset_url }}">
     {%- endif -%}
 
     <!-- Structured Data -->
