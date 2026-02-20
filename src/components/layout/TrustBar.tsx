@@ -7,7 +7,7 @@ export function TrustBar() {
     { image: '/images/cert_fda.png', alt: 'US FDA Facility' },
     { image: '/images/cert_iso_clean.svg', alt: 'ISO 9001:2015' },
     { image: '/images/cert_iso_22000.png', alt: 'ISO 22000' },
-    { image: '/images/cert_veg.png', alt: '100% Vegetarian' },
+    { image: '/images/cert_veg.svg', alt: '100% Vegetarian' },
     { image: '/images/cert_cruelty_free.png', alt: 'Cruelty Free' },
     { image: '/images/cert_madeinindia.png', alt: 'Made in India' },
   ];
