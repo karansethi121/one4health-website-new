@@ -407,12 +407,19 @@ export function ProductPage() {
 
             {/* Allergen Free Section */}
             <div className="bg-sage-50/50 border border-sage-100 rounded-xl lg:rounded-2xl p-4 lg:p-5">
-              <h3 className="text-[10px] lg:text-xs font-bold text-charcoal-500 mb-3 uppercase tracking-widest">100% Allergen Free</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-2">
-                {['Soy Free', 'Nut Free', 'Peanut Free', 'Dairy Free', 'Gluten Free', 'Gelatin Free'].map((allergen) => (
-                  <div key={allergen} className="flex items-center gap-1.5 lg:gap-2">
-                    <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-600 flex-shrink-0" />
-                    <span className="text-xs lg:text-sm text-charcoal-800 font-medium">{allergen}</span>
+              <h3 className="text-[10px] lg:text-xs font-bold text-charcoal-500 mb-4 uppercase tracking-widest">100% Allergen Free</h3>
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                {[
+                  { image: '/images/allergen_soy_free.svg', alt: 'Soy Free' },
+                  { image: '/images/allergen_nut_free.svg', alt: 'Nut Free' },
+                  { image: '/images/allergen_peanut_free.svg', alt: 'Peanut Free' },
+                  { image: '/images/allergen_dairy_free.svg', alt: 'Dairy Free' },
+                  { image: '/images/allergen_gluten_free.svg', alt: 'Gluten Free' },
+                  { image: '/images/allergen_gelatin_free.svg', alt: 'Gelatin Free' },
+                ].map((allergen) => (
+                  <div key={allergen.alt} className="flex flex-col items-center gap-1.5">
+                    <img src={allergen.image} alt={allergen.alt} className="h-10 w-10 lg:h-12 lg:w-12 object-contain" loading="lazy" />
+                    <span className="text-[9px] lg:text-[10px] text-charcoal-600 text-center font-medium leading-tight">{allergen.alt}</span>
                   </div>
                 ))}
               </div>

@@ -9,6 +9,7 @@ import { CleanFormulaSection } from '@/sections/CleanFormulaSection';
 import { SubscriptionSection } from '@/sections/SubscriptionSection';
 import { FAQSection } from '@/sections/FAQSection';
 import { TrustBar } from '@/components/layout/TrustBar';
+import { AllergenBar } from '@/components/layout/AllergenBar';
 
 export function HomePage() {
   return (
@@ -16,6 +17,7 @@ export function HomePage() {
       <PromoMarquee />
       <HeroSection />
       <TrustBar />
+      <AllergenBar />
       <div id="benefits">
         <ProblemSolutionSection />
       </div>
