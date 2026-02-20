@@ -159,7 +159,7 @@ export function HeroSection() {
                 {/* Main product image - transparent PNG */}
                 <div className="relative z-10">
                   <img
-                    src="/images/product_transparent.png"
+                    src="/images/product_transparent.webp"
                     alt="One4Health Ashwagandha Gummies bottle containing 30-day supply of KSM-66 clinical grade gummies"
                     className="w-80 sm:w-96 lg:w-[32rem] xl:w-[38rem] h-auto drop-shadow-2xl"
                     loading="eager"

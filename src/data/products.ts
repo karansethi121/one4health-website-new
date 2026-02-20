@@ -7,9 +7,9 @@ export const mainProduct: Product = {
   description: 'Clinically studied KSM-66® Ashwagandha with Vitamin D2 and BioPerine® to support your body\'s stress response, promote relaxation, and help maintain daily balance.',
   price: 349,
   originalPrice: 499,
-  image: '/images/product_transparent.png',
+  image: '/images/product_transparent.webp',
   images: [
-    '/images/product_transparent.png',
+    '/images/product_transparent.webp',
   ],
   badge: 'New Launch',
   inStock: true,
@@ -71,21 +71,21 @@ export const testimonials: Testimonial[] = [
     name: 'Maya',
     role: 'Designer',
     quote: 'I feel more balanced throughout my workday. This has become an essential part of my evening routine.',
-    image: '/images/testimonial_maya.jpg',
+    image: '/images/testimonial_maya.webp',
   },
   {
     id: '2',
     name: 'Jon',
     role: 'Developer',
     quote: 'Tastes like candy, helps me unwind. Finally, a supplement I actually look forward to taking.',
-    image: '/images/testimonial_jon.jpg',
+    image: '/images/testimonial_jon.webp',
   },
   {
     id: '3',
     name: 'Riley',
     role: 'Founder',
     quote: 'My evening ritual in 30 seconds. As a founder, stress is constant. This helps me stay grounded.',
-    image: '/images/testimonial_riley.jpg',
+    image: '/images/testimonial_riley.webp',
   },
 ];
 

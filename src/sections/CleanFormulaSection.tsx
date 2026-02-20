@@ -103,7 +103,7 @@ export function CleanFormulaSection() {
           <div className="clean-image">
             <div className="relative rounded-3xl overflow-hidden shadow-soft-lg">
               <img
-                src="/images/clean_formula_gummies.jpg"
+                src="/images/clean_formula_gummies.webp"
                 alt="Close-up of premium, natural berry flavored Ashwagandha gummies without artificial dyes"
                 className="w-full h-80 lg:h-96 object-cover"
                 loading="lazy"

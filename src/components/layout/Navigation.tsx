@@ -53,7 +53,7 @@ export function Navigation() {
             {/* Logo - transparent, no background */}
             <Link to="/" className="flex items-center">
               <img
-                src="/images/logo_cropped.png"
+                src="/images/logo_cropped.webp"
                 alt="One4Health"
                 className="h-20 lg:h-24 w-auto object-contain logo-main"
               />

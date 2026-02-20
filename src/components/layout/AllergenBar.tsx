@@ -15,7 +15,7 @@ export function AllergenBar() {
                     100% Allergen Free
                 </p>
                 <div className="relative flex overflow-hidden group">
-                    <div className="flex w-max animate-[scroll_35s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-10 lg:gap-14 pr-10 lg:pr-14">
+                    <div className="flex w-max animate-[scroll_35s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-10 lg:gap-14 pr-10 lg:pr-14 will-change-transform">
                         {allergens.map((item, index) => (
                             <div key={index} className="flex flex-col items-center shrink-0 w-20">
                                 <img

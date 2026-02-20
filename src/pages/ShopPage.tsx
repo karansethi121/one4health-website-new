@@ -98,7 +98,7 @@ export function ShopPage() {
               {/* Image */}
               <Link to="/product/ashwagandha-gummies-ksm66" className="block relative">
                 <img
-                  src={shopifyProduct.featured_image || "/images/product_transparent.png"}
+                  src={shopifyProduct.featured_image || "/images/product_transparent.webp"}
                   alt={`One4Health ${shopifyProduct.title} - KSM-66 Ashwagandha Stress Support Gummies`}
                   className="w-full aspect-square object-cover"
                   loading="lazy"
