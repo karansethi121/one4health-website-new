@@ -3,7 +3,7 @@ import { HeroSection } from '@/sections/HeroSection';
 import { ProblemSolutionSection } from '@/sections/ProblemSolutionSection';
 import { WhatsInsideSection } from '@/sections/WhatsInsideSection';
 import { ComparisonSection } from '@/sections/ComparisonSection';
-import { HowItWorksSection } from '@/sections/HowItWorksSection';
+
 import { ScienceSection } from '@/sections/ScienceSection';
 import { CleanFormulaSection } from '@/sections/CleanFormulaSection';
 import { SubscriptionSection } from '@/sections/SubscriptionSection';
@@ -23,9 +23,7 @@ export function HomePage() {
         <WhatsInsideSection />
       </div>
       <ComparisonSection />
-      <div id="how-it-works">
-        <HowItWorksSection />
-      </div>
+
       <ScienceSection />
       <CleanFormulaSection />
       <SubscriptionSection />
