@@ -144,7 +144,7 @@ export function ShopPage() {
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs text-charcoal-600">
                     <Check className="w-3.5 h-3.5 text-sage-700" />
-                    Sugar-Free
+                    No Added Sugar
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs text-charcoal-600">
                     <Check className="w-3.5 h-3.5 text-sage-700" />

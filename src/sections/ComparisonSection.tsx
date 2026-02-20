@@ -25,7 +25,7 @@ const comparisonData = [
     capsules: false,
   },
   {
-    feature: 'Sugar-Free',
+    feature: 'No Added Sugar',
     one4health: true,
     generic: 'partial',
     capsules: true,

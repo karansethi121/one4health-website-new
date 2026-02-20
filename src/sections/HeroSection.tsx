@@ -103,7 +103,7 @@ export function HeroSection() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-sm text-charcoal-600 bg-white/80 px-3 py-1.5 rounded-full">
                   <Leaf className="w-3.5 h-3.5 text-sage-600" />
-                  Sugar-free & vegan
+                  No added sugar & vegan
                 </span>
               </div>
 

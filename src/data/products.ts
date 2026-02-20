@@ -110,8 +110,8 @@ export const faqs: FAQ[] = [
     answer: 'Everyone\'s body is different. Many people report feeling more balanced within the first week, with optimal support typically experienced after 2-4 weeks of consistent daily use. Consistency is key—take your two gummies at the same time each day.',
   },
   {
-    question: 'Are these gummies sugar-free?',
-    answer: 'Yes! Our gummies are completely sugar-free. We use natural sweeteners to create a delicious berry flavor without the sugar crash. They\'re also vegan, gluten-free, and contain no artificial dyes or flavors.',
+    question: 'Are these gummies no added sugar?',
+    answer: 'Yes! Our gummies are completely no added sugar. We use natural sweeteners to create a delicious berry flavor without the sugar crash. They\'re also vegan, gluten-free, and contain no artificial dyes or flavors.',
   },
   {
     question: 'Can I take these with other supplements?',
