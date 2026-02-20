@@ -1,0 +1,16 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="60" cy="60" r="56" fill="none" stroke="#4A6B3E" stroke-width="4"/>
+  <!-- Wheat stalk -->
+  <line x1="60" y1="30" x2="60" y2="82" stroke="#4A6B3E" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="54" cy="42" rx="7" ry="11" fill="#4A6B3E" opacity="0.2" transform="rotate(-20 54 42)"/>
+  <ellipse cx="54" cy="42" rx="7" ry="11" fill="none" stroke="#4A6B3E" stroke-width="2.5" transform="rotate(-20 54 42)"/>
+  <ellipse cx="66" cy="42" rx="7" ry="11" fill="#4A6B3E" opacity="0.2" transform="rotate(20 66 42)"/>
+  <ellipse cx="66" cy="42" rx="7" ry="11" fill="none" stroke="#4A6B3E" stroke-width="2.5" transform="rotate(20 66 42)"/>
+  <ellipse cx="54" cy="58" rx="7" ry="11" fill="#4A6B3E" opacity="0.2" transform="rotate(-20 54 58)"/>
+  <ellipse cx="54" cy="58" rx="7" ry="11" fill="none" stroke="#4A6B3E" stroke-width="2.5" transform="rotate(-20 54 58)"/>
+  <ellipse cx="66" cy="58" rx="7" ry="11" fill="#4A6B3E" opacity="0.2" transform="rotate(20 66 58)"/>
+  <ellipse cx="66" cy="58" rx="7" ry="11" fill="none" stroke="#4A6B3E" stroke-width="2.5" transform="rotate(20 66 58)"/>
+  <!-- Cross-out -->
+  <line x1="28" y1="28" x2="92" y2="92" stroke="#C23A2D" stroke-width="5" stroke-linecap="round"/>
+  <text x="60" y="108" font-family="Arial, sans-serif" font-weight="bold" font-size="9.5" fill="#4A6B3E" text-anchor="middle" letter-spacing="0.5">GLUTEN FREE</text>
+</svg>
