@@ -89,7 +89,7 @@ export function AboutPage() {
           <div className="about-animate relative">
             <div className="rounded-[40px] overflow-hidden shadow-2xl skew-y-1 lg:skew-y-0 lg:-rotate-2 hover:rotate-0 transition-transform duration-700">
               <img
-                src="/images/about_lifestyle.jpg"
+                src="/images/about_lifestyle.webp"
                 alt="A peaceful and balanced lifestyle achieved through mindfulness and One4Health wellness rituals"
                 className="w-full h-[500px] lg:h-[700px] object-cover scale-110"
                 loading="lazy"

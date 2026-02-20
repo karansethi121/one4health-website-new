@@ -89,7 +89,7 @@ export function TestimonialsSection() {
       {/* Background */}
       <div className="absolute inset-0">
         <img
-          src="/images/product_hands.png"
+          src="/images/product_hands.webp"
           alt=""
           className="w-full h-full object-cover opacity-10"
         />

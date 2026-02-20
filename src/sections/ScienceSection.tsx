@@ -150,7 +150,7 @@ export function ScienceSection() {
         {/* Right - Image */}
         <div className="science-image relative h-64 lg:h-auto">
           <img
-            src="/images/science_jar_table.jpg"
+            src="/images/science_jar_table.webp"
             alt="Science background"
             className="w-full h-full object-cover"
           />
