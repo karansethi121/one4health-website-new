@@ -146,15 +146,21 @@ export const Footer = memo(function Footer() {
               <span>FSSAI Lic. No. 12725998000541</span>
             </div>
             <span className="hidden lg:inline">•</span>
-            <span>GST No. 09ACPPS5217E1ZB</span>
-            <span className="hidden lg:inline">•</span>
             <span>GMP Certified</span>
             <span className="hidden lg:inline">•</span>
+            <span>FSSC 22000</span>
+            <span className="hidden lg:inline">•</span>
+            <span>HACCP Certified</span>
+            <span className="hidden lg:inline">•</span>
+            <span>US FDA Registered Facility</span>
+            <span className="hidden lg:inline">•</span>
+            <span>ISO 22000 & 9001</span>
+            <span className="hidden lg:inline">•</span>
+            <span>100% Vegetarian</span>
+            <span className="hidden lg:inline">•</span>
+            <span>Cruelty Free</span>
+            <span className="hidden lg:inline">•</span>
             <span>Made in India</span>
-            <span className="hidden lg:inline">•</span>
-            <span>ISO Certified</span>
-            <span className="hidden lg:inline">•</span>
-            <span>Dietary Supplement</span>
           </div>
         </div>
 
