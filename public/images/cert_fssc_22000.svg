@@ -1,0 +1,7 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- FSSC 22000 simplified vector logo -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#2B8344" stroke-width="8"/>
+  <path d="M50 100 Q100 50 150 100 Q100 150 50 100 Z" fill="#2B8344" opacity="0.8"/>
+  <text x="100" y="110" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="#FFFFFF" text-anchor="middle">FSSC</text>
+  <text x="100" y="140" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#2B8344" text-anchor="middle">22000</text>
+</svg>

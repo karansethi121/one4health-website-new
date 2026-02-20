@@ -1,0 +1,9 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Golden HACCP seal vector -->
+  <circle cx="100" cy="100" r="85" fill="#D4AF37"/>
+  <circle cx="100" cy="100" r="80" fill="none" stroke="#FFD700" stroke-width="3" stroke-dasharray="10, 5"/>
+  <circle cx="100" cy="100" r="70" fill="none" stroke="#B8860B" stroke-width="2"/>
+  <text x="100" y="95" font-family="Times New Roman, serif" font-weight="bold" font-size="32" fill="#FFFFFF" text-anchor="middle">HACCP</text>
+  <text x="100" y="125" font-family="Arial, sans-serif" font-weight="bold" font-size="16" fill="#FFFFFF" text-anchor="middle">CERTIFIED</text>
+  <path d="M60 140 Q100 170 140 140" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+</svg>
