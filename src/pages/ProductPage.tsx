@@ -405,6 +405,19 @@ export function ProductPage() {
               </button>
             </div>
 
+            {/* Allergen Free Section */}
+            <div className="bg-sage-50/50 border border-sage-100 rounded-xl lg:rounded-2xl p-4 lg:p-5">
+              <h3 className="text-[10px] lg:text-xs font-bold text-charcoal-500 mb-3 uppercase tracking-widest">100% Allergen Free</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-2">
+                {['Soy Free', 'Nut Free', 'Peanut Free', 'Dairy Free', 'Gluten Free', 'Gelatin Free'].map((allergen) => (
+                  <div key={allergen} className="flex items-center gap-1.5 lg:gap-2">
+                    <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-600 flex-shrink-0" />
+                    <span className="text-xs lg:text-sm text-charcoal-800 font-medium">{allergen}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Trust Badges */}
             <div className="flex flex-wrap gap-3 lg:gap-4 text-xs text-charcoal-500">
               <span className="flex items-center gap-1.5">
