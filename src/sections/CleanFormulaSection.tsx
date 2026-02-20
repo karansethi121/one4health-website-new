@@ -139,7 +139,17 @@ export function CleanFormulaSection() {
               ))}
             </div>
 
-
+            <div className="bg-white/80 border border-sage-100 rounded-2xl p-5 mb-8">
+              <h3 className="text-xs font-bold text-charcoal-500 mb-4 uppercase tracking-widest">100% Allergen Free</h3>
+              <div className="grid grid-cols-2 gap-y-3 gap-x-4">
+                {['Soy Free', 'Nut Free', 'Peanut Free', 'Dairy Free', 'Gluten Free', 'Gelatin Free'].map((allergen) => (
+                  <div key={allergen} className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-sage-600 flex-shrink-0" />
+                    <span className="text-sm text-charcoal-900 font-medium">{allergen}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <Link
               to="/science"
