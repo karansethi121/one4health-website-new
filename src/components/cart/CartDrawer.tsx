@@ -76,8 +76,7 @@ export function CartDrawer() {
                       </div>
                       <button
                         onClick={() => removeFromCart(item.key)}
-                        disabled={loading}
-                        className="p-1.5 hover:bg-sage-100 rounded-full transition-colors disabled:opacity-50"
+                        className="p-1.5 hover:bg-sage-100 rounded-full transition-colors"
                         aria-label="Remove item"
                       >
                         <X className="w-4 h-4 text-charcoal-400" />
@@ -87,8 +86,7 @@ export function CartDrawer() {
                       <div className="flex items-center gap-2 bg-sage-50 rounded-full px-2 py-1">
                         <button
                           onClick={() => updateQuantity(item.key, item.quantity - 1)}
-                          disabled={loading}
-                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors disabled:opacity-50"
+                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors"
                           aria-label="Decrease quantity"
                         >
                           <Minus className="w-3 h-3" />
@@ -98,8 +96,7 @@ export function CartDrawer() {
                         </span>
                         <button
                           onClick={() => updateQuantity(item.key, item.quantity + 1)}
-                          disabled={loading}
-                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors disabled:opacity-50"
+                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors"
                           aria-label="Increase quantity"
                         >
                           <Plus className="w-3 h-3" />
@@ -141,7 +138,12 @@ export function CartDrawer() {
               </div>
 
               {/* Subtotal */}
-              <div className="flex justify-between items-center bg-white rounded-2xl p-5 shadow-soft-sm">
+              <div className="flex justify-between items-center bg-white rounded-2xl p-5 shadow-soft-sm relative overflow-hidden">
+                {loading && (
+                  <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
+                    <Loader2 className="w-4 h-4 animate-spin text-sage-600" />
+                  </div>
+                )}
                 <span className="text-charcoal-600 font-medium">Subtotal</span>
                 <span className="text-2xl font-bold text-charcoal-900">
                   {formatPrice(totalPrice)}
@@ -151,7 +153,7 @@ export function CartDrawer() {
               {/* Checkout Button */}
               <Button
                 onClick={handleCheckout}
-                disabled={loading}
+                disabled={loading && items.length === 0}
                 className="w-full bg-sage-700 hover:bg-sage-800 text-white font-bold py-6 rounded-xl transition-all duration-300 hover:shadow-lg text-base"
               >
                 {loading ? <Loader2 className="w-5 h-5 animate-spin mr-3" /> : <Sparkles className="w-5 h-5 mr-3" />}
