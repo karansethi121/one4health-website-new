@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   Check,
   Sparkles,
@@ -32,21 +32,15 @@ type PurchaseType = 'onetime' | 'subscribe';
 type SubscriptionDuration = '15days' | '1month';
 type PackSize = 1 | 2;
 
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
 export function ProductPage() {
   const { id } = useParams<{ id: string }>();
-  const location = useLocation();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [purchaseType, setPurchaseType] = useState<PurchaseType>('onetime');
   const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('15days');
   const [packSize, setPackSize] = useState<PackSize>(1);
-
-  // Handle initial purchase type from navigation state
-  useEffect(() => {
-    if (location.state?.purchaseType) {
-      setPurchaseType(location.state.purchaseType);
-    }
-  }, [location.state]);
 
   // Use dynamic Shopify product data if available
   const shopifyProduct = useMemo(() => {
@@ -69,6 +63,10 @@ export function ProductPage() {
     }
     return null;
   }, [id]);
+
+  useDocumentTitle(shopifyProduct?.title || 'Product');
+
+  // Handle initial purchase type from navigation state
 
   useEffect(() => {
     const ctx = gsap.context(() => {

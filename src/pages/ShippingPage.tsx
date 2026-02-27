@@ -40,7 +40,10 @@ const policies = [
   },
 ];
 
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
 export function ShippingPage() {
+  useDocumentTitle('Shipping & Delivery');
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

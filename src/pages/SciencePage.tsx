@@ -6,7 +6,10 @@ import { mainProduct } from '@/data/products';
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
 export function SciencePage() {
+  useDocumentTitle('The Science');
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

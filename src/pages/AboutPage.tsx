@@ -28,8 +28,11 @@ const values = [
   },
 ];
 
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
 export function AboutPage() {
   const heroRef = useRef<HTMLDivElement>(null);
+  useDocumentTitle('About Us');
 
   useEffect(() => {
     const ctx = gsap.context(() => {

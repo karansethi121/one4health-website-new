@@ -31,7 +31,10 @@ const contactInfo = [
   },
 ];
 
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
 export function ContactPage() {
+  useDocumentTitle('Contact Us');
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',

@@ -4,10 +4,12 @@ import { ArrowRight, Check } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '@/context/CartContext';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function ShopPage() {
+  useDocumentTitle('Shop All');
   const { addToCart } = useCart();
   const heroRef = useRef<HTMLDivElement>(null);
 

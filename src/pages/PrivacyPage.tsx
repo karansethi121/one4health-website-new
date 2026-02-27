@@ -1,6 +1,9 @@
 import { Shield } from 'lucide-react';
 
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
 export function PrivacyPage() {
+  useDocumentTitle('Privacy Policy');
   return (
     <main className="w-full pt-24 pb-16">
       <div className="section-container max-w-3xl">

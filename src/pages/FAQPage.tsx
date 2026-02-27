@@ -8,7 +8,10 @@ import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
 export function FAQPage() {
+  useDocumentTitle('FAQ');
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

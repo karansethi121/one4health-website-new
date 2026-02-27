@@ -1,6 +1,9 @@
 import { FileText } from 'lucide-react';
 
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
 export function TermsPage() {
+  useDocumentTitle('Terms of Service');
   return (
     <main className="w-full pt-24 pb-16">
       <div className="section-container max-w-3xl">
