@@ -53,7 +53,7 @@ export function Navigation() {
             {/* Logo */}
             <Link to="/" className="flex items-center group -ml-2 lg:-ml-6">
               <img
-                src="/images/logo_cropped.webp"
+                src="/images/logo_new.webp"
                 alt="One4Health™"
                 className="h-20 lg:h-32 w-auto object-contain transition-transform duration-500 hover:scale-110 scale-100 origin-left"
               />
@@ -95,7 +95,7 @@ export function Navigation() {
               {/* Shop Now Button - Desktop */}
               <Link
                 to="/shop"
-                className="hidden md:inline-flex bg-charcoal-900 hover:bg-sage-700 text-white text-[11px] font-bold uppercase tracking-[0.2em] px-7 py-4 rounded-full transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5"
+                className="hidden md:inline-flex bg-sage-700 hover:bg-sage-800 text-white text-[11px] font-bold uppercase tracking-[0.2em] px-7 py-4 rounded-full transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5"
               >
                 Shop All
               </Link>
