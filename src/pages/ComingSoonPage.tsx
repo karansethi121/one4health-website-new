@@ -170,27 +170,21 @@ export const ComingSoonPage: React.FC = () => {
 
             // TODO: REPLACE THESE PLACEHOLDERS WITH YOUR ACTUAL EMAILJS KEYS
             const EMAILJS_SERVICE_ID = 'service_3xkrkk9';
-            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID_HERE'; // Still waiting for this
+            const EMAILJS_TEMPLATE_ID = 'template_18vaeqv'; // Added real template ID
             const EMAILJS_PUBLIC_KEY = 'g5a4Avnc7hq96Qu6X';
 
-            // We only attempt to send if the placeholders have been replaced
-            if (EMAILJS_TEMPLATE_ID !== 'YOUR_TEMPLATE_ID_HERE') {
-                const templateParams = {
-                    to_email: data.email, // The customer's email
-                    // Add any other variables your template needs (e.g., customer_name)
-                    message: "Thank you for joining the One4Health waitlist!"
-                };
+            const templateParams = {
+                to_email: data.email, // The customer's email
+                message: "Thank you for joining the One4Health waitlist!"
+            };
 
-                await emailjs.send(
-                    EMAILJS_SERVICE_ID,
-                    EMAILJS_TEMPLATE_ID,
-                    templateParams,
-                    EMAILJS_PUBLIC_KEY
-                );
-                console.log('Customer Thank You email sent successfully via EmailJS');
-            } else {
-                console.warn('EmailJS keys not configured. Customer email was NOT sent.');
-            }
+            await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams,
+                EMAILJS_PUBLIC_KEY
+            );
+            console.log('Customer Thank You email sent successfully via EmailJS');
 
             toast.success('You\'re on the list! Check your inbox for a welcome note.', {
                 description: 'We\'ve successfully received your email.',
