@@ -113,32 +113,35 @@ export function ScienceSection() {
                 promote relaxation, and help maintain daily balance.
               </p>
 
-              {/* Differentiators */}
-              <div className="space-y-4 mb-10">
-                {differentiators.map((item) => (
-                  <div key={item.label} className="flex items-start gap-4">
-                    <span className="text-2xl flex-shrink-0">{item.icon}</span>
-                    <div>
-                      <p className="font-semibold text-white">{item.label}</p>
-                      <p className="text-sm text-white/70">{item.desc}</p>
+              {/* Features & Stats Grid */}
+              <div className="grid grid-cols-2 gap-6 mb-10">
+                {/* Differentiators */}
+                <div className="space-y-4">
+                  {differentiators.map((item) => (
+                    <div key={item.label} className="flex items-start gap-3">
+                      <span className="text-xl flex-shrink-0">{item.icon}</span>
+                      <div>
+                        <p className="font-semibold text-white text-sm">{item.label}</p>
+                        <p className="text-[10px] text-white/70 leading-tight">{item.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              {/* Stats */}
-              <div className="flex flex-wrap gap-6 mb-10">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="science-stat">
-                    <p className="text-3xl font-bold text-white">{stat.number}</p>
-                    <p className="text-sm text-white/60">{stat.label}</p>
-                  </div>
-                ))}
+                {/* Stats */}
+                <div className="grid grid-cols-1 gap-4">
+                  {stats.map((stat) => (
+                    <div key={stat.label} className="science-stat bg-white/5 p-3 rounded-lg border border-white/10">
+                      <p className="text-2xl font-bold text-white leading-none mb-1">{stat.number}</p>
+                      <p className="text-[10px] text-white/60 uppercase tracking-wider">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <Link
                 to="/science"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-sage-700 font-semibold rounded-full hover:bg-sage-50 transition-colors group"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-sage-700 font-semibold rounded-full hover:bg-sage-50 transition-colors group text-sm"
               >
                 Explore the science
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

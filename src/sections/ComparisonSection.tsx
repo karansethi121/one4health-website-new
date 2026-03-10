@@ -104,7 +104,7 @@ export function ComparisonSection() {
         <div className="compare-title text-center max-w-2xl mx-auto mb-12">
           <span className="inline-block text-4xl mb-4">⚖️</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-4">
-            One4Health vs. Others
+            One4Health™ vs. Others
           </h2>
           <p className="text-lg text-charcoal-500">
             See why our formula stands out from the crowd.
@@ -118,7 +118,7 @@ export function ComparisonSection() {
               <tr className="border-b-2 border-sage-200">
                 <th className="text-left py-4 px-4 font-semibold text-charcoal-900">Feature</th>
                 <th className="text-center py-4 px-4 font-bold text-sage-700 bg-sage-50 rounded-t-xl">
-                  One4Health
+                  One4Health™
                 </th>
                 <th className="text-center py-4 px-4 font-semibold text-charcoal-600">
                   Generic Ashwagandha

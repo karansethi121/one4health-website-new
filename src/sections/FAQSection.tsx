@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     question: 'What\'s your return policy?',
-    answer: 'We offer a 30-day satisfaction guarantee. If you\'re not completely happy with your results, contact us for a full refund—even on opened bottles. We want you to feel confident trying One4Health risk-free.',
+    answer: 'We offer a 30-day satisfaction guarantee. If you\'re not completely happy with your results, contact us for a full refund—even on opened bottles. We want you to feel confident trying One4Health™ risk-free.',
   },
 ];
 
@@ -112,7 +112,7 @@ export function FAQSection() {
             Frequently Asked Questions
           </h2>
           <p className="text-lg text-charcoal-500">
-            Everything you need to know about One4Health.
+            Everything you need to know about One4Health™.
           </p>
         </div>
 

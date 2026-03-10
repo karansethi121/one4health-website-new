@@ -5,12 +5,13 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '@/context/CartContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { LoadingState } from '@/components/ui/LoadingState';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function ShopPage() {
   useDocumentTitle('Shop All');
-  const { addToCart } = useCart();
+  const { addToCart, loading: cartLoading } = useCart();
   const heroRef = useRef<HTMLDivElement>(null);
 
   // Get dynamic Shopify product data
@@ -37,12 +38,12 @@ export function ShopPage() {
         {
           y: 0,
           opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
+          duration: 0.8,
+          stagger: 0.15,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: heroRef.current,
-            start: 'top 70%',
+            start: 'top 80%',
             toggleActions: 'play none none reverse',
           },
         }
@@ -66,11 +67,7 @@ export function ShopPage() {
   }, [shopifyProduct]);
 
   if (!shopifyProduct) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-charcoal-500 animate-pulse">Loading products...</p>
-      </div>
-    );
+    return <LoadingState fullPage message="Fetching wellness essentials..." />;
   }
 
   const originalPrice = 49900;
@@ -78,96 +75,107 @@ export function ShopPage() {
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
-    <main className="w-full pt-24 pb-16">
+    <main className="w-full pt-24 pb-16 min-h-screen bg-sage-50/30">
       {/* Hero */}
       <div ref={heroRef} className="section-container mb-16">
         <div className="text-center max-w-2xl mx-auto shop-animate">
-          <h1 className="text-4xl md:text-5xl font-heading font-bold text-charcoal-900 mb-4">
-            Shop One4Health
+          <span className="inline-block px-4 py-1.5 bg-sage-100 text-sage-700 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6">
+            Our Collection
+          </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal-900 mb-6 leading-tight">
+            Shop One4Health™
           </h1>
-          <p className="text-lg text-charcoal-600">
+          <p className="text-lg text-charcoal-600 leading-relaxed">
             Clean, science-backed supplements designed for modern life.
+            Formulated for maximum absorption and efficacy.
           </p>
         </div>
       </div>
 
       {/* Products Grid */}
       <div className="section-container">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* Main Product Card */}
-          <div className="shop-animate md:col-span-2 lg:col-span-1 lg:col-start-2">
-            <div className="bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-soft transition-shadow duration-300">
-              {/* Image */}
-              <Link to="/product/ashwagandha-gummies-ksm66" className="block relative">
+          <div className="shop-animate md:col-span-2 lg:col-span-1 lg:col-start-2 group">
+            <div className="bg-white rounded-[32px] overflow-hidden shadow-soft-sm hover:shadow-soft transition-all duration-500 transform hover:-translate-y-2 border border-charcoal-50/50">
+              {/* Image Section */}
+              <Link to="/product/ashwagandha-gummies-ksm66" className="block relative overflow-hidden aspect-square">
                 <img
                   src={shopifyProduct.featured_image || "/images/product_transparent.webp"}
-                  alt={`One4Health ${shopifyProduct.title} - KSM-66 Ashwagandha Stress Support Gummies`}
-                  className="w-full aspect-square object-cover"
+                  alt={`One4Health™ ${shopifyProduct.title}`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
                 />
-                <span className="absolute top-4 left-4 px-3 py-1.5 bg-sage-700 text-white rounded-full text-sm font-medium">
+                <div className="absolute inset-0 bg-sage-900/0 group-hover:bg-sage-900/5 transition-colors duration-500" />
+
+                <span className="absolute top-6 left-6 px-3 py-1.5 bg-sage-700 text-white rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg">
                   {shopifyProduct.type || 'New Launch'}
                 </span>
+
                 {savings > 0 && (
-                  <span className="absolute top-4 right-4 px-3 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
+                  <span className="absolute top-6 right-6 px-3 py-1.5 bg-amber-400 text-amber-950 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg">
                     Save {savings}%
                   </span>
                 )}
               </Link>
 
-              {/* Content */}
-              <div className="p-6">
-
-                {/* Title */}
-                <Link to="/product/ashwagandha-gummies-ksm66">
-                  <h3 className="text-xl font-semibold text-charcoal-900 mb-1 hover:text-sage-700 transition-colors">
-                    {shopifyProduct.title}
-                  </h3>
-                </Link>
-                <p className="text-sm text-charcoal-500 mb-4">Flavor: Mixed Berry</p>
-
-                {/* Price */}
-                <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-2xl font-bold text-sage-700">
-                    {formatPrice(currentPrice)}
-                  </span>
-                  {originalPrice && (
-                    <span className="text-lg text-charcoal-400 line-through">
-                      {formatPrice(originalPrice)}
-                    </span>
-                  )}
+              {/* Content Section */}
+              <div className="p-8">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <Link to="/product/ashwagandha-gummies-ksm66">
+                      <h3 className="text-2xl font-bold text-charcoal-900 mb-1 hover:text-sage-700 transition-colors tracking-tight">
+                        {shopifyProduct.title}
+                      </h3>
+                    </Link>
+                    <p className="text-sm font-medium text-charcoal-400">Flavor: Mixed Berry</p>
+                  </div>
                 </div>
 
                 {/* Features */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  <span className="inline-flex items-center gap-1 text-xs text-charcoal-600">
-                    <Check className="w-3.5 h-3.5 text-sage-700" />
-                    Vegan
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-xs text-charcoal-600">
-                    <Check className="w-3.5 h-3.5 text-sage-700" />
-                    No Added Sugar
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-xs text-charcoal-600">
-                    <Check className="w-3.5 h-3.5 text-sage-700" />
-                    KSM-66®
-                  </span>
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {['Vegan', 'Non-GMO', 'KSM-66®'].map((feat) => (
+                    <span key={feat} className="inline-flex items-center gap-1.5 px-3 py-1 bg-sage-50 text-sage-700 rounded-full text-[10px] font-bold uppercase tracking-wide">
+                      <Check className="w-3 h-3" />
+                      {feat}
+                    </span>
+                  ))}
                 </div>
 
-                {/* CTAs */}
-                <div className="space-y-2">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex flex-col">
+                    <span className="text-xs text-charcoal-400 font-bold uppercase tracking-widest mb-1">Price</span>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-sage-700">
+                        {formatPrice(currentPrice)}
+                      </span>
+                      {originalPrice && (
+                        <span className="text-sm text-charcoal-300 line-through font-medium">
+                          {formatPrice(originalPrice)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 mt-8">
                   <button
                     onClick={() => addToCart(currentVariant.id)}
-                    className="w-full btn-primary py-3"
+                    disabled={cartLoading}
+                    className="btn-primary py-4 text-xs font-bold uppercase tracking-[0.15em] flex items-center justify-center group/btn"
                   >
-                    Add to Cart
+                    {cartLoading ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      'Add to Cart'
+                    )}
                   </button>
                   <Link
                     to="/product/ashwagandha-gummies-ksm66"
-                    className="w-full btn-secondary py-3 flex items-center justify-center gap-2"
+                    className="btn-secondary py-4 text-xs font-bold uppercase tracking-[0.15em] flex items-center justify-center gap-2 group/link"
                   >
-                    View Details
-                    <ArrowRight className="w-4 h-4" />
+                    Details
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
                   </Link>
                 </div>
               </div>

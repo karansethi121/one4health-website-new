@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Twitter, Youtube, Mail, Sparkles, Shield, AlertTriangle } from 'lucide-react';
+import { Instagram, Twitter, Youtube, Mail, Sparkles, Shield } from 'lucide-react';
 
 const footerLinks = {
   shop: [
@@ -69,7 +69,7 @@ export const Footer = memo(function Footer() {
             <Link to="/" className="inline-block mb-8">
               <img
                 src="/images/logo_cropped.webp"
-                alt="One4Health"
+                alt="One4Health™"
                 className="h-10 lg:h-12 w-auto brightness-0 invert"
               />
             </Link>
@@ -138,68 +138,35 @@ export const Footer = memo(function Footer() {
           </div>
         </div>
 
-        {/* Certifications Bar */}
-        <div className="mt-8 lg:mt-10 py-4 lg:py-5 border-y border-charcoal-800">
-          <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-8 text-xs text-charcoal-400">
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-sage-500" />
-              <span>FSSAI Lic. No. 12725998000541</span>
-            </div>
-            <span className="hidden lg:inline">•</span>
-            <span>GMP Certified</span>
-            <span className="hidden lg:inline">•</span>
-            <span>FSSC 22000</span>
-            <span className="hidden lg:inline">•</span>
-            <span>HACCP Certified</span>
-            <span className="hidden lg:inline">•</span>
-            <span>US FDA Registered Facility</span>
-            <span className="hidden lg:inline">•</span>
-            <span>ISO 22000 & 9001</span>
-            <span className="hidden lg:inline">•</span>
-            <span>100% Vegetarian</span>
-            <span className="hidden lg:inline">•</span>
-            <span>Cruelty Free</span>
-            <span className="hidden lg:inline">•</span>
-            <span>Made in India</span>
-          </div>
-        </div>
-
-        {/* Disclaimer & Bottom Bar */}
-        <div className="mt-6 lg:mt-8">
-          {/* Medical Disclaimer */}
-          <div className="bg-charcoal-800/50 rounded-xl lg:rounded-2xl p-4 lg:p-6 mb-4 lg:mb-6">
-            <p className="text-xs text-charcoal-400 leading-relaxed mb-3">
-              <span className="font-medium text-charcoal-300">Disclaimer:</span>{' '}
-              *These statements have not been evaluated by the Food and Drug Administration or FSSAI.
-              This product is not intended to diagnose, treat, cure, or prevent any disease.
-              This is a dietary supplement, not a medicine. Individual results may vary.
-            </p>
-            <p className="text-xs text-charcoal-400 leading-relaxed mb-3">
-              Consult your healthcare provider before use if you are pregnant, nursing, taking medication,
-              or have a medical condition. Manufactured in a facility that follows GMP standards.
-            </p>
-          </div>
-
-          {/* Safety Warnings */}
-          <div className="bg-red-900/20 rounded-xl lg:rounded-2xl p-4 lg:p-6 mb-4 lg:mb-6">
-            <div className="flex items-start gap-2 lg:gap-3">
-              <AlertTriangle className="w-4 h-4 lg:w-5 lg:h-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <div className="text-xs text-red-200/80 leading-relaxed">
-                <p className="font-medium text-red-200 mb-1">Important Safety Information:</p>
-                <ul className="space-y-1">
-                  <li>• Keep out of reach of children</li>
-                  <li>• Do not exceed recommended dosage of 2 gummies per day</li>
-                  <li>• For adults 18 years and older only</li>
-                  <li>• This is a dietary supplement, not a medicine or drug</li>
-                  <li>• Store in a cool, dry place away from direct sunlight</li>
-                </ul>
+        {/* Consolidated Certifications & Legal */}
+        <div className="mt-8 pt-8 border-t border-charcoal-800">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
+            {/* Certifications & Licensing */}
+            <div className="flex-1">
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-[10px] text-charcoal-500 uppercase tracking-wider mb-6">
+                <div className="flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-sage-500" />
+                  <span>FSSAI Lic. 12725998000541</span>
+                </div>
+                <span>GMP</span>
+                <span>FSSC 22000</span>
+                <span>ISO 9001:2015</span>
+                <span>US FDA REGISTERED FACILITY</span>
+                <span>MADE IN INDIA</span>
               </div>
-            </div>
-          </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-4">
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 lg:gap-4 text-xs text-charcoal-500">
-              <span>© 2026 One4Health. All rights reserved.</span>
+              {/* Legal Disclaimer */}
+              <p className="text-[10px] text-charcoal-500 leading-relaxed max-w-2xl">
+                <span className="text-charcoal-400 font-medium uppercase tracking-tight mr-1">Safety & Compliance:</span>
+                *These statements have not been evaluated by the FDA or FSSAI. Not intended to diagnose, treat, or cure any disease.
+                Dietary supplement only. Consult your physician if pregnant, nursing, or on medication. Max 2 gummies/day. Adults 18+ only.
+                Keep out of reach of children. Store in a cool, dry place.
+              </p>
+            </div>
+
+            {/* Copyright */}
+            <div className="text-[10px] text-charcoal-600 whitespace-nowrap pt-1">
+              © 2026 One4Health™. All rights reserved.
             </div>
           </div>
         </div>

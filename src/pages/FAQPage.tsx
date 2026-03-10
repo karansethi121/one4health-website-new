@@ -47,7 +47,7 @@ export function FAQPage() {
             Frequently Asked Questions
           </h1>
           <p className="text-lg text-charcoal-600">
-            Everything you need to know about One4Health and our products.
+            Everything you need to know about One4Health™ and our products.
           </p>
         </div>
       </section>

@@ -35,7 +35,7 @@ export function MobileStickyBar({
 
   const handleWhatsApp = () => {
     const message = encodeURIComponent(
-      `Hi One4Health team! I'm interested in the ${productName}. Can you help me with more information?`
+      `Hi One4Health™ team! I'm interested in the ${productName}. Can you help me with more information?`
     );
     window.open(`https://wa.me/919876543210?text=${message}`, '_blank');
   };

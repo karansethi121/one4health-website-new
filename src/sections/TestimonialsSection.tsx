@@ -107,8 +107,8 @@ export function TestimonialsSection() {
           </h2>
           <p className="text-base lg:text-lg text-charcoal-500 max-w-xl mx-auto">
             {reviews.length > 0 
-              ? `Join ${reviews.length} happy customers who've made One4Health part of their daily ritual.`
-              : "We're just getting started. Join our founding customers and help shape the One4Health story."}
+              ? `Join ${reviews.length} happy customers who've made One4Health™ part of their daily ritual.`
+              : "We're just getting started. Join our founding customers and help shape the One4Health™ story."}
           </p>
         </div>
 
@@ -155,8 +155,8 @@ export function TestimonialsSection() {
             </h3>
             <p className="text-charcoal-500 mb-5 max-w-md mx-auto text-sm">
               {reviews.length > 0 
-                ? 'Help others discover One4Health by sharing your story.'
-                : "We're excited to hear from our first customers. Be the one to share your experience with One4Health!"}
+                ? 'Help others discover One4Health™ by sharing your story.'
+                : "We're excited to hear from our first customers. Be the one to share your experience with One4Health™!"}
             </p>
 
             {/* Add Review Button */}
@@ -207,7 +207,7 @@ export function TestimonialsSection() {
             </button>
             
             <h3 className="text-xl font-semibold text-charcoal-900 mb-1">Write a Review</h3>
-            <p className="text-sm text-charcoal-500 mb-5">Share your experience with One4Health</p>
+            <p className="text-sm text-charcoal-500 mb-5">Share your experience with One4Health™</p>
             
             <form onSubmit={handleSubmitReview} className="space-y-4">
               <div>

@@ -19,7 +19,7 @@ export function TermsPage() {
 
         <div className="prose prose-lg max-w-none text-charcoal-600">
           <p>
-            Welcome to One4Health. By accessing or using our website and services,
+            Welcome to One4Health™. By accessing or using our website and services,
             you agree to be bound by these Terms of Service. Please read them carefully
             before making a purchase.
           </p>
@@ -87,7 +87,7 @@ export function TermsPage() {
           </h2>
           <p>
             All content on this website, including text, graphics, logos, images, and
-            software, is the property of One4Health and is protected by copyright and
+            software, is the property of One4Health™ and is protected by copyright and
             other intellectual property laws. You may not use, reproduce, or distribute
             any content without our prior written permission.
           </p>
@@ -96,7 +96,7 @@ export function TermsPage() {
             7. Limitation of Liability
           </h2>
           <p>
-            To the fullest extent permitted by law, One4Health shall not be liable
+            To the fullest extent permitted by law, One4Health™ shall not be liable
             for any indirect, incidental, special, consequential, or punitive damages
             arising out of or relating to your use of our website or products.
           </p>

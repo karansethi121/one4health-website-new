@@ -80,7 +80,7 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "One4Health",
+      "name": "One4Health™",
       "url": "{{ shop.url }}",
       "logo": "https:{{ 'logo_cropped.png' | asset_url }}",
       "sameAs": [
@@ -100,7 +100,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "One4Health",
+      "name": "One4Health™",
       "url": "{{ shop.url }}",
       "potentialAction": {
         "@type": "SearchAction",
@@ -124,7 +124,7 @@
         "sku": {{ product.selected_or_first_available_variant.sku | json }},
         "brand": {
           "@type": "Brand",
-          "name": "One4Health"
+          "name": "One4Health™"
         },
         "offers": {
           "@type": "Offer",
@@ -135,7 +135,7 @@
           "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
           "seller": {
             "@type": "Organization",
-            "name": "One4Health"
+            "name": "One4Health™"
           }
         }
       }

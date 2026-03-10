@@ -43,37 +43,31 @@ export function Navigation() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-          ? 'bg-white/95 backdrop-blur-xl shadow-soft'
-          : 'bg-transparent'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isScrolled
+          ? 'bg-white/95 backdrop-blur-xl shadow-soft py-0'
+          : 'bg-transparent py-1 lg:py-2'
           }`}
       >
-        <nav className="section-container">
-          <div className="flex items-center justify-between h-16 lg:h-24">
-            {/* Logo - transparent, no background */}
-            <Link to="/" className="flex items-center">
+        <nav className="w-full px-2 sm:px-4 lg:px-8 max-w-[1440px] mx-auto">
+          <div className="flex items-center justify-between h-16 lg:h-20">
+            {/* Logo */}
+            <Link to="/" className="flex items-center group -ml-2 lg:-ml-6">
               <img
                 src="/images/logo_cropped.webp"
-                alt="One4Health"
-                className="h-20 lg:h-24 w-auto object-contain logo-main"
+                alt="One4Health™"
+                className="h-20 lg:h-32 w-auto object-contain transition-transform duration-500 hover:scale-110 scale-100 origin-left"
               />
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1 bg-white/50 backdrop-blur-sm rounded-full px-2 py-1.5">
+            <div className="hidden lg:flex items-center gap-1 bg-white/60 backdrop-blur-md border border-white/40 rounded-full px-1.5 py-1 shadow-soft-sm">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   to={item.href}
-                  onClick={(e) => {
-                    if (item.href.startsWith('/#')) {
-                      e.preventDefault();
-                      scrollToSection(item.href);
-                    }
-                  }}
-                  className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${isActive(item.href)
-                    ? 'bg-sage-700 text-white'
-                    : 'text-charcoal-600 hover:bg-sage-100 hover:text-sage-700'
+                  className={`relative px-5 py-2 text-[13px] font-bold uppercase tracking-widest rounded-full transition-all duration-500 ${isActive(item.href)
+                    ? 'bg-sage-700 text-white shadow-md'
+                    : 'text-charcoal-700 hover:bg-white/80 hover:text-sage-700'
                     }`}
                   aria-current={isActive(item.href) ? 'page' : undefined}
                 >
@@ -83,16 +77,16 @@ export function Navigation() {
             </div>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 lg:gap-4">
               {/* Cart Button */}
               <button
                 onClick={toggleCart}
-                className="relative p-3 rounded-full bg-white/50 backdrop-blur-sm hover:bg-sage-100 transition-all duration-300 hover:scale-105 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="relative p-3 rounded-full bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white/80 transition-all duration-500 hover:scale-110 shadow-soft-sm group"
                 aria-label="Open cart"
               >
-                <ShoppingBag className="w-5 h-5 text-charcoal-700" />
+                <ShoppingBag className="w-5 h-5 text-charcoal-900 group-hover:text-sage-700 transition-colors" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-coral-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pop">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-sage-700 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-bounce shadow-lg border-2 border-white">
                     {totalItems}
                   </span>
                 )}
@@ -100,16 +94,16 @@ export function Navigation() {
 
               {/* Shop Now Button - Desktop */}
               <Link
-                to="/product/ashwagandha-gummies-ksm66"
-                className="hidden lg:inline-flex bg-sage-700 hover:bg-sage-800 text-white font-semibold px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 text-sm"
+                to="/shop"
+                className="hidden md:inline-flex bg-charcoal-900 hover:bg-sage-700 text-white text-[11px] font-bold uppercase tracking-[0.2em] px-7 py-4 rounded-full transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5"
               >
-                Shop Now
+                Shop All
               </Link>
 
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-3 rounded-full bg-white/50 backdrop-blur-sm hover:bg-sage-100 transition-all duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="lg:hidden p-3 rounded-full bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white/80 transition-all duration-300 flex items-center justify-center"
                 aria-label="Toggle menu"
               >
                 {isMobileMenuOpen ? (

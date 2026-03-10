@@ -19,7 +19,7 @@ export function PrivacyPage() {
 
         <div className="prose prose-lg max-w-none text-charcoal-600">
           <p>
-            At One4Health, we take your privacy seriously. This Privacy Policy explains
+            At One4Health™, we take your privacy seriously. This Privacy Policy explains
             how we collect, use, disclose, and safeguard your information when you visit
             our website or make a purchase.
           </p>

@@ -64,14 +64,14 @@ export function AboutPage() {
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="about-animate">
             <span className="inline-block px-4 py-1.5 bg-sage-100 text-sage-700 rounded-full text-xs font-bold uppercase tracking-widest mb-8">
-              The One4Health Story
+              The One4Health™ Story
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-bold text-charcoal-900 leading-[1.05] mb-8">
               Daily wellness, <span className="text-sage-700">for the driven.</span>
             </h1>
             <div className="space-y-6 text-lg text-charcoal-600 leading-relaxed">
               <p>
-                One4Health began with a simple observation: in the pursuit of modern success, our internal
+                One4Health™ began with a simple observation: in the pursuit of modern success, our internal
                 balance is often the first thing we sacrifice. We found ourselves constantly navigating
                 a world of overpromise and under-delivery—where "wellness" was either too complicated
                 to maintain or too diluted to actually work.
@@ -93,7 +93,7 @@ export function AboutPage() {
             <div className="rounded-[40px] overflow-hidden shadow-2xl skew-y-1 lg:skew-y-0 lg:-rotate-2 hover:rotate-0 transition-transform duration-700">
               <img
                 src="/images/about_lifestyle.webp"
-                alt="A peaceful and balanced lifestyle achieved through mindfulness and One4Health wellness rituals"
+                alt="A peaceful and balanced lifestyle achieved through mindfulness and One4Health™ wellness rituals"
                 className="w-full h-[500px] lg:h-[700px] object-cover scale-110"
                 loading="lazy"
               />

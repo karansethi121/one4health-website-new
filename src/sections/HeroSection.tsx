@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Sparkles, Leaf, Zap, Check } from 'lucide-react';
+import { ArrowRight, Shield, Sparkles, Leaf, Zap } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
 
@@ -133,23 +133,13 @@ export function HeroSection() {
                 </Link>
               </div>
 
-              {/* Money back guarantee & ISO */}
+              {/* Money back guarantee */}
               <div className="hero-float flex flex-wrap items-center gap-4 lg:gap-6 text-xs lg:text-sm text-charcoal-600">
                 <div className="flex items-center gap-2">
                   <Shield className="w-4 h-4 text-sage-600" />
                   <span>30-Day Money Back Guarantee</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-sage-600" />
-                  <span>ISO 9001:2015 Certified</span>
-                </div>
               </div>
-
-              {/* FDA Disclaimer */}
-              <p className="hero-float mt-4 text-[10px] text-charcoal-400 leading-relaxed max-w-sm">
-                *These statements have not been evaluated by the Food and Drug Administration or FSSAI.
-                This product is not intended to diagnose, treat, cure, or prevent any disease.
-              </p>
 
             </div>
 
@@ -160,7 +150,7 @@ export function HeroSection() {
                 <div className="relative z-10">
                   <img
                     src="/images/product_transparent.webp"
-                    alt="One4Health Ashwagandha Gummies bottle containing 30-day supply of KSM-66 clinical grade gummies"
+                    alt="One4Health™ Ashwagandha Gummies bottle containing 30-day supply of KSM-66 clinical grade gummies"
                     className="w-80 sm:w-96 lg:w-[32rem] xl:w-[38rem] h-auto drop-shadow-2xl"
                     loading="eager"
                   />
