@@ -131,23 +131,35 @@ export const ComingSoonPage: React.FC = () => {
 
     const onSubmit = async (data: FormValues) => {
         try {
-            // Real Email Integration using Formspree
-            // Note: Replace 'mqakpopy' with your actual Formspree ID
-            const response = await fetch('https://formspree.io/f/mqakpopy', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: data.email,
-                    _subject: 'New Waitlist Signup - One4Health™',
-                    message: `A new user has joined the waitlist: ${data.email}`
-                })
-            });
+            // Real Email Integration using Shopify's native Contact Form endpoint
+            // This securely sends an email to the store owner's Shopify admin email without needing 3rd party apps.
+            // On localhost, it simulates the request to avoid CORS errors during active development.
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-            if (!response.ok) {
-                throw new Error('Formspree submission failed');
+            if (isLocal) {
+                console.log('[Dev Mode] Simulated Waitlist Signup for:', data.email);
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            } else {
+                const formData = new URLSearchParams();
+                formData.append('form_type', 'contact');
+                formData.append('utf8', '✓');
+                formData.append('contact[email]', data.email);
+                formData.append('contact[tags]', 'newsletter, waitlist_coming_soon');
+                formData.append('contact[body]', 'Early Access Waitlist Signup from Coming Soon Page');
+
+                const response = await fetch('/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'text/html'
+                    },
+                    body: formData.toString()
+                });
+
+                // Fetch follows Shopify's redirect on success. We just check if the final response is OK.
+                if (!response.ok) {
+                    throw new Error('Shopify contact submission failed');
+                }
             }
 
             toast.success('You\'re on the list! Check your inbox for a welcome note.', {
