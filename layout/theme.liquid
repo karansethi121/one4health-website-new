@@ -26,22 +26,22 @@
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% else %}
-      <meta name="description" content="Clean, science-backed Ashwagandha gummies for stress relief and better sleep. KSM-66® with Vitamin D2 & BioPerine®. Vegan, no added sugar, made in India.">
+      <meta name="description" content="Premium, science-backed One4Health™ Ashwagandha gummies. Specialists in clinically studied KSM-66® root extract, BioPerine®, and Vitamin D2 for maximum bioavailability, cortisol regulation, stress relief, and sleep optimization. 100% vegan.">
     {% endif %}
 
-    <meta name="keywords" content="Ashwagandha Gummies, KSM-66, Stress Support, Vitamin D3, BioPerine, Sleep Support, Wellness, Vegan">
+    <meta name="keywords" content="One4Health, ashwagandha gummies, KSM-66 extract, BioPerine, cortisol regulation, stress relief, sleep optimization, vegan supplements, adaptogens">
 
     <!-- Google Search Console Verification -->
-    <meta name="google-site-verification" content="GSC_VERIFICATION_ID_HERE" />
+    <meta name="google-site-verification" content="TQO_Q5x3A4oqUTcxb-4z1EdHO0vpKyn7yAxwl185yI4" />
     <meta name="msvalidate.01" content="ADD_BING_VERIFICATION_TAG_HERE" />
 
     <!-- Google Analytics (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GA4_MEASUREMENT_ID_HERE"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L3GJXRQX63"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
-      gtag('config', 'G-GA4_MEASUREMENT_ID_HERE');
+      gtag('config', 'G-L3GJXRQX63');
     </script>
 
     <!-- Google Tag Manager -->
@@ -103,9 +103,20 @@
       "name": "One4Health™",
       "url": "{{ shop.url }}",
       "logo": "https:{{ 'logo_cropped.png' | asset_url }}",
+      "description": "Premium wellness brand delivering science-backed Ashwagandha gummies. Specialists in KSM-66® technology, stress management, and sleep optimization.",
+      "foundingDate": "2024",
+      "knowsAbout": [
+        "Ashwagandha",
+        "KSM-66®",
+        "Wellness Supplements",
+        "Stress Relief",
+        "BioPerine®",
+        "Nutraceuticals"
+      ],
       "sameAs": [
         "https://instagram.com/one4health",
-        "https://twitter.com/one4health"
+        "https://twitter.com/one4health",
+        "https://www.linkedin.com/company/one4health"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
@@ -146,6 +157,19 @@
           "@type": "Brand",
           "name": "One4Health™"
         },
+        "material": "KSM-66® Ashwagandha",
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "Dietary Preference",
+            "value": "Vegan, Sugar-Free, Gelatin-Free, Non-GMO"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Special Ingredients",
+            "value": "BioPerine®, Vitamin D2"
+          }
+        ],
         "offers": {
           "@type": "Offer",
           "url": {{ shop.url | append: product.selected_or_first_available_variant.url | json }},
