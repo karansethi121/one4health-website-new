@@ -131,47 +131,32 @@ export const ComingSoonPage: React.FC = () => {
 
     const onSubmit = async (data: FormValues) => {
         try {
-            // Simulated Email Automation Flow
-            // 1. Notify info@one4health.com (Admin)
-            // 2. Send Thank You to user (Auto-responder)
+            // Real Email Integration using Formspree
+            // Note: Replace 'mqakpopy' with your actual Formspree ID
+            const response = await fetch('https://formspree.io/f/mqakpopy', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: data.email,
+                    _subject: 'New Waitlist Signup - One4Health™',
+                    message: `A new user has joined the waitlist: ${data.email}`
+                })
+            });
 
-            console.log('--- Initializing Waitlist Automation ---');
-            console.log(`[ACTION] Notifying info@one4health.com about new signup: ${data.email}`);
-            console.log(`[ACTION] Triggering automated "Thank You" email to: ${data.email}`);
-
-            // Drafting the email content for the automation
-            const emailBody = `
-                Hi there,
-
-                Thank you for your interest in One4Health™! We've successfully added you to our exclusive waitlist.
-
-                At One4Health™, we're on a mission to simplify daily wellness through science-backed, 100% natural rituals. We're currently putting the finishing touches on something special, and we can't wait to share it with you.
-
-                Your Early Access Perks:
-                - Priority notification the moment we go live.
-                - Exclusive early-bird offers only for our waitlist members.
-                - A sneak peek into our clean, natural formulas.
-
-                Stay tuned – something beautiful is brewing!
-
-                Best health,
-                The One4Health™ Team
-            `;
-
-            console.log('--- Automated Email Draft ---');
-            console.log(emailBody);
-
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            // In a real production environment, you would use:
-            // await emailjs.send('service_id', 'template_id', { email: data.email, content: emailBody });
+            if (!response.ok) {
+                throw new Error('Formspree submission failed');
+            }
 
             toast.success('You\'re on the list! Check your inbox for a welcome note.', {
-                description: 'The automated welcome email has been queued.',
+                description: 'We\'ve successfully received your email.',
                 duration: 5000,
             });
             reset();
         } catch (error) {
+            console.error('Email submission error:', error);
             toast.error('Something went wrong. Please try again.');
         }
     };
@@ -201,7 +186,7 @@ export const ComingSoonPage: React.FC = () => {
             <main className="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row gap-10 lg:gap-20 items-center px-4 pt-0 pb-20 lg:py-0">
                 {/* Left Side: Brand Story & Info */}
                 <div ref={infoRef} className="flex-1 text-center lg:text-left space-y-1 lg:space-y-2 max-w-xl -mt-8 sm:-mt-12 lg:mt-0">
-                    <div ref={logoRef} className="inline-block transform-gpu -mb-20 lg:-mb-24 animate-bounce-subtle">
+                    <div ref={logoRef} className="inline-block transform-gpu animate-bounce-subtle">
                         <img
                             src="/images/logo_new.webp"
                             alt="One4Health™"
