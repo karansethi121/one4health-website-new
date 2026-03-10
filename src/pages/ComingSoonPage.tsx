@@ -169,12 +169,12 @@ export const ComingSoonPage: React.FC = () => {
             // ---------------------------------------------------------
 
             // TODO: REPLACE THESE PLACEHOLDERS WITH YOUR ACTUAL EMAILJS KEYS
-            const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID_HERE';
-            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID_HERE';
-            const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY_HERE';
+            const EMAILJS_SERVICE_ID = 'service_3xkrkk9';
+            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID_HERE'; // Still waiting for this
+            const EMAILJS_PUBLIC_KEY = 'g5a4Avnc7hq96Qu6X';
 
             // We only attempt to send if the placeholders have been replaced
-            if (EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID_HERE') {
+            if (EMAILJS_TEMPLATE_ID !== 'YOUR_TEMPLATE_ID_HERE') {
                 const templateParams = {
                     to_email: data.email, // The customer's email
                     // Add any other variables your template needs (e.g., customer_name)
