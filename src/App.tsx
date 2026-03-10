@@ -20,7 +20,7 @@ import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  const isComingSoon = location.pathname === '/coming-soon';
+  const isComingSoon = location.pathname === '/' || location.pathname === '/coming-soon';
 
   return (
     <div className="min-h-screen bg-sage-50">
@@ -35,7 +35,8 @@ function AppContent() {
 
       {/* Main Content */}
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<ComingSoonPage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/about" element={<AboutPage />} />
