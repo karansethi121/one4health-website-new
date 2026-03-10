@@ -149,7 +149,11 @@ module.exports = {
         "scroll": {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-100%)" },
-        }
+        },
+        "expand-x": {
+          "0%": { transform: "scaleX(0)" },
+          "100%": { transform: "scaleX(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -158,6 +162,7 @@ module.exports = {
         "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
         "wiggle": "wiggle 0.5s ease-in-out",
         "pop": "pop 0.3s ease-out",
+        "expand-x": "expand-x 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards",
       },
     },
   },

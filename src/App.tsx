@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from '@/context/CartContext';
 import { Navigation } from '@/components/layout/Navigation';
 import { CartDrawer } from '@/components/cart/CartDrawer';
@@ -13,45 +13,56 @@ import { ShippingPage } from '@/pages/ShippingPage';
 import { ContactPage } from '@/pages/ContactPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 import { TermsPage } from '@/pages/TermsPage';
+import { ComingSoonPage } from '@/pages/ComingSoonPage';
 import { Toaster } from '@/components/ui/sonner';
 import ScrollToTop from '@/components/layout/ScrollToTop';
 import './App.css';
+
+function AppContent() {
+  const location = useLocation();
+  const isComingSoon = location.pathname === '/coming-soon';
+
+  return (
+    <div className="min-h-screen bg-sage-50">
+      {/* Grain Overlay */}
+      <div className="grain-overlay" />
+
+      {/* Navigation - Hidden on coming soon page */}
+      {!isComingSoon && <Navigation />}
+
+      {/* Cart Drawer */}
+      {!isComingSoon && <CartDrawer />}
+
+      {/* Main Content */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/shop" element={<ShopPage />} />
+        <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/science" element={<SciencePage />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/shipping" element={<ShippingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/coming-soon" element={<ComingSoonPage />} />
+      </Routes>
+
+      {/* Footer - Hidden on coming soon page */}
+      {!isComingSoon && <Footer />}
+
+      {/* Toast Notifications */}
+      <Toaster position="bottom-right" />
+    </div>
+  );
+}
 
 function App() {
   return (
     <CartProvider>
       <Router>
         <ScrollToTop />
-        <div className="min-h-screen bg-sage-50">
-          {/* Grain Overlay */}
-          <div className="grain-overlay" />
-
-          {/* Navigation */}
-          <Navigation />
-
-          {/* Cart Drawer */}
-          <CartDrawer />
-
-          {/* Main Content */}
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/shop" element={<ShopPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/science" element={<SciencePage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/shipping" element={<ShippingPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-          </Routes>
-
-          {/* Footer */}
-          <Footer />
-
-          {/* Toast Notifications */}
-          <Toaster position="bottom-right" />
-        </div>
+        <AppContent />
       </Router>
     </CartProvider>
   );
