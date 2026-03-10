@@ -64,7 +64,8 @@ export const ComingSoonPage: React.FC = () => {
     });
 
     useEffect(() => {
-        // Remove scroll lock to allow mobile scrolling
+        // Apply scroll-friendly class to body
+        document.body.classList.add('coming-soon-mode');
 
         const ctx = gsap.context(() => {
             // Entrance Animations
@@ -124,6 +125,7 @@ export const ComingSoonPage: React.FC = () => {
 
         return () => {
             ctx.revert();
+            document.body.classList.remove('coming-soon-mode');
         };
     }, []);
 
@@ -179,7 +181,7 @@ export const ComingSoonPage: React.FC = () => {
     return (
         <div
             ref={containerRef}
-            className="relative min-h-[100dvh] w-full overflow-y-auto overflow-x-hidden flex items-start lg:items-center justify-center bg-sage-50 pt-2 sm:pt-4 lg:p-12 px-4 sm:px-6"
+            className="relative min-h-[100dvh] w-full overflow-y-auto overflow-x-hidden flex items-start lg:items-center justify-center bg-sage-50 px-4 sm:px-6 lg:p-12 mb-20"
         >
             {/* Animated Gummy Background */}
             <div ref={gummiesContainerRef} className="absolute inset-0 z-0 pointer-events-none opacity-40">
@@ -196,10 +198,10 @@ export const ComingSoonPage: React.FC = () => {
             {/* Glossy Backdrop Overlay */}
             <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px] z-[1]" />
 
-            <main className="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row gap-10 lg:gap-20 items-center px-4 pt-4 pb-20 lg:py-0">
+            <main className="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row gap-10 lg:gap-20 items-center px-4 pt-0 pb-20 lg:py-0">
                 {/* Left Side: Brand Story & Info */}
-                <div ref={infoRef} className="flex-1 text-center lg:text-left space-y-1 lg:space-y-2 max-w-xl">
-                    <div ref={logoRef} className="inline-block transform-gpu -mb-12 lg:-mb-16 animate-bounce-subtle">
+                <div ref={infoRef} className="flex-1 text-center lg:text-left space-y-1 lg:space-y-2 max-w-xl -mt-8 sm:-mt-12 lg:mt-0">
+                    <div ref={logoRef} className="inline-block transform-gpu -mb-20 lg:-mb-24 animate-bounce-subtle">
                         <img
                             src="/images/logo_new.webp"
                             alt="One4Health™"

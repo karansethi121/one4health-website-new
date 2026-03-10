@@ -59,6 +59,26 @@ img {
   background-color: transparent !important;
 }
 
+/* Aggressive Top Reset for Shopify/React Integration */
+#root, .shopify-section, .shopify-section-main-index {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  display: block !important;
+}
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+
+/* Force scrollability on Coming Soon */
+.coming-soon-mode {
+  overflow-y: auto !important;
+  height: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
 .logo-main {
   height: 7rem !important;
   margin-top: -1.5rem !important;
