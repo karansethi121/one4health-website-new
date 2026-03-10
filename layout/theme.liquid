@@ -31,9 +31,29 @@
 
     <meta name="keywords" content="Ashwagandha Gummies, KSM-66, Stress Support, Vitamin D3, BioPerine, Sleep Support, Wellness, Vegan">
 
-    <!-- Google & Bing Verification -->
-    <meta name="google-site-verification" content="ADD_GOOGLE_VERIFICATION_TAG_HERE" />
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="GSC_VERIFICATION_ID_HERE" />
     <meta name="msvalidate.01" content="ADD_BING_VERIFICATION_TAG_HERE" />
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GA4_MEASUREMENT_ID_HERE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-GA4_MEASUREMENT_ID_HERE');
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+          'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-ID_HERE');</script>
+    <!-- End Google Tag Manager -->
 
     <!-- Open Graph / Facebook -->
     {%- assign og_title = page_title | default: shop.name -%}
@@ -211,6 +231,11 @@
   </head>
 
   <body class="gradient">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-ID_HERE" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="root"></div>
 
     {{ content_for_layout }}
