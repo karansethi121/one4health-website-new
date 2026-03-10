@@ -74,12 +74,10 @@ export function TermsPage() {
           </p>
 
           <h2 className="text-2xl font-heading font-bold text-charcoal-900 mt-8 mb-4">
-            5. Returns and Refunds
+            5. Refunds and Returns Policy
           </h2>
           <p>
-            We offer a 30-day satisfaction guarantee. If you are not satisfied with your
-            purchase, you may return unopened products within 30 days for a full refund.
-            Please refer to our Shipping & Returns page for complete details.
+            Due to the nature of our products as health supplements, we do not accept physical returns to ensure the highest safety and quality standards. However, we offer a satisfaction guarantee. If you experience an issue with your order, please contact us for a full or partial refund. Please refer to our Shipping & Refunds page for complete details.
           </p>
 
           <h2 className="text-2xl font-heading font-bold text-charcoal-900 mt-8 mb-4">

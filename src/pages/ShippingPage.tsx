@@ -25,8 +25,8 @@ const shippingMethods = [
 const policies = [
   {
     icon: RefreshCw,
-    title: '30-Day Returns',
-    description: 'Not satisfied? Return any unopened product within 30 days for a full refund.',
+    title: 'Refund Policy',
+    description: 'Due to health and safety standards, we do not accept physical returns. If there is an issue, we provide refunds.',
   },
   {
     icon: Shield,
@@ -76,10 +76,10 @@ export function ShippingPage() {
         <div className="text-center max-w-2xl mx-auto shipping-animate">
           <Truck className="w-12 h-12 text-sage-700 mx-auto mb-6" />
           <h1 className="text-4xl md:text-5xl font-heading font-bold text-charcoal-900 mb-4">
-            Shipping & Returns
+            Shipping & Refunds
           </h1>
           <p className="text-lg text-charcoal-600">
-            Fast, reliable delivery with hassle-free returns. Your satisfaction is our priority.
+            Fast, reliable delivery with a hassle-free refund policy. Your satisfaction is our priority.
           </p>
         </div>
       </section>
@@ -220,16 +220,19 @@ export function ShippingPage() {
         </div>
       </section>
 
-      {/* Return Process */}
+      {/* Refund Process */}
       <section className="section-container">
         <div className="shipping-animate bg-white rounded-3xl p-8 md:p-12 shadow-soft">
           <div className="text-center mb-10">
             <RefreshCw className="w-12 h-12 text-sage-700 mx-auto mb-4" />
             <h2 className="text-3xl font-heading font-bold text-charcoal-900 mb-4">
-              Easy Returns
+              Our Refund Policy
             </h2>
             <p className="text-lg text-charcoal-600 max-w-2xl mx-auto">
-              Not completely satisfied? We make returns simple and hassle-free.
+              As One4Health™ provides premium health supplements, we cannot accept physical returns of our products to ensure the highest safety and quality standards for all customers.
+            </p>
+            <p className="text-lg text-charcoal-600 max-w-2xl mx-auto mt-4 font-medium">
+              However, your satisfaction is extremely important to us. If you experience any issues with your order, here is how we can help:
             </p>
           </div>
 
@@ -240,16 +243,16 @@ export function ShippingPage() {
               </div>
               <h4 className="font-semibold text-charcoal-900 mb-2">Contact Us</h4>
               <p className="text-sm text-charcoal-600">
-                Email us at info@one4health.com within 30 days of purchase.
+                Email us at info@one4health.com with your order number and detail the issue you experienced.
               </p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-sage-700 font-bold">2</span>
               </div>
-              <h4 className="font-semibold text-charcoal-900 mb-2">Ship It Back</h4>
+              <h4 className="font-semibold text-charcoal-900 mb-2">Review Process</h4>
               <p className="text-sm text-charcoal-600">
-                We'll provide a return label. Pack the product and send it back.
+                Our team will review your request within 1-2 business days. We may ask for photos if there was damage during transit.
               </p>
             </div>
             <div className="text-center">
@@ -258,7 +261,7 @@ export function ShippingPage() {
               </div>
               <h4 className="font-semibold text-charcoal-900 mb-2">Get Refunded</h4>
               <p className="text-sm text-charcoal-600">
-                Once received, we'll process your refund within 5-7 business days.
+                If approved, we'll process your refund to the original payment method within 5-7 business days, no return required!
               </p>
             </div>
           </div>
