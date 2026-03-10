@@ -141,25 +141,29 @@ export const ComingSoonPage: React.FC = () => {
                 console.log('[Dev Mode] Simulated Waitlist Signup for:', data.email);
                 await new Promise(resolve => setTimeout(resolve, 1500));
             } else {
-                const formData = new URLSearchParams();
-                formData.append('form_type', 'contact');
-                formData.append('utf8', '✓');
-                formData.append('contact[email]', data.email);
-                formData.append('contact[tags]', 'newsletter, waitlist_coming_soon');
-                formData.append('contact[body]', 'Early Access Waitlist Signup from Coming Soon Page');
+                try {
+                    const formData = new URLSearchParams();
+                    formData.append('form_type', 'contact');
+                    formData.append('utf8', '✓');
+                    formData.append('contact[email]', data.email);
+                    formData.append('contact[tags]', 'newsletter, waitlist_coming_soon');
+                    formData.append('contact[body]', 'Early Access Waitlist Signup from Coming Soon Page');
 
-                const response = await fetch('/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'text/html'
-                    },
-                    body: formData.toString()
-                });
+                    const response = await fetch('/contact', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Accept': 'text/html'
+                        },
+                        body: formData.toString()
+                    });
 
-                // Fetch follows Shopify's redirect on success. We just check if the final response is OK.
-                if (!response.ok) {
-                    console.error('Shopify contact submission failed (Admin notification).');
+                    if (!response.ok) {
+                        console.error('Shopify contact submission failed (Admin notification). status:', response.status);
+                    }
+                } catch (e) {
+                    console.error('Failed to submit to Shopify /contact endpoint:', e);
+                    // Do not throw here. We want to ensure the customer still gets their EmailJS "Thank You" email.
                 }
             }
 
@@ -191,9 +195,10 @@ export const ComingSoonPage: React.FC = () => {
                 duration: 5000,
             });
             reset();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Email submission error:', error);
-            toast.error('Something went wrong. Please try again.');
+            const errorMessage = error instanceof Error ? error.message : (error?.text || JSON.stringify(error));
+            toast.error(`Error: ${errorMessage}. Please try again.`);
         }
     };
 
