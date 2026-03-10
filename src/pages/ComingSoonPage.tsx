@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import emailjs from '@emailjs/browser';
 
 const formSchema = z.object({
     email: z.string().email('Please enter a valid email address'),
@@ -158,8 +159,37 @@ export const ComingSoonPage: React.FC = () => {
 
                 // Fetch follows Shopify's redirect on success. We just check if the final response is OK.
                 if (!response.ok) {
-                    throw new Error('Shopify contact submission failed');
+                    console.error('Shopify contact submission failed (Admin notification).');
                 }
+            }
+
+            // ---------------------------------------------------------
+            // 2. Real Customer Email Automation using EmailJS
+            // This sends the "Thank You" email directly to the customer.
+            // ---------------------------------------------------------
+
+            // TODO: REPLACE THESE PLACEHOLDERS WITH YOUR ACTUAL EMAILJS KEYS
+            const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID_HERE';
+            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID_HERE';
+            const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY_HERE';
+
+            // We only attempt to send if the placeholders have been replaced
+            if (EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID_HERE') {
+                const templateParams = {
+                    to_email: data.email, // The customer's email
+                    // Add any other variables your template needs (e.g., customer_name)
+                    message: "Thank you for joining the One4Health waitlist!"
+                };
+
+                await emailjs.send(
+                    EMAILJS_SERVICE_ID,
+                    EMAILJS_TEMPLATE_ID,
+                    templateParams,
+                    EMAILJS_PUBLIC_KEY
+                );
+                console.log('Customer Thank You email sent successfully via EmailJS');
+            } else {
+                console.warn('EmailJS keys not configured. Customer email was NOT sent.');
             }
 
             toast.success('You\'re on the list! Check your inbox for a welcome note.', {
