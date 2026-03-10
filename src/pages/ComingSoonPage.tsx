@@ -179,7 +179,7 @@ export const ComingSoonPage: React.FC = () => {
     return (
         <div
             ref={containerRef}
-            className="relative min-h-screen w-full overflow-y-auto overflow-x-hidden flex items-center justify-center bg-sage-50 p-4 sm:p-6 lg:p-12"
+            className="relative min-h-[100dvh] w-full overflow-y-auto overflow-x-hidden flex items-start lg:items-center justify-center bg-sage-50 p-4 sm:p-6 lg:p-12"
         >
             {/* Animated Gummy Background */}
             <div ref={gummiesContainerRef} className="absolute inset-0 z-0 pointer-events-none opacity-40">
@@ -196,13 +196,17 @@ export const ComingSoonPage: React.FC = () => {
             {/* Glossy Backdrop Overlay */}
             <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px] z-[1]" />
 
-            <main className="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row gap-10 lg:gap-20 items-center px-4 py-20 lg:py-0">
+            <main className="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row gap-10 lg:gap-20 items-center px-4 pt-12 pb-20 lg:py-0">
                 {/* Left Side: Brand Story & Info */}
                 <div ref={infoRef} className="flex-1 text-center lg:text-left space-y-1 lg:space-y-2 max-w-xl">
                     <div ref={logoRef} className="inline-block transform-gpu -mb-12 lg:-mb-16 animate-bounce-subtle">
                         <img
                             src="/images/logo_new.webp"
                             alt="One4Health™"
+                            width="288"
+                            height="288"
+                            fetchPriority="high"
+                            loading="eager"
                             className="h-44 sm:h-56 lg:h-72 w-auto object-contain transition-transform duration-700 hover:scale-110 drop-shadow-2xl"
                         />
                     </div>
