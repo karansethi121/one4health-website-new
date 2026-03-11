@@ -47,9 +47,9 @@ export const Footer = memo(function Footer() {
             <Sparkles className="w-4 h-4" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-white">The Daily Ritual Awaits</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-white mb-8 leading-tight max-w-2xl mx-auto">
+          <p className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-white mb-8 leading-tight max-w-2xl mx-auto">
             Ready to find your center?
-          </h2>
+          </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/product/ashwagandha-gummies-ksm66"
