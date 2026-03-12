@@ -48,7 +48,7 @@ export const Footer = memo(function Footer() {
             <span className="text-[10px] font-bold uppercase tracking-widest text-white">The Daily Ritual Awaits</span>
           </div>
           <p className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-white mb-8 leading-tight max-w-2xl mx-auto">
-            Ready to find your center?
+            Experience the Daily Ritual
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link

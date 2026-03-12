@@ -14,7 +14,7 @@ import { AllergenBar } from '@/components/layout/AllergenBar';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function HomePage() {
-  useDocumentTitle('ONE4HEALTH | Daily Wellness, Simplified', false);
+  useDocumentTitle('ONE4HEALTH | Stay Calm. Stay Sharp. | Daily Wellness Simplified', false);
   return (
     <main className="w-full pt-16 lg:pt-24">
       <PromoMarquee />
