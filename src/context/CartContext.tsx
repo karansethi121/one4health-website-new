@@ -6,7 +6,7 @@ interface CartContextType {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addToCart: (variantId: number, quantity?: number, attributes?: Record<string, string>) => Promise<void>;
+  addToCart: (variantId: string, quantity?: number, attributes?: Record<string, string>) => Promise<void>;
   removeFromCart: (key: string) => Promise<void>;
   updateQuantity: (key: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -91,35 +91,40 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const closeCart = useCallback(() => setIsOpen(false), []);
   const toggleCart = useCallback(() => setIsOpen(prev => !prev), []);
 
-  const addToCart = useCallback(async (variantId: number, quantity = 1, attributes?: Record<string, string>) => {
+  const addToCart = useCallback(async (variantId: string, quantity = 1, attributes?: Record<string, string>) => {
     setIsOpen(true);
     setLoading(true);
 
     // Dev/mock mode – use in-memory cart state
     if (!isShopifyEnv()) {
-      const product = window.ShopifyData?.all_products?.['ashwagandha-gummies-ksm66'];
+      const product = window.ShopifyData?.all_products?.['ashwagandha-gummies-ksm66'] || {
+        title: 'Ashwagandha Gummies',
+        type: 'Supplement',
+        featured_image: '/images/product_transparent.webp',
+        variants: [{ price: 34900 }]
+      };
       const price = product?.variants?.[0]?.price ?? 34900;
       const newItem = {
         id: variantId,
-        key: String(variantId),
+        key: variantId,
         variant_id: variantId,
         quantity,
-        title: product?.title ?? 'Ashwagandha Gummies',
-        product_title: product?.title ?? 'Ashwagandha Gummies',
+        title: product?.title,
+        product_title: product?.title,
         variant_title: 'Default Title',
-        product_type: product?.type ?? 'Supplement',
+        product_type: product?.type,
         price,
         line_price: price * quantity,
         final_line_price: price * quantity,
         original_line_price: price * quantity,
-        image: product?.featured_image ?? '/images/product_transparent.webp',
+        image: product?.featured_image,
         properties: attributes ?? {},
       };
       setItems(prev => {
-        const existing = prev.find((i: any) => i.key === String(variantId));
+        const existing = prev.find((i: any) => i.key === variantId);
         if (existing) {
           return prev.map((i: any) =>
-            i.key === String(variantId)
+            i.key === variantId
               ? { ...i, quantity: i.quantity + quantity, line_price: i.price * (i.quantity + quantity), final_line_price: i.price * (i.quantity + quantity) }
               : i
           );

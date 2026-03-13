@@ -14,6 +14,7 @@ import { ContactPage } from '@/pages/ContactPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 import { TermsPage } from '@/pages/TermsPage';
 import { ComingSoonPage } from '@/pages/ComingSoonPage';
+import { AdminPage } from '@/pages/AdminPage';
 import { Toaster } from '@/components/ui/sonner';
 import ScrollToTop from '@/components/layout/ScrollToTop';
 import './App.css';
@@ -21,17 +22,19 @@ import './App.css';
 function AppContent() {
   const location = useLocation();
   const isComingSoon = location.pathname === '/coming-soon';
+  const isAdminPage = location.pathname.startsWith('/admin');
+  const hideLayout = isComingSoon || isAdminPage;
 
   return (
     <div className="min-h-screen bg-sage-50">
       {/* Grain Overlay */}
       <div className="grain-overlay" />
 
-      {/* Navigation - Hidden on coming soon page */}
-      {!isComingSoon && <Navigation />}
+      {/* Navigation - Hidden on special pages */}
+      {!hideLayout && <Navigation />}
 
       {/* Cart Drawer */}
-      {!isComingSoon && <CartDrawer />}
+      {!hideLayout && <CartDrawer />}
 
       {/* Main Content */}
       <Routes>
@@ -47,10 +50,11 @@ function AppContent() {
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/coming-soon" element={<ComingSoonPage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
 
-      {/* Footer - Hidden on coming soon page */}
-      {!isComingSoon && <Footer />}
+      {/* Footer - Hidden on special pages */}
+      {!hideLayout && <Footer />}
 
       {/* Toast Notifications */}
       <Toaster position="bottom-right" />

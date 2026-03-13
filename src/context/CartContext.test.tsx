@@ -17,7 +17,7 @@ const TestComponent = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => addToCart(44000000001, 1)}>Add Ashwagandha</button>
+            <button onClick={() => addToCart('ashwagandha-gummies-ksm66', 1)}>Add Ashwagandha</button>
         </div>
     );
 };
@@ -33,7 +33,7 @@ describe('CartContext', () => {
             all_products: {
                 'ashwagandha-gummies-ksm66': {
                     title: 'Ashwagandha Gummies',
-                    variants: [{ id: 44000000001, price: 34900 }],
+                    variants: [{ id: 'ashwagandha-gummies-ksm66', price: 34900 }],
                 },
             },
             cart: { items: [], item_count: 0, total_price: 0 },

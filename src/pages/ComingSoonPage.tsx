@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import emailjs from '@emailjs/browser';
+import { useWaitlist } from '@/hooks/useSupabase';
 
 const formSchema = z.object({
     email: z.string().email('Please enter a valid email address'),
@@ -55,14 +56,18 @@ export const ComingSoonPage: React.FC = () => {
     const infoRef = useRef<HTMLDivElement>(null);
     const gummiesContainerRef = useRef<HTMLDivElement>(null);
 
+    const { joinWaitlist, submitting: dbSubmitting } = useWaitlist();
+
     const {
         register,
         handleSubmit,
         reset,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting: formSubmitting },
     } = useForm<FormValues>({
         resolver: zodResolver(formSchema),
     });
+
+    const isSubmitting = formSubmitting || dbSubmitting;
 
     useEffect(() => {
         // Apply scroll-friendly class to body
@@ -132,15 +137,13 @@ export const ComingSoonPage: React.FC = () => {
 
     const onSubmit = async (data: FormValues) => {
         try {
-            // Real Email Integration using Shopify's native Contact Form endpoint
-            // This securely sends an email to the store owner's Shopify admin email without needing 3rd party apps.
-            // On localhost, it simulates the request to avoid CORS errors during active development.
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            // 1. Save to Supabase Database
+            await joinWaitlist(data.email, 'Coming Soon Page');
+            console.log('Saved to Supabase waitlist');
 
-            if (isLocal) {
-                console.log('[Dev Mode] Simulated Waitlist Signup for:', data.email);
-                await new Promise(resolve => setTimeout(resolve, 1500));
-            } else {
+            // 2. Shopify Contact Form (Optional notification)
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            if (!isLocal) {
                 try {
                     const formData = new URLSearchParams();
                     formData.append('form_type', 'contact');
@@ -149,7 +152,7 @@ export const ComingSoonPage: React.FC = () => {
                     formData.append('contact[tags]', 'newsletter, waitlist_coming_soon');
                     formData.append('contact[body]', 'Early Access Waitlist Signup from Coming Soon Page');
 
-                    const response = await fetch('/contact', {
+                    await fetch('/contact', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
@@ -157,28 +160,22 @@ export const ComingSoonPage: React.FC = () => {
                         },
                         body: formData.toString()
                     });
-
-                    if (!response.ok) {
-                        console.error('Shopify contact submission failed (Admin notification). status:', response.status);
-                    }
                 } catch (e) {
                     console.error('Failed to submit to Shopify /contact endpoint:', e);
-                    // Do not throw here. We want to ensure the customer still gets their EmailJS "Thank You" email.
                 }
             }
 
             // ---------------------------------------------------------
-            // 2. Real Customer Email Automation using EmailJS
+            // 3. Real Customer Email Automation using EmailJS
             // This sends the "Thank You" email directly to the customer.
             // ---------------------------------------------------------
 
-            // TODO: REPLACE THESE PLACEHOLDERS WITH YOUR ACTUAL EMAILJS KEYS
             const EMAILJS_SERVICE_ID = 'service_3xkrkk9';
-            const EMAILJS_TEMPLATE_ID = 'template_18vaeqv'; // Added real template ID
+            const EMAILJS_TEMPLATE_ID = 'template_18vaeqv';
             const EMAILJS_PUBLIC_KEY = 'g5a4Avnc7hq96Qu6X';
 
             const templateParams = {
-                to_email: data.email, // The customer's email
+                to_email: data.email,
                 message: "Thank you for joining the One4Health waitlist!"
             };
 
@@ -196,7 +193,7 @@ export const ComingSoonPage: React.FC = () => {
             });
             reset();
         } catch (error: any) {
-            console.error('Email submission error:', error);
+            console.error('Waitlist submission error:', error);
             const errorMessage = error instanceof Error ? error.message : (error?.text || JSON.stringify(error));
             toast.error(`Error: ${errorMessage}. Please try again.`);
         }

@@ -3,10 +3,17 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Sparkles, Leaf, Zap } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
+import { useProducts } from '@/hooks/useSupabase';
+import { LoadingState } from '@/components/ui/LoadingState';
 
 export function HeroSection() {
   const { addToCart } = useCart();
+  const { products, loading } = useProducts();
   const sectionRef = useRef<HTMLElement>(null);
+
+  if (loading) {
+    return <LoadingState message="Preparing your wellness journey..." />;
+  }
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -111,10 +118,10 @@ export function HeroSection() {
               <div className="hero-cta flex flex-col sm:flex-row gap-3 mb-5">
                 <button
                   onClick={() => {
-                    const shopifyProduct = window.ShopifyData?.all_products?.["ashwagandha-gummies-ksm66"];
-                    const variantId = shopifyProduct?.variants?.[0]?.id;
-                    if (variantId) {
-                      addToCart(variantId, 1);
+                    const product = products.find(p => p.id === 'ashwagandha-gummies-ksm66') || products[0];
+                    if (product) {
+                      // Using legacy numeric ID for CartContext mock compatibility
+                      addToCart(product.id, 1);
                     } else {
                       // Fallback to navigating if data isn't loaded yet
                       window.location.href = "/product/ashwagandha-gummies-ksm66";

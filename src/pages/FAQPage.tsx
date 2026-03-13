@@ -1,20 +1,26 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { HelpCircle, MessageCircle } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { faqs, shippingFAQs } from '@/data/products';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Link } from 'react-router-dom';
+import { useFAQs } from '@/hooks/useSupabase';
+import { LoadingState } from '@/components/ui/LoadingState';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-
 export function FAQPage() {
   useDocumentTitle('FAQ');
+  const { faqs, loading } = useFAQs();
   const heroRef = useRef<HTMLDivElement>(null);
 
+  const productFAQs = useMemo(() => faqs.filter(f => !f.question.toLowerCase().includes('shipping')), [faqs]);
+  const shippingFAQs = useMemo(() => faqs.filter(f => f.question.toLowerCase().includes('shipping')), [faqs]);
+
   useEffect(() => {
+    if (loading || !faqs.length) return;
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.faq-animate',
@@ -35,7 +41,11 @@ export function FAQPage() {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [loading, faqs.length]);
+
+  if (loading) {
+    return <LoadingState fullPage message="Fetching answers..." />;
+  }
 
   return (
     <main className="w-full pt-24 pb-16">
@@ -53,50 +63,54 @@ export function FAQPage() {
       </section>
 
       {/* Product FAQs */}
-      <section className="section-container mb-16">
-        <h2 className="faq-animate text-2xl font-heading font-bold text-charcoal-900 mb-8">
-          Product Questions
-        </h2>
-        <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, idx) => (
-            <AccordionItem
-              key={idx}
-              value={`product-${idx}`}
-              className="faq-animate bg-white rounded-2xl mb-3 px-6 border-none shadow-soft-sm"
-            >
-              <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-5">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-charcoal-600 pb-5 leading-relaxed">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </section>
+      {productFAQs.length > 0 && (
+        <section className="section-container mb-16">
+          <h2 className="faq-animate text-2xl font-heading font-bold text-charcoal-900 mb-8">
+            Product Questions
+          </h2>
+          <Accordion type="single" collapsible className="w-full">
+            {productFAQs.map((faq, idx) => (
+              <AccordionItem
+                key={idx}
+                value={`product-${idx}`}
+                className="faq-animate bg-white rounded-2xl mb-3 px-6 border-none shadow-soft-sm"
+              >
+                <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-5">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-charcoal-600 pb-5 leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+      )}
 
       {/* Shipping FAQs */}
-      <section className="section-container mb-16">
-        <h2 className="faq-animate text-2xl font-heading font-bold text-charcoal-900 mb-8">
-          Shipping & Delivery
-        </h2>
-        <Accordion type="single" collapsible className="w-full">
-          {shippingFAQs.map((faq, idx) => (
-            <AccordionItem
-              key={idx}
-              value={`shipping-${idx}`}
-              className="faq-animate bg-white rounded-2xl mb-3 px-6 border-none shadow-soft-sm"
-            >
-              <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-5">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-charcoal-600 pb-5 leading-relaxed">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </section>
+      {shippingFAQs.length > 0 && (
+        <section className="section-container mb-16">
+          <h2 className="faq-animate text-2xl font-heading font-bold text-charcoal-900 mb-8">
+            Shipping & Delivery
+          </h2>
+          <Accordion type="single" collapsible className="w-full">
+            {shippingFAQs.map((faq, idx) => (
+              <AccordionItem
+                key={idx}
+                value={`shipping-${idx}`}
+                className="faq-animate bg-white rounded-2xl mb-3 px-6 border-none shadow-soft-sm"
+              >
+                <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-5">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-charcoal-600 pb-5 leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+      )}
 
       {/* Contact CTA */}
       <section className="section-container">

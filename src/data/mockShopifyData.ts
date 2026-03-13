@@ -15,7 +15,7 @@ const MOCK_PRODUCT = {
   options: [{ name: 'Title', values: ['Default Title'] }],
   variants: [
     {
-      id: 44000000001,
+      id: 'ashwagandha-gummies-ksm66',
       title: 'Default Title',
       price: 34900,
       compare_at_price: 49900,

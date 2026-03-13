@@ -3,22 +3,21 @@ import { MessageSquare, Star, Users, Sparkles, X, Send } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { toast } from 'sonner';
+import { useTestimonials } from '@/hooks/useSupabase';
+import { LoadingState } from '@/components/ui/LoadingState';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Review {
-  id: number;
-  name: string;
-  rating: number;
-  comment: string;
-  date: string;
-}
 
 export function TestimonialsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const { testimonials, loading } = useTestimonials();
   const [newReview, setNewReview] = useState({ name: '', rating: 5, comment: '' });
+
+  if (loading) {
+    return <LoadingState message="Loading testimonials..." />;
+  }
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -66,18 +65,9 @@ export function TestimonialsSection() {
       return;
     }
     
-    const review: Review = {
-      id: Date.now(),
-      name: newReview.name,
-      rating: newReview.rating,
-      comment: newReview.comment,
-      date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-    };
-    
-    setReviews([review, ...reviews]);
+    toast.success('Thank you for your review! It will be visible after moderation.');
     setNewReview({ name: '', rating: 5, comment: '' });
     setIsReviewModalOpen(false);
-    toast.success('Thank you for your review!');
   };
 
   return (
@@ -103,32 +93,31 @@ export function TestimonialsSection() {
             <MessageSquare className="w-5 h-5 lg:w-6 lg:h-6 text-sage-700" />
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-4">
-            {reviews.length > 0 ? 'What our customers say' : 'Be among the first'}
+            {testimonials.length > 0 ? 'What our customers say' : 'Be among the first'}
           </h2>
           <p className="text-base lg:text-lg text-charcoal-500 max-w-xl mx-auto">
-            {reviews.length > 0 
-              ? `Join ${reviews.length} happy customers who've made One4Health™ part of their daily ritual.`
+            {testimonials.length > 0 
+              ? `Join ${testimonials.length} happy customers who've made One4Health™ part of their daily ritual.`
               : "We're just getting started. Join our founding customers and help shape the One4Health™ story."}
           </p>
         </div>
 
         {/* Reviews Grid */}
-        {reviews.length > 0 && (
+        {testimonials.length > 0 && (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-10">
-            {reviews.map((review) => (
+            {testimonials.map((review) => (
               <div key={review.id} className="testimonial-card bg-white rounded-2xl p-5 lg:p-6 shadow-soft">
                 <div className="flex gap-1 mb-3">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-4 h-4 ${i < review.rating ? 'fill-sunshine-400 text-sunshine-400' : 'text-charcoal-200'}`}
+                      className="w-4 h-4 fill-sunshine-400 text-sunshine-400"
                     />
                   ))}
                 </div>
-                <p className="text-charcoal-700 text-sm mb-4">"{review.comment}"</p>
+                <p className="text-charcoal-700 text-sm mb-4">"{review.quote}"</p>
                 <div className="flex items-center justify-between">
                   <p className="font-semibold text-charcoal-900 text-sm">{review.name}</p>
-                  <p className="text-xs text-charcoal-400">{review.date}</p>
                 </div>
               </div>
             ))}
@@ -151,10 +140,10 @@ export function TestimonialsSection() {
             </div>
 
             <h3 className="text-lg lg:text-xl font-semibold text-charcoal-900 mb-2">
-              {reviews.length > 0 ? 'Share your experience' : 'Reviews Coming Soon'}
+              {testimonials.length > 0 ? 'Share your experience' : 'Reviews Coming Soon'}
             </h3>
             <p className="text-charcoal-500 mb-5 max-w-md mx-auto text-sm">
-              {reviews.length > 0 
+              {testimonials.length > 0 
                 ? 'Help others discover One4Health™ by sharing your story.'
                 : "We're excited to hear from our first customers. Be the one to share your experience with One4Health™!"}
             </p>

@@ -4,7 +4,7 @@ import { useCart } from '@/context/CartContext';
 
 interface MobileStickyBarProps {
   productName?: string;
-  variantId?: number;
+  variantId?: string;
   quantity?: number;
 }
 

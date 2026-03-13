@@ -21,10 +21,11 @@ import {
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '@/context/CartContext';
-import { faqs } from '@/data/products';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
+import { useProducts } from '@/hooks/useSupabase';
+import { LoadingState } from '@/components/ui/LoadingState';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,29 +43,15 @@ export function ProductPage() {
   const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('15days');
   const [packSize, setPackSize] = useState<PackSize>(1);
 
-  // Use dynamic Shopify product data if available
-  const shopifyProduct = useMemo(() => {
-    // 1. Try to find by handle in all_products (most reliable for client-side navigation)
-    if (id && window.ShopifyData?.all_products?.[id]) {
-      return window.ShopifyData.all_products[id];
-    }
-    // 2. Try the global product (present if on Shopify product page)
-    if (window.ShopifyData?.product && (!id || window.ShopifyData.product.handle === id)) {
-      return window.ShopifyData.product;
-    }
-    // 3. Last resort: just use the first available product in all_products if we are on a product-like path
-    if (window.ShopifyData?.all_products) {
-      const handles = Object.keys(window.ShopifyData.all_products);
-      if (handles.length > 0) {
-        // If we have a handle like "ashwagandha-gummies-ksm66" but it's not found exactly, 
-        // we might still want to show the primary product.
-        return window.ShopifyData.all_products[handles[0]];
-      }
-    }
-    return null;
-  }, [id]);
+  const { products, loading: productsLoading } = useProducts();
 
-  useDocumentTitle(shopifyProduct?.title || 'Product');
+  // Get dynamic product data from Supabase
+  const product = useMemo(() => {
+    if (!id) return products[0];
+    return products.find(p => p.id === id) || products[0];
+  }, [id, products]);
+
+  useDocumentTitle(product?.name || 'Product');
 
   // Handle initial purchase type from navigation state
 
@@ -96,15 +83,8 @@ export function ProductPage() {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format(price / 100);
+    }).format(price);
   };
-
-  const currentVariant = useMemo(() => {
-    if (!shopifyProduct) return null;
-    // For this implementation, we assume the first variant is the main one.
-    // In a more complex setup, we'd match against selected options.
-    return shopifyProduct.variants[0];
-  }, [shopifyProduct]);
 
   const getCurrentPrice = () => {
     // Starting with 499 as original base price for 1 pack of 30 gummies
@@ -127,39 +107,45 @@ export function ProductPage() {
   }, [packSize, purchaseType, subscriptionDuration]);
 
   const handleAddToCart = async () => {
-    if (!currentVariant) return;
+    if (!product) return;
 
     const attributes: Record<string, string> = {};
     if (purchaseType === 'subscribe') {
-      // Find subscription variant if it exists, otherwise use main and add properties
-      // Note: In real Shopify, we'd use selling_plan_id
       attributes['subscription'] = subscriptionDuration === '15days' ? '15 Days Supply (1 Jar)' : '1 Month Supply (2 Jars)';
       attributes['_is_subscription'] = 'true';
       attributes['_selling_plan_id'] = subscriptionDuration === '15days' ? '15_day_plan' : '30_day_plan';
 
-      await addToCart(currentVariant.id, 1, attributes);
+      await addToCart(product.id, 1, attributes);
     } else {
       attributes['purchase_type'] = 'One-time';
       attributes['pack_size'] = packSize === 1 ? '1 Jar' : '2 Jars (Bundle)';
 
-      // For bundle, we use quantity 1 but ensure attributes reflect it's a bundle
-      // If there was a specific Variant ID for the 2-pack, we would select it here
-      await addToCart(currentVariant.id, 1, attributes);
+      await addToCart(product.id, 1, attributes);
     }
   };
 
-  if (!shopifyProduct) {
+  if (productsLoading) {
+    return <LoadingState fullPage message="Fetching wellness essentials..." />;
+  }
+
+  if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-charcoal-500 animate-pulse">Loading product...</p>
+      <div className="min-h-screen flex items-center justify-center bg-sage-50/30 font-sans">
+        <div className="text-center p-8 bg-white rounded-3xl shadow-soft-sm border border-sage-100">
+          <h2 className="text-2xl font-bold text-charcoal-900 mb-2">Something went wrong</h2>
+          <p className="text-charcoal-500 mb-6">We couldn't load this product. Please try again later.</p>
+          <button onClick={() => window.location.reload()} className="btn-primary px-6 py-2">
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
 
-  const currentPrice = getCurrentPrice();
-  const originalPrice = purchaseType === 'onetime'
+  const currentPrice = getCurrentPrice() / 100;
+  const originalPrice = (purchaseType === 'onetime'
     ? (packSize === 2 ? 99800 : 49900)
-    : (subscriptionDuration === '1month' ? 99800 : 49900);
+    : (subscriptionDuration === '1month' ? 99800 : 49900)) / 100;
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
@@ -171,7 +157,7 @@ export function ProductPage() {
           <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
           <Link to="/shop" className="hover:text-sage-700">Shop</Link>
           <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
-          <span className="text-charcoal-900" aria-current="page">{shopifyProduct.title}</span>
+          <span className="text-charcoal-900" aria-current="page">{product.name}</span>
         </nav>
       </div>
 
@@ -182,8 +168,8 @@ export function ProductPage() {
           <div className="product-animate flex items-center justify-center">
             <div className="relative">
               <img
-                src={shopifyProduct.featured_image || "/images/product_transparent.webp"}
-                alt={`${shopifyProduct.title} Bottle - Premium KSM-66 Ashwagandha Stress Support Gummies (30 Day Supply)`}
+                src={product.image}
+                alt={`${product.name} Bottle - Premium ${product.id.replace(/-/g, ' ')} Stress Support Gummies`}
                 className="w-64 sm:w-72 lg:w-96 xl:w-[28rem] h-auto drop-shadow-2xl"
                 loading="eager"
               />
@@ -203,9 +189,9 @@ export function ProductPage() {
             {/* Title */}
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-charcoal-900 mb-2">
-                {shopifyProduct.title}
+                {product.name}
               </h1>
-              <p className="text-base lg:text-lg text-charcoal-600">{shopifyProduct.type}</p>
+              <p className="text-base lg:text-lg text-charcoal-600">{product.subtitle}</p>
               <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Mixed Berry</p>
             </div>
 
@@ -396,10 +382,10 @@ export function ProductPage() {
             <div className="space-y-2 lg:space-y-3">
               <button
                 onClick={handleAddToCart}
-                disabled={!currentVariant || !currentVariant.available}
+                disabled={!product.inStock}
                 className="w-full bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-[1.02] text-sm lg:text-base min-h-[52px] lg:min-h-[56px] disabled:bg-charcoal-200"
               >
-                {!currentVariant?.available ? 'Out of Stock' : (purchaseType === 'subscribe' ? 'Subscribe Now' : 'Add to Cart')}
+                {!product.inStock ? 'Out of Stock' : (purchaseType === 'subscribe' ? 'Subscribe Now' : 'Add to Cart')}
               </button>
             </div>
 
@@ -467,8 +453,7 @@ export function ProductPage() {
 
           <TabsContent value="benefits" className="mt-0">
             <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
-              {/* Fallback to static data as Shopify product body is usually HTML, but the UI expects an array */}
-              {["Supports a healthy stress response", "Promotes relaxation and calm", "Helps maintain daily balance", "Supports mood and well-being", "Enhanced absorption with BioPerine®"].map((benefit, idx) => (
+              {product.benefits.map((benefit, idx) => (
                 <div key={idx} className="bg-white rounded-xl lg:rounded-2xl p-4 lg:p-6 shadow-soft-sm flex items-start gap-3 lg:gap-4">
                   <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
                     <Heart className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" />
@@ -491,11 +476,7 @@ export function ProductPage() {
 
           <TabsContent value="ingredients" className="mt-0">
             <div className="space-y-4 lg:space-y-6">
-              {[
-                { name: 'Ashwagandha (KSM-66®)', amount: '150 mg', dailyAmount: '300 mg', description: 'Full-spectrum root extract supports stress response and promotes calm' },
-                { name: 'Vitamin D2', amount: '200 IU', dailyAmount: '400 IU', description: 'Supports mood balance and healthy immune function' },
-                { name: 'BioPerine® (Black Pepper Extract)', amount: '5 mg', dailyAmount: '10 mg', description: 'Enhances nutrient absorption by up to 30%' }
-              ].map((ingredient, idx) => (
+              {product.ingredients.map((ingredient, idx) => (
                 <div key={idx} className="bg-white rounded-xl lg:rounded-2xl p-4 lg:p-6 shadow-soft-sm">
                   <div className="flex items-start justify-between mb-3">
                     <div>
@@ -505,8 +486,8 @@ export function ProductPage() {
                       </p>
                     </div>
                     <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
-                      {idx === 0 ? <Leaf className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
-                        idx === 1 ? <Sun className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
+                      {ingredient.name.includes('Ashwagandha') ? <Leaf className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
+                        ingredient.name.includes('Vitamin') ? <Sun className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
                           <Beaker className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" />}
                     </div>
                   </div>
@@ -559,23 +540,36 @@ export function ProductPage() {
 
           <TabsContent value="faq" className="mt-0">
             <Accordion type="single" collapsible className="w-full">
-              {faqs.map((faq, idx) => (
-                <AccordionItem key={idx} value={`item-${idx}`} className="bg-white rounded-xl lg:rounded-2xl mb-2 lg:mb-3 px-4 lg:px-6 border-none shadow-soft-sm">
+              {product.howToUse.length > 0 && product.whoShouldAvoid.length > 0 && (
+                <AccordionItem value="additional-info" className="bg-white rounded-xl lg:rounded-2xl mb-2 lg:mb-3 px-4 lg:px-6 border-none shadow-soft-sm">
                   <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-3 lg:py-4 text-sm lg:text-base">
-                    {faq.question}
+                    Safety & Usage Info
                   </AccordionTrigger>
                   <AccordionContent className="text-charcoal-600 pb-3 lg:pb-4 text-sm">
-                    {faq.answer}
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-semibold text-charcoal-900 mb-2">Instructions:</h4>
+                        <ul className="list-disc pl-5 space-y-1">
+                          {product.howToUse.map((step, i) => <li key={i}>{step}</li>)}
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-charcoal-900 mb-2">Who should avoid:</h4>
+                        <ul className="list-disc pl-5 space-y-1">
+                          {product.whoShouldAvoid.map((point, i) => <li key={i}>{point}</li>)}
+                        </ul>
+                      </div>
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
-              ))}
+              )}
             </Accordion>
           </TabsContent>
         </Tabs>
       </section>
 
       {/* Mobile Sticky Bottom Bar with WhatsApp */}
-      <MobileStickyBar productName={shopifyProduct.title} variantId={currentVariant?.id} quantity={quantity} />
+      <MobileStickyBar productName={product.name} variantId={product.id} quantity={quantity} />
     </main>
   );
 }
