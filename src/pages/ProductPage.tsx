@@ -110,18 +110,25 @@ export function ProductPage() {
     console.log('[Product] handleAddToCart called with:', { productId: product.id, purchaseType });
     if (!product) return;
 
+    const variantId = product.shopifyVariantId || product.id;
+    let sellingPlanId: string | undefined = undefined;
     const attributes: Record<string, string> = {};
+    
     if (purchaseType === 'subscribe') {
       attributes['subscription'] = subscriptionDuration === '15days' ? '15 Days Supply (1 Jar)' : '1 Month Supply (2 Jars)';
       attributes['_is_subscription'] = 'true';
+      // Pass the real selling plan ID to Shopify
+      sellingPlanId = subscriptionDuration === '15days' ? product.sellingPlanId15 : product.sellingPlanId30;
+      
+      // Kept for backward compatibility/attributes
       attributes['_selling_plan_id'] = subscriptionDuration === '15days' ? '15_day_plan' : '30_day_plan';
 
-      await addToCart(product.id, 1, attributes);
+      await addToCart(variantId, 1, attributes, sellingPlanId);
     } else {
       attributes['purchase_type'] = 'One-time';
       attributes['pack_size'] = packSize === 1 ? '1 Jar' : '2 Jars (Bundle)';
 
-      await addToCart(product.id, 1, attributes);
+      await addToCart(variantId, 1, attributes);
     }
   };
 
@@ -568,7 +575,7 @@ export function ProductPage() {
       </section>
 
       {/* Mobile Sticky Bottom Bar with WhatsApp */}
-      <MobileStickyBar productName={product.name} variantId={product.id} quantity={quantity} />
+      <MobileStickyBar productName={product.name} variantId={product.shopifyVariantId || product.id} quantity={quantity} />
     </main>
   );
 }

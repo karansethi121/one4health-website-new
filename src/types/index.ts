@@ -18,6 +18,9 @@ export interface Product {
   howToUse: string[];
   whoItsFor: string[];
   whoShouldAvoid: string[];
+  shopifyVariantId?: string;
+  sellingPlanId15?: string;
+  sellingPlanId30?: string;
 }
 
 export interface Ingredient {

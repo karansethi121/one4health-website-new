@@ -11,19 +11,14 @@ export function HeroSection() {
   const { products, loading } = useProducts();
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Defensive check for missing product data
-  const product = products && products.length > 0 ? products[0] : null;
-
   const handleAddToCart = () => {
-    if (!product) {
-      console.warn('[Hero] No product available to add to cart');
-      // Fallback to navigating if data isn't loaded yet or product is null
+    const product = products.find(p => p.id === 'ashwagandha-gummies-ksm66') || products[0];
+    if (product) {
+      console.log('[Hero] Clicking Buy Now for:', product.id);
+      addToCart(product.shopifyVariantId || product.id, 1);
+    } else {
       window.location.href = "/product/ashwagandha-gummies-ksm66";
-      return;
     }
-    
-    console.log('[Hero] Adding to cart:', product.id);
-    addToCart(product.id, 1);
   };
 
   useEffect(() => {

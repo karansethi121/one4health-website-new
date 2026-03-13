@@ -223,7 +223,7 @@ export function ShopPage() {
                     <button
                       onClick={() => {
                         console.log('[Shop] Clicking Add to Cart for:', ashwagandhaProduct.id);
-                        addToCart(ashwagandhaProduct.id);
+                        addToCart(ashwagandhaProduct.shopifyVariantId || ashwagandhaProduct.id);
                       }}
                       disabled={cartLoading}
                       className="btn-primary py-4 text-xs font-bold uppercase tracking-[0.15em] flex items-center justify-center group/btn"

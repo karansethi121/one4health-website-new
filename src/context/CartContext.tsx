@@ -7,7 +7,7 @@ interface CartContextType {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addToCart: (variantId: string, quantity?: number, attributes?: Record<string, string>) => Promise<void>;
+  addToCart: (variantId: string, quantity?: number, attributes?: Record<string, string>, sellingPlanId?: string) => Promise<void>;
   removeFromCart: (key: string) => Promise<void>;
   updateQuantity: (key: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -92,8 +92,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const closeCart = useCallback(() => setIsOpen(false), []);
   const toggleCart = useCallback(() => setIsOpen(prev => !prev), []);
 
-  const addToCart = useCallback(async (variantId: string, quantity = 1, attributes?: Record<string, string>) => {
-    console.log('[Cart] Adding to cart:', { variantId, quantity, attributes });
+  const addToCart = useCallback(async (variantId: string, quantity = 1, attributes?: Record<string, string>, sellingPlanId?: string) => {
+    console.log('[Cart] Adding to cart:', { variantId, quantity, attributes, sellingPlanId });
     setIsOpen(true);
     setLoading(true);
 
@@ -142,12 +142,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     // Live Shopify mode
     try {
+      const payload: any = {
+        items: [{ id: variantId, quantity, properties: attributes }],
+      };
+      if (sellingPlanId) {
+        payload.items[0].selling_plan = sellingPlanId;
+      }
+      
       const response = await fetch('/cart/add.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: [{ id: variantId, quantity, properties: attributes }],
-        }),
+        body: JSON.stringify(payload),
       });
       if (!response.ok) throw new Error('Failed to add to cart');
       await refreshCart();

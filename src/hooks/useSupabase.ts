@@ -71,6 +71,9 @@ export function useProducts() {
               .sort((a: any, b: any) => (a.position || 0) - (b.position || 0))
               .map((t: any) => t.description)
           : [],
+        shopifyVariantId: p.shopify_variant_id,
+        sellingPlanId15: p.selling_plan_id_15,
+        sellingPlanId30: p.selling_plan_id_30,
       }));
 
       setProducts(mappedProducts);
