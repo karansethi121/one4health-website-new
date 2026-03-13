@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { toast } from 'sonner';
 
 interface CartContextType {
   items: any[];
@@ -92,6 +93,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const toggleCart = useCallback(() => setIsOpen(prev => !prev), []);
 
   const addToCart = useCallback(async (variantId: string, quantity = 1, attributes?: Record<string, string>) => {
+    console.log('[Cart] Adding to cart:', { variantId, quantity, attributes });
     setIsOpen(true);
     setLoading(true);
 
@@ -134,6 +136,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setTotalItems(prev => prev + quantity);
       setTotalPrice(prev => prev + price * quantity);
       setLoading(false);
+      toast.success('Added to cart');
       return;
     }
 
@@ -148,8 +151,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
       if (!response.ok) throw new Error('Failed to add to cart');
       await refreshCart();
+      toast.success('Added to cart');
     } catch (error) {
       console.error('Error adding to cart:', error);
+      toast.error('Failed to add to cart. Please try again.');
       await refreshCart();
     } finally {
       setLoading(false);

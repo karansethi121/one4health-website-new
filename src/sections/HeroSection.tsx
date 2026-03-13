@@ -11,11 +11,8 @@ export function HeroSection() {
   const { products, loading } = useProducts();
   const sectionRef = useRef<HTMLElement>(null);
 
-  if (loading) {
-    return <LoadingState message="Preparing your wellness journey..." />;
-  }
-
   useEffect(() => {
+    if (loading) return;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
@@ -58,7 +55,11 @@ export function HeroSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [loading]);
+
+  if (loading) {
+    return <LoadingState message="Preparing your wellness journey..." />;
+  }
 
   return (
     <section
@@ -120,7 +121,7 @@ export function HeroSection() {
                   onClick={() => {
                     const product = products.find(p => p.id === 'ashwagandha-gummies-ksm66') || products[0];
                     if (product) {
-                      // Using legacy numeric ID for CartContext mock compatibility
+                      console.log('[Hero] Clicking Buy Now for:', product.id);
                       addToCart(product.id, 1);
                     } else {
                       // Fallback to navigating if data isn't loaded yet

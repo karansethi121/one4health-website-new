@@ -221,7 +221,10 @@ export function ShopPage() {
 
                   <div className="grid grid-cols-2 gap-3 mt-8">
                     <button
-                      onClick={() => addToCart(ashwagandhaProduct.id)}
+                      onClick={() => {
+                        console.log('[Shop] Clicking Add to Cart for:', ashwagandhaProduct.id);
+                        addToCart(ashwagandhaProduct.id);
+                      }}
                       disabled={cartLoading}
                       className="btn-primary py-4 text-xs font-bold uppercase tracking-[0.15em] flex items-center justify-center group/btn"
                     >

@@ -107,6 +107,7 @@ export function ProductPage() {
   }, [packSize, purchaseType, subscriptionDuration]);
 
   const handleAddToCart = async () => {
+    console.log('[Product] handleAddToCart called with:', { productId: product.id, purchaseType });
     if (!product) return;
 
     const attributes: Record<string, string> = {};

@@ -15,11 +15,8 @@ export function TestimonialsSection() {
   const { testimonials, loading } = useTestimonials();
   const [newReview, setNewReview] = useState({ name: '', rating: 5, comment: '' });
 
-  if (loading) {
-    return <LoadingState message="Loading testimonials..." />;
-  }
-
   useEffect(() => {
+    if (loading) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.testimonials-title',
@@ -56,7 +53,11 @@ export function TestimonialsSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [loading]);
+
+  if (loading) {
+    return <LoadingState message="Loading testimonials..." />;
+  }
 
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault();

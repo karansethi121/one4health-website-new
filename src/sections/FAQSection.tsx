@@ -12,14 +12,8 @@ export function FAQSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { faqs, loading } = useFAQs();
   
-  if (loading) {
-    return <LoadingState message="Loading FAQs..." />;
-  }
-
-  // Get top 6 FAQs for homepage
-  const displayFaqs = faqs.slice(0, 6);
-
   useEffect(() => {
+    if (loading) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.faq-title',
@@ -56,7 +50,14 @@ export function FAQSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [loading]);
+
+  if (loading) {
+    return <LoadingState message="Loading FAQs..." />;
+  }
+
+  // Get top 6 FAQs for homepage
+  const displayFaqs = faqs.slice(0, 6);
 
   return (
     <section
