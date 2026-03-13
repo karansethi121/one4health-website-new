@@ -129,15 +129,13 @@ export function ProductPage() {
     return <LoadingState fullPage message="Fetching wellness essentials..." />;
   }
 
-  if (!product) {
+  if (!product && !productsLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-sage-50/30 font-sans">
-        <div className="text-center p-8 bg-white rounded-3xl shadow-soft-sm border border-sage-100">
-          <h2 className="text-2xl font-bold text-charcoal-900 mb-2">Something went wrong</h2>
-          <p className="text-charcoal-500 mb-6">We couldn't load this product. Please try again later.</p>
-          <button onClick={() => window.location.reload()} className="btn-primary px-6 py-2">
-            Retry
-          </button>
+      <div className="min-h-screen flex items-center justify-center bg-sage-50 pt-20">
+        <div className="text-center p-8 bg-white rounded-3xl shadow-soft border border-sage-100 max-w-md">
+          <h2 className="text-2xl font-bold text-charcoal-900 mb-4">Product Not Found</h2>
+          <p className="text-charcoal-500 mb-8">We couldn't find the product you're looking for. It might have been moved or is currently unavailable.</p>
+          <a href="/shop" className="btn-primary inline-flex py-4 px-8">Back to Shop</a>
         </div>
       </div>
     );

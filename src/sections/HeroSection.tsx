@@ -11,9 +11,25 @@ export function HeroSection() {
   const { products, loading } = useProducts();
   const sectionRef = useRef<HTMLElement>(null);
 
+  // Defensive check for missing product data
+  const product = products && products.length > 0 ? products[0] : null;
+
+  const handleAddToCart = () => {
+    if (!product) {
+      console.warn('[Hero] No product available to add to cart');
+      // Fallback to navigating if data isn't loaded yet or product is null
+      window.location.href = "/product/ashwagandha-gummies-ksm66";
+      return;
+    }
+    
+    console.log('[Hero] Adding to cart:', product.id);
+    addToCart(product.id, 1);
+  };
+
   useEffect(() => {
     if (loading) return;
     const ctx = gsap.context(() => {
+      if (!sectionRef.current) return;
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       tl.fromTo(
@@ -118,16 +134,7 @@ export function HeroSection() {
               {/* Primary CTA */}
               <div className="hero-cta flex flex-col sm:flex-row gap-3 mb-5">
                 <button
-                  onClick={() => {
-                    const product = products.find(p => p.id === 'ashwagandha-gummies-ksm66') || products[0];
-                    if (product) {
-                      console.log('[Hero] Clicking Buy Now for:', product.id);
-                      addToCart(product.id, 1);
-                    } else {
-                      // Fallback to navigating if data isn't loaded yet
-                      window.location.href = "/product/ashwagandha-gummies-ksm66";
-                    }
-                  }}
+                  onClick={handleAddToCart}
                   className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-6 lg:px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-base min-h-[56px]"
                 >
                   Buy Now | Save 30%

@@ -23,47 +23,52 @@ export function useProducts() {
 
       if (productsError) throw productsError;
 
+      if (!productsData) {
+        setProducts([]);
+        return;
+      }
+
       const mappedProducts: Product[] = productsData.map((p: any) => ({
-        id: p.handle,
-        name: p.name,
-        subtitle: p.subtitle,
-        description: p.description,
-        price: p.price / 100,
+        id: p.handle || 'unknown',
+        name: p.name || 'Unknown Product',
+        subtitle: p.subtitle || '',
+        description: p.description || '',
+        price: (p.price || 0) / 100,
         originalPrice: p.compare_at_price ? p.compare_at_price / 100 : undefined,
-        image: p.featured_image,
-        images: p.product_images
-          ? p.product_images.sort((a: any, b: any) => a.position - b.position).map((img: any) => img.image_url)
-          : [p.featured_image],
+        image: p.featured_image || '',
+        images: p.product_images && p.product_images.length > 0
+          ? p.product_images.sort((a: any, b: any) => (a.position || 0) - (b.position || 0)).map((img: any) => img.image_url)
+          : [p.featured_image || ''],
         badge: p.badge,
-        inStock: p.in_stock,
-        quantity: p.quantity,
-        packageSize: p.package_size,
-        servingSize: p.serving_size,
-        supplyDuration: p.supply_duration,
+        inStock: p.in_stock ?? true,
+        quantity: p.quantity || 0,
+        packageSize: p.package_size || '',
+        servingSize: p.serving_size || '',
+        supplyDuration: p.supply_duration || '',
         benefits: p.benefits
-          ? p.benefits.sort((a: any, b: any) => a.position - b.position).map((b: any) => b.benefit)
+          ? p.benefits.sort((a: any, b: any) => (a.position || 0) - (b.position || 0)).map((b: any) => b.benefit)
           : [],
         ingredients: p.ingredients
-          ? p.ingredients.sort((a: any, b: any) => a.position - b.position).map((i: any) => ({
-              name: i.name,
-              amount: i.amount,
-              dailyAmount: i.daily_amount,
-              description: i.description,
+          ? p.ingredients.sort((a: any, b: any) => (a.position || 0) - (b.position || 0)).map((i: any) => ({
+              name: i.name || '',
+              amount: i.amount || '',
+              dailyAmount: i.daily_amount || '',
+              description: i.description || '',
             }))
           : [],
         howToUse: p.usage_instructions
-          ? p.usage_instructions.sort((a: any, b: any) => a.position - b.position).map((u: any) => u.instruction)
+          ? p.usage_instructions.sort((a: any, b: any) => (a.position || 0) - (b.position || 0)).map((u: any) => u.instruction)
           : [],
         whoItsFor: p.target_audience
           ? p.target_audience
               .filter((t: any) => !t.is_avoid)
-              .sort((a: any, b: any) => a.position - b.position)
+              .sort((a: any, b: any) => (a.position || 0) - (b.position || 0))
               .map((t: any) => t.description)
           : [],
         whoShouldAvoid: p.target_audience
           ? p.target_audience
               .filter((t: any) => t.is_avoid)
-              .sort((a: any, b: any) => a.position - b.position)
+              .sort((a: any, b: any) => (a.position || 0) - (b.position || 0))
               .map((t: any) => t.description)
           : [],
       }));
@@ -72,6 +77,7 @@ export function useProducts() {
     } catch (err: any) {
       console.error('Error fetching products:', err);
       setError(err.message);
+      setProducts([]); // Fallback to empty array
     } finally {
       setLoading(false);
     }
@@ -103,15 +109,22 @@ export function useTestimonials() {
 
       if (error) throw error;
 
+      if (!data) {
+        setTestimonials([]);
+        return;
+      }
+
       setTestimonials(data.map((t: any) => ({
         id: t.id,
-        name: t.name,
-        role: t.role,
-        quote: t.quote,
-        image: t.image_url,
+        name: t.name || 'Anonymous',
+        role: t.role || 'Customer',
+        quote: t.quote || '',
+        image: t.image_url || '',
       })));
     } catch (err: any) {
+      console.error('Error fetching testimonials:', err);
       setError(err.message);
+      setTestimonials([]);
     } finally {
       setLoading(false);
     }
@@ -143,12 +156,19 @@ export function useFAQs() {
 
       if (error) throw error;
 
+      if (!data) {
+        setFaqs([]);
+        return;
+      }
+
       setFaqs(data.map((f: any) => ({
-        question: f.question,
-        answer: f.answer,
+        question: f.question || '',
+        answer: f.answer || '',
       })));
     } catch (err: any) {
+      console.error('Error fetching FAQs:', err);
       setError(err.message);
+      setFaqs([]);
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ChevronDown } from 'lucide-react';
 import { useFAQs } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
 
@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 export function FAQSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { faqs, loading } = useFAQs();
+  const [openIndex, setOpenIndex] = useState<number>(-1);
   
   useEffect(() => {
     if (loading) return;
@@ -77,24 +78,40 @@ export function FAQSection() {
           </p>
         </div>
 
-        {/* FAQ Accordion */}
-        <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="w-full">
-            {displayFaqs.map((faq, idx) => (
-              <AccordionItem
-                key={idx}
-                value={`item-${idx}`}
-                className="faq-item bg-white rounded-2xl mb-3 px-6 border-none shadow-soft-sm"
+        {/* FAQ List */}
+        <div className="max-w-2xl mx-auto space-y-4">
+          {(!faqs || faqs.length === 0) ? (
+            <div className="text-center py-10 bg-white/50 rounded-3xl border border-sage-100">
+               <p className="text-charcoal-400 italic">No FAQs available at the moment.</p>
+            </div>
+          ) : (
+            displayFaqs.map((faq, index) => (
+              <div
+                key={faq.question}
+                className="faq-item bg-white/80 backdrop-blur-sm border border-sage-100 rounded-3xl overflow-hidden shadow-soft-sm hover:shadow-soft transition-all duration-500"
               >
-                <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-4">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-charcoal-600 pb-4 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
+                  className="w-full px-6 py-6 flex items-center justify-between text-left group"
+                >
+                  <span className={`text-base lg:text-lg font-bold transition-colors duration-300 ${openIndex === index ? 'text-sage-700' : 'text-charcoal-800'}`}>
+                    {faq.question}
+                  </span>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${openIndex === index ? 'bg-sage-700 text-white rotate-180' : 'bg-sage-50 text-sage-600 group-hover:bg-sage-100'}`}>
+                    <ChevronDown className="w-4 h-4" />
+                  </div>
+                </button>
+                <div
+                  className={`transition-all duration-500 ease-in-out ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                >
+                  <div className="px-6 pb-6 text-charcoal-600 leading-relaxed text-sm lg:text-base border-t border-sage-50 pt-4">
+                    {faq.answer}
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </section>
