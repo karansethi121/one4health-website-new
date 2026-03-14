@@ -65,7 +65,7 @@ export function BenefitsSection() {
         <div className="benefits-title text-center max-w-2xl mx-auto mb-16">
           <Sparkles className="w-10 h-10 text-sage-600 mx-auto mb-4" />
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-4">
-            Stress relief you can{' '}
+            Ashwagandha benefits you can{' '}
             <span className="relative inline-block">
               taste
               <svg className="absolute -bottom-2 left-0 w-full text-sage-500" viewBox="0 0 100 12" fill="none">

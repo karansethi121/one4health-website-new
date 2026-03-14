@@ -28,8 +28,6 @@ import { LoadingState } from '@/components/ui/LoadingState';
 
 gsap.registerPlugin(ScrollTrigger);
 
-type PurchaseType = 'onetime' | 'subscribe';
-type SubscriptionDuration = '15days' | '1month';
 type PackSize = 1 | 2;
 
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
@@ -38,8 +36,6 @@ export function ProductPage() {
   const { id } = useParams<{ id: string }>();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [purchaseType, setPurchaseType] = useState<PurchaseType>('onetime');
-  const [subscriptionDuration, setSubscriptionDuration] = useState<SubscriptionDuration>('15days');
   const [packSize, setPackSize] = useState<PackSize>(1);
 
   const { products, loading: productsLoading } = useProducts();
@@ -87,48 +83,36 @@ export function ProductPage() {
 
   const getCurrentPrice = () => {
     // Starting with 499 as original base price for 1 pack of 30 gummies
-    if (purchaseType === 'subscribe') {
-      if (subscriptionDuration === '15days') {
-        return 29900; // Special subscription price for 15 days
-      }
-      return 54900; // Special subscription price for 1 month (2 packs)
-    }
-
     // One-time purchase
     if (packSize === 2) {
       return 59900; // Bundle price for 2 packs (60 gummies)
     }
     return 34900; // Standard price for 1 pack (30 gummies) after discount
   };
-  // Sync quantity for cart submission - always 1 for bundles/subscriptions as requested
+  // Sync quantity for cart submission - always 1 for bundles as requested
   useEffect(() => {
     setQuantity(1);
-  }, [packSize, purchaseType, subscriptionDuration]);
+  }, [packSize]);
 
   const handleAddToCart = async () => {
-    console.log('[Product] handleAddToCart called with:', { productId: product.id, purchaseType });
+    console.log('[Product] handleAddToCart called with:', { productId: product.id, packSize });
     if (!product) return;
 
-    const variantId = product.shopifyVariantId || product.id;
-    let sellingPlanId: string | undefined = undefined;
-    const attributes: Record<string, string> = {};
+    // Use variant ID logic: if bundle (2 jars), use bundle variant if it exists
+    const isBundle = packSize === 2;
+    const variantId = isBundle 
+      ? (product.id === 'ashwagandha-gummies-ksm66' ? 'ashwagandha-gummies-bundle-2' : product.shopifyVariantId || product.id)
+      : (product.shopifyVariantId || product.id);
     
-    if (purchaseType === 'subscribe') {
-      attributes['subscription'] = subscriptionDuration === '15days' ? '15 Days Supply (1 Jar)' : '1 Month Supply (2 Jars)';
-      attributes['_is_subscription'] = 'true';
-      // Pass the real selling plan ID to Shopify
-      sellingPlanId = subscriptionDuration === '15days' ? product.sellingPlanId15 : product.sellingPlanId30;
-      
-      // Kept for backward compatibility/attributes
-      attributes['_selling_plan_id'] = subscriptionDuration === '15days' ? '15_day_plan' : '30_day_plan';
+    const attributes: Record<string, string> = {};
+    attributes['purchase_type'] = 'One-time';
+    attributes['pack_size'] = isBundle ? '2 Jars (Bundle)' : '1 Jar';
 
-      await addToCart(variantId, 1, attributes, sellingPlanId);
-    } else {
-      attributes['purchase_type'] = 'One-time';
-      attributes['pack_size'] = packSize === 1 ? '1 Jar' : '2 Jars (Bundle)';
+    // Explicitly pass the current price to prevent resets
+    const pricePaise = getCurrentPrice();
+    const cartQuantity = quantity; // Always use the quantity selector state
 
-      await addToCart(variantId, 1, attributes);
-    }
+    await addToCart(variantId, cartQuantity, attributes, undefined, pricePaise, product.name);
   };
 
   if (productsLoading) {
@@ -148,9 +132,7 @@ export function ProductPage() {
   }
 
   const currentPrice = getCurrentPrice();
-  const originalPrice = purchaseType === 'onetime'
-    ? (packSize === 2 ? 99800 : 49900)
-    : (subscriptionDuration === '1month' ? 99800 : 49900);
+  const originalPrice = packSize === 2 ? 99800 : 49900;
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
@@ -200,126 +182,51 @@ export function ProductPage() {
               <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Mixed Berry</p>
             </div>
 
-            {/* Premium Purchase Type Selection */}
+            {/* Premium Pack Size Selection */}
             <div className="flex flex-col gap-3 lg:gap-4 mt-2">
-              {/* Subscribe & Save Card */}
-              <button
-                onClick={() => setPurchaseType('subscribe')}
-                className={`relative p-4 lg:p-5 rounded-2xl border-2 transition-all flex items-start gap-3 lg:gap-4 text-left overflow-hidden group ${
-                  purchaseType === 'subscribe'
-                    ? 'border-sage-700 bg-sage-50/80 shadow-soft'
-                    : 'border-charcoal-100 hover:border-sage-300 bg-white hover:bg-sage-50/30'
-                }`}
-              >
-                {/* Decorative background element */}
-                {purchaseType === 'subscribe' && (
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-sage-600/5 rounded-bl-full -z-10 transition-all duration-500" />
-                )}
-                
-                <div className={`mt-0.5 lg:mt-1 w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                  purchaseType === 'subscribe' ? 'border-sage-700' : 'border-charcoal-300 group-hover:border-sage-400'
-                }`}>
-                  {purchaseType === 'subscribe' && <div className="w-2 h-2 lg:w-2.5 lg:h-2.5 bg-sage-700 rounded-full" />}
-                </div>
-                
-                <div className="flex-1 w-full">
-                  <div className="flex items-center justify-between mb-0.5">
-                    <span className="font-bold text-charcoal-900 text-base lg:text-lg">Subscribe & Save 40%</span>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-sage-200/50 text-sage-800 rounded text-[10px] font-bold uppercase tracking-widest shrink-0">
-                      <Sparkles className="w-3 h-3" /> Best Value
-                    </span>
+               <div className="grid grid-cols-2 gap-2 lg:gap-3 animate-fade-in w-full pb-1">
+                  <button
+                  onClick={() => setPackSize(1)}
+                  className={`flex flex-col justify-center p-4 lg:p-5 rounded-2xl border-2 transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
+                    packSize === 1
+                      ? 'border-sage-700 bg-sage-50/80 shadow-soft ring-1 ring-sage-700/20'
+                      : 'border-charcoal-100 hover:border-sage-300 hover:bg-sage-50/30'
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full mb-1">
+                    <span className="font-bold text-charcoal-900 text-base lg:text-lg">1 Jar</span>
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 1 ? 'border-sage-700' : 'border-charcoal-300'}`}>
+                      {packSize === 1 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
+                    </div>
                   </div>
-                  <p className="text-xs lg:text-sm text-charcoal-500 font-medium">Never run out. Pause or cancel anytime.</p>
-                  
-                  {/* Subscription Durations */}
-                  {purchaseType === 'subscribe' && (
-                    <div className="mt-4 grid grid-cols-2 gap-2 lg:gap-3 animate-fade-in w-full" onClick={(e) => e.stopPropagation()}>
-                      <button
-                        onClick={() => setSubscriptionDuration('15days')}
-                        className={`flex flex-col justify-center p-3 rounded-xl border transition-all bg-white group/subbtn relative translate-y-0 hover:-translate-y-0.5 ${
-                          subscriptionDuration === '15days'
-                            ? 'border-sage-700 shadow-sm ring-1 ring-sage-700/20'
-                            : 'border-charcoal-200 hover:shadow-sm'
-                        }`}
-                      >
-                        <span className="font-bold text-charcoal-900 text-sm lg:text-base">15 Days</span>
-                        <span className={`text-[11px] lg:text-xs mb-1 ${subscriptionDuration === '15days' ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>1 Jar / Delivery</span>
-                        <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(29900)}</span>
-                      </button>
-                      <button
-                        onClick={() => setSubscriptionDuration('1month')}
-                        className={`flex flex-col justify-center p-3 rounded-xl border transition-all bg-white group/subbtn relative translate-y-0 hover:-translate-y-0.5 ${
-                          subscriptionDuration === '1month'
-                            ? 'border-sage-700 shadow-sm ring-1 ring-sage-700/20'
-                            : 'border-charcoal-200 hover:shadow-sm'
-                        }`}
-                      >
-                        <span className="font-bold text-charcoal-900 text-sm lg:text-base">30 Days</span>
-                        <span className={`text-[11px] lg:text-xs mb-1 ${subscriptionDuration === '1month' ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>2 Jars / Delivery</span>
-                        <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(54900)}</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </button>
+                  <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>30-day supply</span>
+                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(34900)}</span>
+                </button>
 
-              {/* One-Time Purchase Card */}
-              <button
-                onClick={() => setPurchaseType('onetime')}
-                className={`relative p-4 lg:p-5 rounded-2xl border-2 transition-all flex items-start gap-3 lg:gap-4 text-left group ${
-                  purchaseType === 'onetime'
-                    ? 'border-sage-700 bg-sage-50/80 shadow-soft'
-                    : 'border-charcoal-100 hover:border-sage-300 bg-white hover:bg-sage-50/30'
-                }`}
-              >
-                <div className={`mt-0.5 lg:mt-1 w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                  purchaseType === 'onetime' ? 'border-sage-700' : 'border-charcoal-300 group-hover:border-sage-400'
-                }`}>
-                  {purchaseType === 'onetime' && <div className="w-2 h-2 lg:w-2.5 lg:h-2.5 bg-sage-700 rounded-full" />}
-                </div>
-                
-                <div className="flex-1 w-full">
-                  <span className="font-bold text-charcoal-900 text-base lg:text-lg block mb-0.5">One-time Purchase</span>
-                  <p className="text-xs lg:text-sm text-charcoal-500 font-medium">Standard pricing without subscription.</p>
-                  
-                  {/* One-Time Pack Sizes */}
-                  {purchaseType === 'onetime' && (
-                    <div className="mt-4 grid grid-cols-2 gap-2 lg:gap-3 animate-fade-in w-full pb-1" onClick={(e) => e.stopPropagation()}>
-                       <button
-                        onClick={() => setPackSize(1)}
-                        className={`flex flex-col justify-center p-3 lg:p-4 rounded-xl border transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
-                          packSize === 1
-                            ? 'border-sage-700 ring-1 ring-sage-700/20 shadow-md'
-                            : 'border-charcoal-200 hover:shadow-sm'
-                        }`}
-                      >
-                        <span className="font-bold text-charcoal-900 text-base lg:text-lg">1 Jar</span>
-                        <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>30-day supply</span>
-                        <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(34900)}</span>
-                      </button>
-
-                      <button
-                         onClick={() => setPackSize(2)}
-                         className={`flex flex-col justify-center p-3 lg:p-4 rounded-xl border transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
-                           packSize === 2
-                             ? 'border-sage-700 ring-1 ring-sage-700/20 shadow-md'
-                             : 'border-charcoal-200 hover:shadow-sm'
-                         }`}
-                       >
-                         <span className="font-bold text-charcoal-900 text-base lg:text-lg">2 Jars</span>
-                         <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 2 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>60-day supply</span>
-                         <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}</span>
-                         
-                         <div className={`mt-3 w-full text-[9px] sm:text-[10px] uppercase font-bold py-1.5 rounded text-center tracking-widest transition-colors ${
-                           packSize === 2 ? 'bg-charcoal-900 text-white' : 'bg-charcoal-100 text-charcoal-600'
-                         }`}>
-                           Most Popular
-                         </div>
-                      </button>
+                <button
+                    onClick={() => setPackSize(2)}
+                    className={`flex flex-col justify-center p-4 lg:p-5 rounded-2xl border-2 transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
+                      packSize === 2
+                        ? 'border-sage-700 bg-sage-50/80 shadow-soft ring-1 ring-sage-700/20'
+                        : 'border-charcoal-100 hover:border-sage-300 hover:bg-sage-50/30'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between w-full mb-1">
+                      <span className="font-bold text-charcoal-900 text-base lg:text-lg">2 Jars</span>
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 2 ? 'border-sage-700' : 'border-charcoal-300'}`}>
+                        {packSize === 2 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
+                      </div>
                     </div>
-                  )}
-                </div>
-              </button>
+                    <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 2 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>60-day supply</span>
+                    <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}</span>
+                    
+                    <div className={`mt-3 w-full text-[9px] sm:text-[10px] uppercase font-bold py-1.5 rounded text-center tracking-widest transition-colors ${
+                      packSize === 2 ? 'bg-charcoal-900 text-white' : 'bg-charcoal-100 text-charcoal-600'
+                    }`}>
+                      Most Popular
+                    </div>
+                </button>
+              </div>
             </div>
 
             {/* Price */}
@@ -343,7 +250,7 @@ export function ProductPage() {
             <div className="flex items-center gap-3 lg:gap-4 text-xs lg:text-sm text-charcoal-600 flex-wrap">
               <span className="flex items-center gap-1.5 px-2.5 py-1 bg-sage-50 rounded-lg text-sage-700 font-medium">
                 <Clock className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                {(purchaseType === 'onetime' && packSize === 2) || (purchaseType === 'subscribe' && subscriptionDuration === '1month') ? '30-Day Supply' : '15-Day Supply'}
+                {packSize === 2 ? '30-Day Supply (2 Jars)' : '15-Day Supply (1 Jar)'}
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700 font-bold" />
@@ -378,7 +285,7 @@ export function ProductPage() {
                 disabled={!product.inStock}
                 className="w-full bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-[1.02] text-sm lg:text-base min-h-[52px] lg:min-h-[56px] disabled:bg-charcoal-200"
               >
-                {!product.inStock ? 'Out of Stock' : (purchaseType === 'subscribe' ? 'Subscribe Now' : 'Add to Cart')}
+                {!product.inStock ? 'Out of Stock' : 'Add to Cart'}
               </button>
             </div>
 
@@ -562,7 +469,13 @@ export function ProductPage() {
       </section>
 
       {/* Mobile Sticky Bottom Bar with WhatsApp */}
-      <MobileStickyBar productName={product.name} variantId={product.shopifyVariantId || product.id} quantity={quantity} />
+      <MobileStickyBar 
+        productName={product.name} 
+        variantId={packSize === 2 ? (product.id === 'ashwagandha-gummies-ksm66' ? 'ashwagandha-gummies-bundle-2' : product.shopifyVariantId || product.id) : (product.shopifyVariantId || product.id)} 
+        quantity={quantity}
+        price={getCurrentPrice()}
+        title={product.name}
+      />
     </main>
   );
 }

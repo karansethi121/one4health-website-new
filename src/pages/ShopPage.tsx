@@ -223,7 +223,15 @@ export function ShopPage() {
                     <button
                       onClick={() => {
                         console.log('[Shop] Clicking Add to Cart for:', ashwagandhaProduct.id);
-                        addToCart(ashwagandhaProduct.shopifyVariantId || ashwagandhaProduct.id);
+                        // Pass explicit price and title to prevent resets
+                        addToCart(
+                          ashwagandhaProduct.shopifyVariantId || ashwagandhaProduct.id, 
+                          1, 
+                          undefined, 
+                          undefined, 
+                          ashwagandhaProduct.price * 100, // already in rupees, convert to paise
+                          ashwagandhaProduct.name
+                        );
                       }}
                       disabled={cartLoading}
                       className="btn-primary py-4 text-xs font-bold uppercase tracking-[0.15em] flex items-center justify-center group/btn"

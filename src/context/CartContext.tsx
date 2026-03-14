@@ -29,7 +29,14 @@ interface CartContextType {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addToCart: (variantId: string, quantity?: number, attributes?: Record<string, string>, sellingPlanId?: string) => Promise<void>;
+  addToCart: (
+    variantId: string,
+    quantity?: number,
+    attributes?: Record<string, string>,
+    sellingPlanId?: string,
+    overridePrice?: number,
+    overrideTitle?: string
+  ) => Promise<void>;
   removeFromCart: (key: string) => Promise<void>;
   updateQuantity: (key: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -129,31 +136,42 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     variantId: string,
     quantity = 1,
     attributes?: Record<string, string>,
-    sellingPlanId?: string
+    sellingPlanId?: string,
+    overridePrice?: number, // in paise
+    overrideTitle?: string
   ) => {
-    console.log('[Cart] addToCart:', { variantId, quantity, attributes, sellingPlanId });
+    console.log('[Cart] addToCart:', { variantId, quantity, attributes, sellingPlanId, overridePrice });
     setIsOpen(true);
     setLoading(true);
 
     // Dev / mock mode
     if (!isShopifyEnv()) {
-      const price = MOCK_PRODUCT_PRICE;
+      // Try to find product/variant in mock data for more accurate price/title
+      const mockProduct = Object.values(window.ShopifyData?.all_products || {}).find((p: any) => 
+        p.variants?.some((v: any) => v.id === variantId)
+      ) as any;
+      const mockVariant = mockProduct?.variants?.find((v: any) => v.id === variantId);
+
+      const price = overridePrice ?? mockVariant?.price ?? MOCK_PRODUCT_PRICE;
+      const title = overrideTitle ?? mockProduct?.title ?? 'Ashwagandha Gummies';
+      const variantTitle = mockVariant?.title ?? 'Default Title';
+
       const newItem: CartItem = {
         id: variantId,
         key: variantId,
         variant_id: variantId,
         quantity,
-        title: 'Ashwagandha Gummies',
-        product_title: 'Ashwagandha Gummies',
-        variant_title: 'Default Title',
-        product_type: 'Supplement',
+        title: title,
+        product_title: title,
+        variant_title: variantTitle,
+        product_type: mockProduct?.type ?? 'Supplement',
         price,
         line_price: price * quantity,
         final_line_price: price * quantity,
-        original_line_price: MOCK_ORIGINAL_PRICE * quantity,
+        original_line_price: (mockVariant?.compare_at_price ?? MOCK_ORIGINAL_PRICE) * quantity,
         final_price: price,
-        original_price: MOCK_ORIGINAL_PRICE,
-        image: MOCK_IMAGE,
+        original_price: mockVariant?.compare_at_price ?? MOCK_ORIGINAL_PRICE,
+        image: mockProduct?.featured_image ?? MOCK_IMAGE,
         properties: attributes ?? {},
       };
 

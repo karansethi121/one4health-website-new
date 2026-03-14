@@ -6,12 +6,16 @@ interface MobileStickyBarProps {
   productName?: string;
   variantId?: string;
   quantity?: number;
+  price?: number;
+  title?: string;
 }
 
 export function MobileStickyBar({
   productName = 'Ashwagandha Gummies',
   variantId,
-  quantity = 1
+  quantity = 1,
+  price,
+  title
 }: MobileStickyBarProps) {
   const { addToCart } = useCart();
   const [isVisible, setIsVisible] = useState(false);
@@ -29,7 +33,7 @@ export function MobileStickyBar({
 
   const handleAddToCart = () => {
     if (variantId) {
-      addToCart(variantId, quantity);
+      addToCart(variantId, quantity, { purchase_type: 'One-time' }, undefined, price, title || productName);
     }
   };
 

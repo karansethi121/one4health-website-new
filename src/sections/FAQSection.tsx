@@ -71,10 +71,10 @@ export function FAQSection() {
         <div className="faq-title text-center max-w-2xl mx-auto mb-16">
           <span className="inline-block text-4xl mb-6">❓</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-6">
-            Frequently Asked Questions
+            Ashwagandha Gummies: Your Questions Answered
           </h2>
           <p className="text-lg text-charcoal-500">
-            Everything you need to know about One4Health™.
+            Everything you need to know about the best wellness gummies in India.
           </p>
         </div>
 

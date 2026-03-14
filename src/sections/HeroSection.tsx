@@ -95,7 +95,7 @@ export function HeroSection() {
               <div className="hero-badge flex flex-wrap gap-2 mb-6">
                 <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-sage-50 text-sage-700 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-widest border border-sage-100">
                   <Sparkles className="w-3.5 h-3.5" />
-                  New Launch Special
+                  India's Premium Launch Special
                 </span>
               </div>
 
@@ -104,8 +104,8 @@ export function HeroSection() {
                 <span className="inline-block">Stay</span>{' '}
                 <span className="inline-block text-sage-700">calm.</span>
                 <br />
-                <span className="inline-block">Stay</span>{' '}
-                <span className="inline-block text-sage-700">sharp.</span>
+                <span className="inline-block">Ashwagandha</span>{' '}
+                <span className="inline-block text-sage-700">Gummies.</span>
               </h1>
 
               {/* Subheadline */}

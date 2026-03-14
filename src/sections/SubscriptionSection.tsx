@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Truck, Pause, Package, Sparkles, Users } from 'lucide-react';
+import { ArrowRight, Zap, Truck, Check, Package, Sparkles, Users } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const benefits = [
-  { icon: Zap, text: 'Save on every delivery', desc: 'Starting at ₹299' },
-  { icon: Truck, text: 'Free shipping', desc: 'On all orders, no minimum' },
-  { icon: Pause, text: 'Pause or cancel anytime', desc: 'No commitments' },
+  { icon: Zap, text: 'Save on 2 Jars', desc: 'Just ₹599 for 2 packs' },
+  { icon: Truck, text: 'Free shipping', desc: 'On all bundle orders' },
+  { icon: Check, text: 'Clean Formula', desc: 'No sugar, no chemicals' },
 ];
 
 export function SubscriptionSection() {
@@ -69,7 +69,7 @@ export function SubscriptionSection() {
               <Sparkles className="w-5 h-5 lg:w-6 lg:h-6 text-sage-700" />
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-4">
-              Subscribe & save
+              Bundle & Save
             </h2>
             <p className="text-base lg:text-lg text-charcoal-500 mb-6">
               Consistency is key. Join our community and never miss your daily calm.
@@ -105,18 +105,16 @@ export function SubscriptionSection() {
             <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
               <Link
                 to="/product/ashwagandha-gummies-ksm66"
-                state={{ purchaseType: 'subscribe' }}
                 className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-6 lg:px-8 py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-sm lg:text-base"
               >
-                Start subscription
+                Shop Bundle
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/product/ashwagandha-gummies-ksm66"
-                state={{ purchaseType: 'onetime' }}
                 className="bg-white border-2 border-charcoal-200 text-charcoal-900 font-semibold px-6 lg:px-8 py-3.5 lg:py-4 rounded-full hover:border-sage-300 hover:bg-sage-50 transition-all flex items-center justify-center text-sm lg:text-base"
               >
-                Buy once
+                Buy Once
               </Link>
             </div>
           </div>
@@ -126,8 +124,8 @@ export function SubscriptionSection() {
             <div className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-soft">
               {/* Price comparison */}
               <div className="flex items-baseline gap-2 lg:gap-3 mb-5 lg:mb-6 flex-wrap">
-                <span className="text-3xl lg:text-4xl font-bold text-sage-700">₹299</span>
-                <span className="text-lg lg:text-xl text-charcoal-400 line-through">₹499</span>
+                <span className="text-3xl lg:text-4xl font-bold text-sage-700">₹599</span>
+                <span className="text-lg lg:text-xl text-charcoal-400 line-through">₹998</span>
                 <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-xs font-medium">
                   Special Rate
                 </span>

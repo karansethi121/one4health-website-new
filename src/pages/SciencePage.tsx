@@ -77,13 +77,13 @@ export function SciencePage() {
               The Gold Standard
             </div>
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-charcoal-900 mb-8 leading-tight">
-              Why KSM-66® Is <br /><span className="text-sage-700">The Gold Standard</span>
+              Why KSM-66® Is <br /><span className="text-sage-700">India's Gift to Wellness</span>
             </h2>
             <p className="text-lg text-charcoal-600 leading-relaxed mb-8">
               KSM-66® is the highest concentration, full-spectrum root extract of ashwagandha
-              available on the market today. It's produced using a unique extraction process
-              that took 14 years of R&D to refine, preserving the natural balance of the herb's
-              beneficial compounds.
+              available on the market today. Developed by Ixoreal Biomed in India after 14 years
+              of rigorous R&D, it preserves the natural balance of the herb's beneficial compounds
+              using a unique "Green Chemistry" extraction process.
             </p>
             <div className="space-y-4">
               {[
@@ -149,7 +149,7 @@ export function SciencePage() {
         <div className="section-container">
           <div className="text-center mb-16 science-animate">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-charcoal-900 mb-6">
-              Distilled to Essentials.
+              Essential Ashwagandha Gummies.
             </h2>
             <p className="text-lg text-charcoal-500 max-w-2xl mx-auto">
               Effective formulas aren't about how much you can add, but what you can't afford to leave out.
