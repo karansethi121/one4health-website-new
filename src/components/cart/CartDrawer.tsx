@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice, loading } = useCart();
 
+  /** Shopify prices are stored in smallest currency unit (paise). Divide by 100 for display. */
   const formatPrice = (price: number) => {
-    // Shopify prices are in cents
+    if (price == null || isNaN(price)) return '₹0';
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
@@ -57,13 +58,14 @@ export function CartDrawer() {
                   <img
                     src={item.image}
                     alt={item.product_title}
-                    className="w-20 h-20 object-cover rounded-xl"
+                    className="w-20 h-20 object-cover rounded-xl flex-shrink-0"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
-                      <div>
+                      <div className="min-w-0 flex-1 pr-2">
                         <h4 className="font-semibold text-charcoal-900 text-sm truncate">
-                          {item.product_title}
+                          {item.product_title || item.title}
                         </h4>
                         <p className="text-xs text-charcoal-500 mt-0.5">
                           {item.variant_title !== 'Default Title' ? item.variant_title : ''}
@@ -76,8 +78,9 @@ export function CartDrawer() {
                       </div>
                       <button
                         onClick={() => removeFromCart(item.key)}
-                        className="p-1.5 hover:bg-sage-100 rounded-full transition-colors"
+                        className="p-1.5 hover:bg-sage-100 rounded-full transition-colors flex-shrink-0"
                         aria-label="Remove item"
+                        disabled={loading}
                       >
                         <X className="w-4 h-4 text-charcoal-400" />
                       </button>
@@ -86,18 +89,20 @@ export function CartDrawer() {
                       <div className="flex items-center gap-2 bg-sage-50 rounded-full px-2 py-1">
                         <button
                           onClick={() => updateQuantity(item.key, item.quantity - 1)}
-                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors"
+                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors disabled:opacity-40"
                           aria-label="Decrease quantity"
+                          disabled={loading}
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="text-sm font-medium w-5 text-center">
+                        <span className="text-sm font-medium w-6 text-center">
                           {item.quantity}
                         </span>
                         <button
                           onClick={() => updateQuantity(item.key, item.quantity + 1)}
-                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors"
+                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors disabled:opacity-40"
                           aria-label="Increase quantity"
+                          disabled={loading}
                         >
                           <Plus className="w-3 h-3" />
                         </button>
@@ -109,7 +114,7 @@ export function CartDrawer() {
                           </p>
                         )}
                         <span className="font-semibold text-sage-700">
-                          {formatPrice(item.final_line_price)}
+                          {formatPrice(item.final_line_price || item.line_price || item.price * item.quantity)}
                         </span>
                         {item.original_line_price > item.final_line_price && (
                           <p className="text-[8px] font-bold text-coral-600 uppercase tracking-tight">
@@ -153,7 +158,7 @@ export function CartDrawer() {
               {/* Checkout Button */}
               <Button
                 onClick={handleCheckout}
-                disabled={loading && items.length === 0}
+                disabled={loading || items.length === 0}
                 className="w-full bg-sage-700 hover:bg-sage-800 text-white font-bold py-6 rounded-xl transition-all duration-300 hover:shadow-lg text-base"
               >
                 {loading ? <Loader2 className="w-5 h-5 animate-spin mr-3" /> : <Sparkles className="w-5 h-5 mr-3" />}

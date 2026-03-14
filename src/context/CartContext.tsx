@@ -1,8 +1,30 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+export interface CartItem {
+  id: string;
+  key: string;
+  variant_id: string;
+  quantity: number;
+  title: string;
+  product_title: string;
+  variant_title: string;
+  product_type: string;
+  // Prices stored in smallest currency unit (paise) to match Shopify
+  price: number;           // unit price in paise
+  line_price: number;      // price * qty
+  final_line_price: number;
+  original_line_price: number;
+  final_price: number;
+  original_price: number;
+  image: string;
+  properties: Record<string, string>;
+}
+
 interface CartContextType {
-  items: any[];
+  items: CartItem[];
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
@@ -12,131 +34,149 @@ interface CartContextType {
   updateQuantity: (key: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
   totalItems: number;
-  totalPrice: number;
+  totalPrice: number; // in paise (smallest unit) - divide by 100 for display
   loading: boolean;
 }
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Detect if we are running on a live Shopify store (cart routes will be present)
 const isShopifyEnv = (): boolean =>
   typeof window !== 'undefined' &&
   typeof window.ShopifyData?.routes?.cart_add_url === 'string' &&
-  window.ShopifyData.routes.cart_add_url !== '/cart/add.js'; // mocked routes point to /cart/add.js
+  window.ShopifyData.routes.cart_add_url !== '/cart/add.js';
+
+/** Derive totalItems and totalPrice from items array - single source of truth */
+const deriveCartTotals = (items: CartItem[]) => ({
+  totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
+  totalPrice: items.reduce((sum, item) => sum + (item.final_line_price || item.line_price || 0), 0),
+});
+
+const MOCK_PRODUCT_PRICE = 34900; // paise = ₹349 (Shopify format)
+const MOCK_ORIGINAL_PRICE = 49900; // paise = ₹499 (Shopify format)
+const MOCK_IMAGE = 'https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062';
+
+// ─── Provider ─────────────────────────────────────────────────────────────────
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [totalItems, setTotalItems] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
+  // Derived totals - always computed from `items` to prevent state drift / NaN bugs
+  const { totalItems, totalPrice } = deriveCartTotals(items);
 
+  // Ref to latest items for callbacks that capture stale closures
+  const itemsRef = useRef<CartItem[]>(items);
+  useEffect(() => { itemsRef.current = items; }, [items]);
+
+  // ── Shopify live refresh ──
   const refreshCart = useCallback(async () => {
-    if (!isShopifyEnv()) return; // Skip in dev/mock mode
+    if (!isShopifyEnv()) return;
     setLoading(true);
     try {
       const response = await fetch('/cart.js');
-      if (!response.ok) throw new Error('Failed to fetch Shopify cart');
+      if (!response.ok) throw new Error('Failed to fetch cart');
       const cart = await response.json();
-      setItems(cart.items);
-      setTotalItems(cart.item_count);
-      setTotalPrice(cart.total_price);
+      setItems(cart.items || []);
     } catch (error) {
-      console.error('Failed to fetch Shopify cart:', error);
+      console.error('[Cart] Failed to refresh:', error);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Initialize cart
+  // ── Initialize cart ──
   useEffect(() => {
-    // 1. Check if we have mock data in localStorage
     if (!isShopifyEnv()) {
-      const savedCart = localStorage.getItem('o4h_mock_cart');
-      if (savedCart) {
-        try {
-          const { items: savedItems, totalItems: savedCount, totalPrice: savedTotal } = JSON.parse(savedCart);
-          setItems(savedItems);
-          setTotalItems(savedCount);
-          setTotalPrice(savedTotal);
-          console.info('[Dev] Restored mock cart from localStorage.');
-          return;
-        } catch (e) {
-          console.error('[Dev] Failed to parse saved cart:', e);
+      // Dev mode: restore from localStorage
+      try {
+        const saved = localStorage.getItem('o4h_mock_cart');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            setItems(parsed);
+            console.info('[Dev] Restored mock cart from localStorage.');
+            return;
+          }
         }
+      } catch (e) {
+        console.error('[Dev] Failed to parse saved cart:', e);
       }
+      return;
     }
-
-    // 2. Otherwise fall back to ShopifyData or refresh
+    // Live Shopify: load from window data or refresh
     if (window.ShopifyData?.cart?.items?.length) {
       setItems(window.ShopifyData.cart.items);
-      setTotalItems(window.ShopifyData.cart.item_count);
-      setTotalPrice(window.ShopifyData.cart.total_price);
     } else {
       refreshCart();
     }
   }, [refreshCart]);
 
-  // Persist mock cart to localStorage
+  // ── Persist mock cart ──
   useEffect(() => {
     if (!isShopifyEnv()) {
-      localStorage.setItem('o4h_mock_cart', JSON.stringify({
-        items,
-        totalItems,
-        totalPrice
-      }));
+      localStorage.setItem('o4h_mock_cart', JSON.stringify(items));
     }
-  }, [items, totalItems, totalPrice]);
+  }, [items]);
 
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
   const toggleCart = useCallback(() => setIsOpen(prev => !prev), []);
 
-  const addToCart = useCallback(async (variantId: string, quantity = 1, attributes?: Record<string, string>, sellingPlanId?: string) => {
-    console.log('[Cart] Adding to cart:', { variantId, quantity, attributes, sellingPlanId });
+  // ── Add to cart ──
+  const addToCart = useCallback(async (
+    variantId: string,
+    quantity = 1,
+    attributes?: Record<string, string>,
+    sellingPlanId?: string
+  ) => {
+    console.log('[Cart] addToCart:', { variantId, quantity, attributes, sellingPlanId });
     setIsOpen(true);
     setLoading(true);
 
-    // Dev/mock mode – use in-memory cart state
+    // Dev / mock mode
     if (!isShopifyEnv()) {
-      const product = window.ShopifyData?.all_products?.['ashwagandha-gummies-ksm66'] || {
-        title: 'Ashwagandha Gummies',
-        type: 'Supplement',
-        featured_image: '/images/product_transparent.webp',
-        variants: [{ price: 34900 }]
-      };
-      const price = product?.variants?.[0]?.price ?? 34900;
-      const newItem = {
+      const price = MOCK_PRODUCT_PRICE;
+      const newItem: CartItem = {
         id: variantId,
         key: variantId,
         variant_id: variantId,
         quantity,
-        title: product?.title,
-        product_title: product?.title,
+        title: 'Ashwagandha Gummies',
+        product_title: 'Ashwagandha Gummies',
         variant_title: 'Default Title',
-        product_type: product?.type,
+        product_type: 'Supplement',
         price,
         line_price: price * quantity,
         final_line_price: price * quantity,
-        original_line_price: price * quantity,
-        image: product?.featured_image,
+        original_line_price: MOCK_ORIGINAL_PRICE * quantity,
+        final_price: price,
+        original_price: MOCK_ORIGINAL_PRICE,
+        image: MOCK_IMAGE,
         properties: attributes ?? {},
       };
+
       setItems(prev => {
-        const existing = prev.find((i: any) => i.key === variantId);
-        if (existing) {
-          return prev.map((i: any) =>
-            i.key === variantId
-              ? { ...i, quantity: i.quantity + quantity, line_price: i.price * (i.quantity + quantity), final_line_price: i.price * (i.quantity + quantity) }
-              : i
-          );
+        const existingIdx = prev.findIndex(i => i.key === variantId);
+        if (existingIdx >= 0) {
+          return prev.map((item, idx) => {
+            if (idx !== existingIdx) return item;
+            const newQty = item.quantity + quantity;
+            return {
+              ...item,
+              quantity: newQty,
+              line_price: item.price * newQty,
+              final_line_price: item.price * newQty,
+              original_line_price: item.original_price * newQty,
+            };
+          });
         }
         return [...prev, newItem];
       });
-      setTotalItems(prev => prev + quantity);
-      setTotalPrice(prev => prev + price * quantity);
+
       setLoading(false);
-      toast.success('Added to cart');
+      toast.success('Added to cart!');
       return;
     }
 
@@ -148,39 +188,35 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (sellingPlanId) {
         payload.items[0].selling_plan = sellingPlanId;
       }
-      
       const response = await fetch('/cart/add.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error('Failed to add to cart');
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err?.description || 'Failed to add to cart');
+      }
       await refreshCart();
-      toast.success('Added to cart');
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      toast.error('Failed to add to cart. Please try again.');
+      toast.success('Added to cart!');
+    } catch (error: any) {
+      console.error('[Cart] addToCart error:', error);
+      toast.error(error?.message || 'Failed to add to cart. Please try again.');
       await refreshCart();
     } finally {
       setLoading(false);
     }
   }, [refreshCart]);
 
+  // ── Remove item ──
   const removeFromCart = useCallback(async (key: string) => {
-    const previousItems = [...items];
-    const itemToRemove = items.find((item: any) => item.key === key || item.id === key);
+    // Optimistic update using functional setState (no stale closure)
+    setItems(prev => prev.filter(item => item.key !== key && item.id !== key));
 
-    if (itemToRemove) {
-      setItems(prev => prev.filter((item: any) => item.key !== key && item.id !== key));
-      setTotalItems(prev => Math.max(0, prev - itemToRemove.quantity));
-      setTotalPrice(prev => {
-        const newTotal = prev - (itemToRemove.line_price || itemToRemove.final_line_price || 0);
-        return isNaN(newTotal) ? 0 : Math.max(0, newTotal);
-      });
+    if (!isShopifyEnv()) {
+      toast.success('Item removed');
+      return;
     }
-
-    // Dev mode – done (already updated local state)
-    if (!isShopifyEnv()) return;
 
     setLoading(true);
     try {
@@ -189,61 +225,41 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: key, quantity: 0 }),
       });
-      if (!response.ok) throw new Error('Failed to remove from cart');
+      if (!response.ok) throw new Error('Failed to remove item');
       await refreshCart();
     } catch (error) {
-      console.error('Error removing from cart:', error);
-      setItems(previousItems);
+      console.error('[Cart] removeFromCart error:', error);
+      // Restore from ref on failure
+      setItems(itemsRef.current);
       await refreshCart();
     } finally {
       setLoading(false);
     }
-  }, [items, refreshCart]);
+  }, [refreshCart]);
 
-  const updateQuantity = useCallback(async (key: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(key);
+  // ── Update quantity ──
+  const updateQuantity = useCallback(async (key: string, newQty: number) => {
+    // If quantity drops to 0 or below, remove the item instead
+    if (newQty <= 0) {
+      await removeFromCart(key);
       return;
     }
 
-    const previousItems = [...items];
-    let unitPrice = 0;
-    
-    setItems(prevItems => {
-      return prevItems.map((item: any) => {
-        if (item.key === key || item.id === key) {
-          // Calculate unit price safely to avoid divide by zero NaN when quantity is 0
-          unitPrice = item.quantity > 0 
-            ? ((item.final_line_price || item.line_price || 0) / item.quantity) 
-            : (item.final_price || item.price || 0);
-          
-          return { 
-            ...item, 
-            quantity, 
-            line_price: quantity * unitPrice,
-            final_line_price: quantity * unitPrice,
-            original_line_price: quantity * (item.original_price || unitPrice)
-          };
-        }
-        return item;
-      });
-    });
+    // Optimistic update
+    setItems(prev =>
+      prev.map(item => {
+        if (item.key !== key && item.id !== key) return item;
+        const unitPrice = item.price || 0; // use stored unit price, not derived
+        return {
+          ...item,
+          quantity: newQty,
+          line_price: unitPrice * newQty,
+          final_line_price: unitPrice * newQty,
+          original_line_price: item.original_price ? item.original_price * newQty : unitPrice * newQty,
+        };
+      })
+    );
 
-    const targetItem = items.find((i: any) => i.key === key || i.id === key);
-    if (targetItem) {
-      const diff = quantity - targetItem.quantity;
-      const safeUnitPrice = targetItem.quantity > 0 
-        ? ((targetItem.final_line_price || targetItem.line_price || 0) / targetItem.quantity) 
-        : (targetItem.final_price || targetItem.price || 0);
-        
-      setTotalItems(prev => Math.max(0, prev + diff));
-      setTotalPrice(prev => {
-        const newTotal = prev + diff * safeUnitPrice;
-        return isNaN(newTotal) ? 0 : Math.max(0, newTotal);
-      });
-    }
-
-    // Dev mode – done (already updated local state)
     if (!isShopifyEnv()) return;
 
     setLoading(true);
@@ -251,25 +267,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const response = await fetch('/cart/change.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: key, quantity }),
+        body: JSON.stringify({ id: key, quantity: newQty }),
       });
       if (!response.ok) throw new Error('Failed to update quantity');
       await refreshCart();
     } catch (error) {
-      console.error('Error updating quantity:', error);
-      setItems(previousItems);
+      console.error('[Cart] updateQuantity error:', error);
+      setItems(itemsRef.current);
       await refreshCart();
     } finally {
       setLoading(false);
     }
-  }, [items, refreshCart]);
+  }, [removeFromCart, refreshCart]);
 
+  // ── Clear cart ──
   const clearCart = useCallback(async () => {
     setItems([]);
-    setTotalItems(0);
-    setTotalPrice(0);
 
-    // Dev mode – done
     if (!isShopifyEnv()) return;
 
     setLoading(true);
@@ -281,7 +295,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (!response.ok) throw new Error('Failed to clear cart');
       await refreshCart();
     } catch (error) {
-      console.error('Error clearing cart:', error);
+      console.error('[Cart] clearCart error:', error);
       await refreshCart();
     } finally {
       setLoading(false);
