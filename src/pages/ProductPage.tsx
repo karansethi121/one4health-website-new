@@ -13,7 +13,6 @@ import {
   Sun,
   Info,
   Heart,
-  RefreshCw,
   Clock,
   Moon,
   Sun as SunIcon,
@@ -83,7 +82,7 @@ export function ProductPage() {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(price / 100);
   };
 
   const getCurrentPrice = () => {
@@ -148,10 +147,10 @@ export function ProductPage() {
     );
   }
 
-  const currentPrice = getCurrentPrice() / 100;
-  const originalPrice = (purchaseType === 'onetime'
+  const currentPrice = getCurrentPrice();
+  const originalPrice = purchaseType === 'onetime'
     ? (packSize === 2 ? 99800 : 49900)
-    : (subscriptionDuration === '1month' ? 99800 : 49900)) / 100;
+    : (subscriptionDuration === '1month' ? 99800 : 49900);
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
@@ -201,139 +200,127 @@ export function ProductPage() {
               <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Mixed Berry</p>
             </div>
 
-            {/* Purchase Type Toggle - Always Visible */}
-            <div className="bg-sage-50 rounded-xl lg:rounded-2xl p-1">
-              <div className="flex gap-1">
-                <button
-                  onClick={() => setPurchaseType('onetime')}
-                  className={`flex-1 py-2.5 px-3 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all ${purchaseType === 'onetime'
-                    ? 'bg-white text-charcoal-900 shadow-sm'
-                    : 'text-charcoal-500 hover:text-charcoal-700'
-                    }`}
-                >
-                  One-Time
-                </button>
-                <button
-                  onClick={() => setPurchaseType('subscribe')}
-                  className={`flex-1 py-2.5 px-3 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-medium transition-all ${purchaseType === 'subscribe'
-                    ? 'bg-sage-700 text-white shadow-sm'
-                    : 'text-charcoal-500 hover:text-charcoal-700'
-                    }`}
-                >
-                  Subscribe & Save
-                </button>
-              </div>
+            {/* Premium Purchase Type Selection */}
+            <div className="flex flex-col gap-3 lg:gap-4 mt-2">
+              {/* Subscribe & Save Card */}
+              <button
+                onClick={() => setPurchaseType('subscribe')}
+                className={`relative p-4 lg:p-5 rounded-2xl border-2 transition-all flex items-start gap-3 lg:gap-4 text-left overflow-hidden group ${
+                  purchaseType === 'subscribe'
+                    ? 'border-sage-700 bg-sage-50/80 shadow-soft'
+                    : 'border-charcoal-100 hover:border-sage-300 bg-white hover:bg-sage-50/30'
+                }`}
+              >
+                {/* Decorative background element */}
+                {purchaseType === 'subscribe' && (
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-sage-600/5 rounded-bl-full -z-10 transition-all duration-500" />
+                )}
+                
+                <div className={`mt-0.5 lg:mt-1 w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                  purchaseType === 'subscribe' ? 'border-sage-700' : 'border-charcoal-300 group-hover:border-sage-400'
+                }`}>
+                  {purchaseType === 'subscribe' && <div className="w-2 h-2 lg:w-2.5 lg:h-2.5 bg-sage-700 rounded-full" />}
+                </div>
+                
+                <div className="flex-1 w-full">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <span className="font-bold text-charcoal-900 text-base lg:text-lg">Subscribe & Save 40%</span>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-sage-200/50 text-sage-800 rounded text-[10px] font-bold uppercase tracking-widest shrink-0">
+                      <Sparkles className="w-3 h-3" /> Best Value
+                    </span>
+                  </div>
+                  <p className="text-xs lg:text-sm text-charcoal-500 font-medium">Never run out. Pause or cancel anytime.</p>
+                  
+                  {/* Subscription Durations */}
+                  {purchaseType === 'subscribe' && (
+                    <div className="mt-4 grid grid-cols-2 gap-2 lg:gap-3 animate-fade-in w-full" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={() => setSubscriptionDuration('15days')}
+                        className={`flex flex-col justify-center p-3 rounded-xl border transition-all bg-white group/subbtn relative translate-y-0 hover:-translate-y-0.5 ${
+                          subscriptionDuration === '15days'
+                            ? 'border-sage-700 shadow-sm ring-1 ring-sage-700/20'
+                            : 'border-charcoal-200 hover:shadow-sm'
+                        }`}
+                      >
+                        <span className="font-bold text-charcoal-900 text-sm lg:text-base">15 Days</span>
+                        <span className={`text-[11px] lg:text-xs mb-1 ${subscriptionDuration === '15days' ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>1 Jar / Delivery</span>
+                        <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(29900)}</span>
+                      </button>
+                      <button
+                        onClick={() => setSubscriptionDuration('1month')}
+                        className={`flex flex-col justify-center p-3 rounded-xl border transition-all bg-white group/subbtn relative translate-y-0 hover:-translate-y-0.5 ${
+                          subscriptionDuration === '1month'
+                            ? 'border-sage-700 shadow-sm ring-1 ring-sage-700/20'
+                            : 'border-charcoal-200 hover:shadow-sm'
+                        }`}
+                      >
+                        <span className="font-bold text-charcoal-900 text-sm lg:text-base">30 Days</span>
+                        <span className={`text-[11px] lg:text-xs mb-1 ${subscriptionDuration === '1month' ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>2 Jars / Delivery</span>
+                        <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(54900)}</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </button>
+
+              {/* One-Time Purchase Card */}
+              <button
+                onClick={() => setPurchaseType('onetime')}
+                className={`relative p-4 lg:p-5 rounded-2xl border-2 transition-all flex items-start gap-3 lg:gap-4 text-left group ${
+                  purchaseType === 'onetime'
+                    ? 'border-sage-700 bg-sage-50/80 shadow-soft'
+                    : 'border-charcoal-100 hover:border-sage-300 bg-white hover:bg-sage-50/30'
+                }`}
+              >
+                <div className={`mt-0.5 lg:mt-1 w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                  purchaseType === 'onetime' ? 'border-sage-700' : 'border-charcoal-300 group-hover:border-sage-400'
+                }`}>
+                  {purchaseType === 'onetime' && <div className="w-2 h-2 lg:w-2.5 lg:h-2.5 bg-sage-700 rounded-full" />}
+                </div>
+                
+                <div className="flex-1 w-full">
+                  <span className="font-bold text-charcoal-900 text-base lg:text-lg block mb-0.5">One-time Purchase</span>
+                  <p className="text-xs lg:text-sm text-charcoal-500 font-medium">Standard pricing without subscription.</p>
+                  
+                  {/* One-Time Pack Sizes */}
+                  {purchaseType === 'onetime' && (
+                    <div className="mt-4 grid grid-cols-2 gap-2 lg:gap-3 animate-fade-in w-full pb-1" onClick={(e) => e.stopPropagation()}>
+                       <button
+                        onClick={() => setPackSize(1)}
+                        className={`flex flex-col justify-center p-3 lg:p-4 rounded-xl border transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
+                          packSize === 1
+                            ? 'border-sage-700 ring-1 ring-sage-700/20 shadow-md'
+                            : 'border-charcoal-200 hover:shadow-sm'
+                        }`}
+                      >
+                        <span className="font-bold text-charcoal-900 text-base lg:text-lg">1 Jar</span>
+                        <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>30-day supply</span>
+                        <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(34900)}</span>
+                      </button>
+
+                      <button
+                         onClick={() => setPackSize(2)}
+                         className={`flex flex-col justify-center p-3 lg:p-4 rounded-xl border transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
+                           packSize === 2
+                             ? 'border-sage-700 ring-1 ring-sage-700/20 shadow-md'
+                             : 'border-charcoal-200 hover:shadow-sm'
+                         }`}
+                       >
+                         <span className="font-bold text-charcoal-900 text-base lg:text-lg">2 Jars</span>
+                         <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 2 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>60-day supply</span>
+                         <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}</span>
+                         
+                         <div className={`mt-3 w-full text-[9px] sm:text-[10px] uppercase font-bold py-1.5 rounded text-center tracking-widest transition-colors ${
+                           packSize === 2 ? 'bg-charcoal-900 text-white' : 'bg-charcoal-100 text-charcoal-600'
+                         }`}>
+                           Most Popular
+                         </div>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </button>
             </div>
-
-            {/* Content based on selection */}
-            {purchaseType === 'onetime' && (
-              <div className="space-y-3 animate-fade-in pt-2">
-                <p className="text-xs lg:text-sm text-charcoal-500 font-medium">Select Pack Size:</p>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => setPackSize(1)}
-                    className={`relative p-3 lg:p-4 rounded-xl border-2 transition-all text-left ${packSize === 1
-                      ? 'border-sage-700 bg-sage-50'
-                      : 'border-charcoal-200 hover:border-sage-300'
-                      }`}
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 1 ? 'border-sage-700' : 'border-charcoal-300'}`}>
-                        {packSize === 1 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
-                      </div>
-                      <span className="font-semibold text-charcoal-900 text-sm lg:text-base">1 Jar</span>
-                    </div>
-                    <p className="text-xs text-charcoal-500 mb-2">30-day supply</p>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-sage-700">{formatPrice(34900)}</span>
-                      <span className="text-[10px] text-coral-600 font-medium tracking-tight">After Discount</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setPackSize(2)}
-                    className={`relative p-3 lg:p-4 rounded-xl border-2 transition-all text-left ${packSize === 2
-                      ? 'border-sage-700 bg-sage-50 shadow-soft-sm'
-                      : 'border-charcoal-200 hover:border-sage-300'
-                      }`}
-                  >
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap border border-amber-200 shadow-sm z-10">
-                      Best Value
-                    </div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 2 ? 'border-sage-700' : 'border-charcoal-300'}`}>
-                        {packSize === 2 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
-                      </div>
-                      <span className="font-semibold text-charcoal-900 text-sm lg:text-base">2 Packs</span>
-                    </div>
-                    <p className="text-xs text-charcoal-500 mb-2">60 gummies (1 month)</p>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-sage-700">{formatPrice(59900)}</span>
-                      <span className="text-[10px] text-coral-600 font-medium tracking-tight">Save 40% total</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Subscription Options */}
-            {purchaseType === 'subscribe' && (
-              <div className="space-y-2 lg:space-y-3 animate-fade-in pt-2">
-                <p className="text-xs lg:text-sm text-charcoal-500 font-medium">Choose your plan:</p>
-                <div className="space-y-2">
-                  <button
-                    onClick={() => setSubscriptionDuration('15days')}
-                    className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '15days'
-                      ? 'border-sage-700 bg-sage-50 shadow-soft-sm'
-                      : 'border-charcoal-200 hover:border-sage-300'
-                      }`}
-                  >
-                    <div className="flex items-center gap-2 lg:gap-3">
-                      <div className={`w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center ${subscriptionDuration === '15days' ? 'border-sage-700' : 'border-charcoal-300'
-                        }`}>
-                        {subscriptionDuration === '15days' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
-                      </div>
-                      <div className="text-left">
-                        <p className="font-semibold text-charcoal-900 text-sm lg:text-base">15 Days Supply</p>
-                        <p className="text-xs text-charcoal-500">30 gummies every 15 days</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(29900)}</p>
-                      <p className="text-xs text-coral-600 font-medium tracking-tight">Special Rate</p>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setSubscriptionDuration('1month')}
-                    className={`w-full flex items-center justify-between p-3 lg:p-4 rounded-xl border-2 transition-all ${subscriptionDuration === '1month'
-                      ? 'border-sage-700 bg-sage-50 shadow-soft-sm'
-                      : 'border-charcoal-200 hover:border-sage-300'
-                      }`}
-                  >
-                    <div className="flex items-center gap-2 lg:gap-3">
-                      <div className={`w-4 h-4 lg:w-5 lg:h-5 rounded-full border-2 flex items-center justify-center ${subscriptionDuration === '1month' ? 'border-sage-700' : 'border-charcoal-300'
-                        }`}>
-                        {subscriptionDuration === '1month' && <div className="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-sage-700 rounded-full" />}
-                      </div>
-                      <div className="text-left">
-                        <p className="font-semibold text-charcoal-900 text-sm lg:text-base">1 Month Supply</p>
-                        <p className="text-xs text-charcoal-500">60 gummies monthly</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(54900)}</p>
-                      <p className="text-xs text-coral-600 font-medium tracking-tight">Max Saving</p>
-                    </div>
-                  </button>
-                </div>
-
-                <div className="flex items-center gap-2 text-xs lg:text-sm text-charcoal-500">
-                  <RefreshCw className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                  <span>Never run out. Pause or cancel anytime.</span>
-                </div>
-              </div>
-            )}
 
             {/* Price */}
             <div className="flex items-baseline gap-2 lg:gap-3 flex-wrap">

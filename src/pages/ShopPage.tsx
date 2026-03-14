@@ -63,7 +63,7 @@ export function ShopPage() {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(price / 100);
   };
 
   if (productsLoading) {
