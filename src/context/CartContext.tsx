@@ -171,9 +171,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const itemToRemove = items.find((item: any) => item.key === key || item.id === key);
 
     if (itemToRemove) {
-      setItems(items.filter((item: any) => item.key !== key && item.id !== key));
-      setTotalItems(prev => prev - itemToRemove.quantity);
-      setTotalPrice(prev => prev - itemToRemove.line_price);
+      setItems(prev => prev.filter((item: any) => item.key !== key && item.id !== key));
+      setTotalItems(prev => Math.max(0, prev - itemToRemove.quantity));
+      setTotalPrice(prev => {
+        const newTotal = prev - (itemToRemove.line_price || itemToRemove.final_line_price || 0);
+        return isNaN(newTotal) ? 0 : Math.max(0, newTotal);
+      });
     }
 
     // Dev mode – done (already updated local state)
@@ -198,18 +201,47 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items, refreshCart]);
 
   const updateQuantity = useCallback(async (key: string, quantity: number) => {
+    if (quantity <= 0) {
+      removeFromCart(key);
+      return;
+    }
+
     const previousItems = [...items];
-    const newItems = items.map((item: any) => {
-      if (item.key === key || item.id === key) {
-        const diff = quantity - item.quantity;
-        const unitPrice = item.line_price / item.quantity;
-        setTotalItems((prev: number) => prev + diff);
-        setTotalPrice((prev: number) => prev + diff * unitPrice);
-        return { ...item, quantity, line_price: quantity * unitPrice };
-      }
-      return item;
+    let unitPrice = 0;
+    
+    setItems(prevItems => {
+      return prevItems.map((item: any) => {
+        if (item.key === key || item.id === key) {
+          // Calculate unit price safely to avoid divide by zero NaN when quantity is 0
+          unitPrice = item.quantity > 0 
+            ? ((item.final_line_price || item.line_price || 0) / item.quantity) 
+            : (item.final_price || item.price || 0);
+          
+          return { 
+            ...item, 
+            quantity, 
+            line_price: quantity * unitPrice,
+            final_line_price: quantity * unitPrice,
+            original_line_price: quantity * (item.original_price || unitPrice)
+          };
+        }
+        return item;
+      });
     });
-    setItems(newItems);
+
+    const targetItem = items.find((i: any) => i.key === key || i.id === key);
+    if (targetItem) {
+      const diff = quantity - targetItem.quantity;
+      const safeUnitPrice = targetItem.quantity > 0 
+        ? ((targetItem.final_line_price || targetItem.line_price || 0) / targetItem.quantity) 
+        : (targetItem.final_price || targetItem.price || 0);
+        
+      setTotalItems(prev => Math.max(0, prev + diff));
+      setTotalPrice(prev => {
+        const newTotal = prev + diff * safeUnitPrice;
+        return isNaN(newTotal) ? 0 : Math.max(0, newTotal);
+      });
+    }
 
     // Dev mode – done (already updated local state)
     if (!isShopifyEnv()) return;
