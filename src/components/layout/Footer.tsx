@@ -6,7 +6,6 @@ const footerLinks = {
   shop: [
     { label: 'Ashwagandha Gummies', href: '/product/ashwagandha-gummies-ksm66' },
     { label: 'Shop All Products', href: '/shop' },
-    { label: 'Subscribe & Save (15% Off)', href: '/shop' },
     { label: 'Best Sellers', href: '/shop' },
   ],
   learn: [

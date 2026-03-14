@@ -6,7 +6,7 @@ import { ComparisonSection } from '@/sections/ComparisonSection';
 
 import { ScienceSection } from '@/sections/ScienceSection';
 import { CleanFormulaSection } from '@/sections/CleanFormulaSection';
-import { SubscriptionSection } from '@/sections/SubscriptionSection';
+import { BundleSection } from '@/sections/BundleSection';
 import { FAQSection } from '@/sections/FAQSection';
 import { TrustBar } from '@/components/layout/TrustBar';
 import { AllergenBar } from '@/components/layout/AllergenBar';
@@ -31,7 +31,7 @@ export function HomePage() {
       <ScienceSection />
       <CleanFormulaSection />
       <AllergenBar />
-      <SubscriptionSection />
+      <BundleSection />
       <FAQSection />
     </main>
   );

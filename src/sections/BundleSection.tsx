@@ -12,7 +12,7 @@ const benefits = [
   { icon: Check, text: 'Clean Formula', desc: 'No sugar, no chemicals' },
 ];
 
-export function SubscriptionSection() {
+export function BundleSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
