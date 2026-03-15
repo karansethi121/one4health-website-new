@@ -99,18 +99,18 @@ export function ProductPage() {
     if (!product) return;
 
     // Use variant ID logic: if bundle (2 jars), use bundle variant if it exists
+    // Force base variant so cart displays individual units
     const isBundle = packSize === 2;
-    const variantId = isBundle 
-      ? (product.id === 'ashwagandha-gummies-ksm66' ? 'ashwagandha-gummies-bundle-2' : product.shopifyVariantId || product.id)
-      : (product.shopifyVariantId || product.id);
+    const variantId = product.shopifyVariantId || product.id;
     
     const attributes: Record<string, string> = {};
     attributes['purchase_type'] = 'One-time';
-    attributes['pack_size'] = isBundle ? '2 Jars (Bundle)' : '1 Jar';
-
-    // Explicitly pass the current price to prevent resets
-    const pricePaise = getCurrentPrice();
-    const cartQuantity = quantity; // Always use the quantity selector state
+    
+    // Add physical units to cart (e.g. 1 qty of 2 Jars = 2 physical units)
+    const cartQuantity = quantity * packSize;
+    
+    // Calculate per-unit price in paise (59900/2 = 29950, 34900/1 = 34900)
+    const pricePaise = isBundle ? 29950 : 34900;
 
     await addToCart(variantId, cartQuantity, attributes, undefined, pricePaise, product.name);
   };
@@ -471,9 +471,9 @@ export function ProductPage() {
       {/* Mobile Sticky Bottom Bar with WhatsApp */}
       <MobileStickyBar 
         productName={product.name} 
-        variantId={packSize === 2 ? (product.id === 'ashwagandha-gummies-ksm66' ? 'ashwagandha-gummies-bundle-2' : product.shopifyVariantId || product.id) : (product.shopifyVariantId || product.id)} 
-        quantity={quantity}
-        price={getCurrentPrice()}
+        variantId={product.shopifyVariantId || product.id} 
+        quantity={quantity * packSize}
+        price={packSize === 2 ? 29950 : 34900}
         title={product.name}
       />
     </main>

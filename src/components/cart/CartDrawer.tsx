@@ -70,11 +70,6 @@ export function CartDrawer() {
                         <p className="text-xs text-charcoal-500 mt-0.5">
                           {item.variant_title !== 'Default Title' ? item.variant_title : ''}
                         </p>
-                        {item.properties?.subscription && (
-                          <p className="text-[10px] font-bold text-sage-600 uppercase tracking-tight mt-0.5">
-                            Subscription ({item.properties.subscription})
-                          </p>
-                        )}
                       </div>
                       <button
                         onClick={() => removeFromCart(item.key)}
