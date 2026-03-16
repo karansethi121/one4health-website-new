@@ -218,7 +218,7 @@ export function useWaitlist() {
             'Authorization': `Bearer ${session?.session?.access_token || anonKey}`,
             'apikey': anonKey,
           },
-          body: JSON.stringify({ email, source }),
+          body: JSON.stringify({ email, source, type: 'waitlist' }),
         });
         console.log('[Waitlist] Shopify sync triggered for', email);
       } catch (shopifyErr) {
@@ -236,4 +236,59 @@ export function useWaitlist() {
   };
 
   return { joinWaitlist, submitting, success, error };
+}
+
+export function useContact() {
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const sendMessage = async (data: { name: string; email: string; subject: string; message: string }) => {
+    try {
+      setSubmitting(true);
+      setError(null);
+      setSuccess(false);
+
+      // 1. Save to Supabase contact_messages table
+      const { error: dbError } = await supabase
+        .from('contact_messages')
+        .insert([data]);
+
+      if (dbError) throw dbError;
+
+      // 2. Sync to Shopify Customers via Edge Function (non-blocking)
+      try {
+        const { data: session } = await supabase.auth.getSession();
+        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+
+        await fetch(`${supabaseUrl}/functions/v1/shopify-sync`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.session?.access_token || anonKey}`,
+            'apikey': anonKey,
+          },
+          body: JSON.stringify({ 
+            ...data, 
+            type: 'contact',
+            source: 'Contact Page'
+          }),
+        });
+        console.log('[Contact] Shopify sync triggered for', data.email);
+      } catch (shopifyErr) {
+        console.warn('[Contact] Shopify sync failed (non-blocking):', shopifyErr);
+      }
+
+      setSuccess(true);
+    } catch (err: any) {
+      console.error('[Contact] Submission error:', err);
+      setError(err.message);
+      setSuccess(false);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return { sendMessage, submitting, success, error };
 }

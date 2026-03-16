@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { useContact } from '@/hooks/useSupabase';
+import emailjs from '@emailjs/browser';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +38,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 export function ContactPage() {
   useDocumentTitle('Contact Us');
   const { toast } = useToast();
+  const { sendMessage, submitting: dbSubmitting } = useContact();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -44,6 +47,8 @@ export function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+
+  const finalSubmitting = isSubmitting || dbSubmitting;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -72,16 +77,57 @@ export function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // 1. Submit to Supabase and Shopify via hook
+      await sendMessage(formData);
 
-    toast({
-      title: 'Message sent!',
-      description: 'We\'ll get back to you within 24 hours.',
-    });
+      // 2. Automated Emails via EmailJS
+      const EMAILJS_SERVICE_ID = 'service_3xkrkk9';
+      const EMAILJS_TEMPLATE_ID = 'template_18vaeqv'; // Using waitlist template as placeholder per plan
+      const EMAILJS_PUBLIC_KEY = 'g5a4Avnc7hq96Qu6X';
 
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setIsSubmitting(false);
+      // Notification to Admin
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          to_email: 'info@one4health.com',
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+
+      // Confirmation to User
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          to_email: formData.email,
+          from_name: 'One4Health',
+          message: `Hi ${formData.name}, thank you for reaching out! We've received your message about "${formData.subject}" and will get back to you soon.`,
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+
+      toast({
+        title: 'Message sent!',
+        description: 'We\'ll get back to you within 24 hours.',
+      });
+
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error: any) {
+      console.error('Contact form error:', error);
+      toast({
+        title: 'Submission failed',
+        description: error.message || 'Something went wrong. Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -181,10 +227,10 @@ export function ContactPage() {
                 </div>
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={finalSubmitting}
                   className="w-full btn-primary py-4"
                 >
-                  {isSubmitting ? (
+                  {finalSubmitting ? (
                     'Sending...'
                   ) : (
                     <>
