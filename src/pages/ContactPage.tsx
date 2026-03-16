@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useContact } from '@/hooks/useSupabase';
-import emailjs from '@emailjs/browser';
+import { supabase } from '@/lib/supabase';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,42 +81,22 @@ export function ContactPage() {
       // 1. Submit to Supabase and Shopify via hook
       await sendMessage(formData);
 
-      // 2. Automated Emails via EmailJS
-      const EMAILJS_SERVICE_ID = 'service_3xkrkk9';
-      const ADMIN_EMAILJS_TEMPLATE_ID = 'template_18vaeqv'; // TODO: Update to specialized contact template when provided
-      const USER_EMAILJS_TEMPLATE_ID = 'template_18vaeqv';  // TODO: Update to specialized confirmation template
-      const EMAILJS_PUBLIC_KEY = 'g5a4Avnc7hq96Qu6X';
+      // 2. Sync to Shopify via Supabase Edge Function
+      const { error: shopifyError } = await supabase.functions.invoke('shopify-sync', {
+        body: {
+          email: formData.email,
+          name: formData.name,
+          type: 'contact',
+          subject: formData.subject,
+          message: formData.message
+        }
+      });
 
-      // Notification to Admin (info@one4health.com)
-      // I'm sending the full message details so even if the template is "Waitlist", 
-      // the dynamic fields might capture it if the template is updated later.
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        ADMIN_EMAILJS_TEMPLATE_ID,
-        {
-          to_email: 'info@one4health.com',
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: `Contact Form: ${formData.subject}`,
-          message: formData.message,
-          type: 'contact', // Hint for EmailJS dynamic logic if any
-        },
-        EMAILJS_PUBLIC_KEY
-      );
-
-      // Confirmation to User
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        USER_EMAILJS_TEMPLATE_ID,
-        {
-          to_email: formData.email,
-          from_name: 'One4Health Support',
-          message: `Hi ${formData.name}, we've received your inquiry: "${formData.subject}". Our team will review your message and get back to you shortly.`,
-          user_name: formData.name,
-          subject: formData.subject
-        },
-        EMAILJS_PUBLIC_KEY
-      );
+      if (shopifyError) {
+        console.error('Shopify sync error:', shopifyError);
+        // We don't fail the whole submission if Shopify sync fails, 
+        // as long as it's saved in Supabase.
+      }
 
       toast({
         title: 'Message sent!',

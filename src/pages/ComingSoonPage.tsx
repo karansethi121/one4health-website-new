@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import emailjs from '@emailjs/browser';
 import { useWaitlist } from '@/hooks/useSupabase';
 
 const formSchema = z.object({
@@ -144,26 +143,8 @@ export const ComingSoonPage: React.FC = () => {
             // 2. Shopify sync is now handled automatically by the
             //    useWaitlist hook via the shopify-sync Edge Function.
 
-            // 3. Real Customer Email Automation using EmailJS
-            // This sends the "Thank You" email directly to the customer.
-            // ---------------------------------------------------------
-
-            const EMAILJS_SERVICE_ID = 'service_3xkrkk9';
-            const EMAILJS_TEMPLATE_ID = 'template_18vaeqv';
-            const EMAILJS_PUBLIC_KEY = 'g5a4Avnc7hq96Qu6X';
-
-            const templateParams = {
-                to_email: data.email,
-                message: "Thank you for joining the One4Health waitlist!"
-            };
-
-            await emailjs.send(
-                EMAILJS_SERVICE_ID,
-                EMAILJS_TEMPLATE_ID,
-                templateParams,
-                EMAILJS_PUBLIC_KEY
-            );
-            console.log('Customer Thank You email sent successfully via EmailJS');
+            // 3. Email automation is now handled natively by Shopify 
+            //    using the 'accepts_marketing: true' flag.
 
             toast.success('You\'re on the list! Check your inbox for a welcome note.', {
                 description: 'We\'ve successfully received your email.',
