@@ -141,31 +141,9 @@ export const ComingSoonPage: React.FC = () => {
             await joinWaitlist(data.email, 'Coming Soon Page');
             console.log('Saved to Supabase waitlist');
 
-            // 2. Shopify Contact Form (Optional notification)
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            if (!isLocal) {
-                try {
-                    const formData = new URLSearchParams();
-                    formData.append('form_type', 'contact');
-                    formData.append('utf8', '✓');
-                    formData.append('contact[email]', data.email);
-                    formData.append('contact[tags]', 'newsletter, waitlist_coming_soon');
-                    formData.append('contact[body]', 'Early Access Waitlist Signup from Coming Soon Page');
+            // 2. Shopify sync is now handled automatically by the
+            //    useWaitlist hook via the shopify-sync Edge Function.
 
-                    await fetch('/contact', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'Accept': 'text/html'
-                        },
-                        body: formData.toString()
-                    });
-                } catch (e) {
-                    console.error('Failed to submit to Shopify /contact endpoint:', e);
-                }
-            }
-
-            // ---------------------------------------------------------
             // 3. Real Customer Email Automation using EmailJS
             // This sends the "Thank You" email directly to the customer.
             // ---------------------------------------------------------

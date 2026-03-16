@@ -197,11 +197,35 @@ export function useWaitlist() {
     try {
       setSubmitting(true);
       setError(null);
+
+      // 1. Save to Supabase waitlist table
       const { error } = await supabase
         .from('waitlist')
         .insert([{ email, source }]);
 
       if (error) throw error;
+
+      // 2. Sync to Shopify Customers via Edge Function (non-blocking)
+      try {
+        const { data: session } = await supabase.auth.getSession();
+        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+
+        await fetch(`${supabaseUrl}/functions/v1/shopify-sync`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.session?.access_token || anonKey}`,
+            'apikey': anonKey,
+          },
+          body: JSON.stringify({ email, source }),
+        });
+        console.log('[Waitlist] Shopify sync triggered for', email);
+      } catch (shopifyErr) {
+        // Silently fail — Supabase insert succeeded, don't block user
+        console.warn('[Waitlist] Shopify sync failed (non-blocking):', shopifyErr);
+      }
+
       setSuccess(true);
     } catch (err: any) {
       setError(err.message);
