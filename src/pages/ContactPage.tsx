@@ -83,19 +83,23 @@ export function ContactPage() {
 
       // 2. Automated Emails via EmailJS
       const EMAILJS_SERVICE_ID = 'service_3xkrkk9';
-      const EMAILJS_TEMPLATE_ID = 'template_18vaeqv'; // Using waitlist template as placeholder per plan
+      const ADMIN_EMAILJS_TEMPLATE_ID = 'template_18vaeqv'; // TODO: Update to specialized contact template when provided
+      const USER_EMAILJS_TEMPLATE_ID = 'template_18vaeqv';  // TODO: Update to specialized confirmation template
       const EMAILJS_PUBLIC_KEY = 'g5a4Avnc7hq96Qu6X';
 
-      // Notification to Admin
+      // Notification to Admin (info@one4health.com)
+      // I'm sending the full message details so even if the template is "Waitlist", 
+      // the dynamic fields might capture it if the template is updated later.
       await emailjs.send(
         EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        ADMIN_EMAILJS_TEMPLATE_ID,
         {
           to_email: 'info@one4health.com',
           from_name: formData.name,
           from_email: formData.email,
-          subject: formData.subject,
+          subject: `Contact Form: ${formData.subject}`,
           message: formData.message,
+          type: 'contact', // Hint for EmailJS dynamic logic if any
         },
         EMAILJS_PUBLIC_KEY
       );
@@ -103,11 +107,13 @@ export function ContactPage() {
       // Confirmation to User
       await emailjs.send(
         EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        USER_EMAILJS_TEMPLATE_ID,
         {
           to_email: formData.email,
-          from_name: 'One4Health',
-          message: `Hi ${formData.name}, thank you for reaching out! We've received your message about "${formData.subject}" and will get back to you soon.`,
+          from_name: 'One4Health Support',
+          message: `Hi ${formData.name}, we've received your inquiry: "${formData.subject}". Our team will review your message and get back to you shortly.`,
+          user_name: formData.name,
+          subject: formData.subject
         },
         EMAILJS_PUBLIC_KEY
       );
