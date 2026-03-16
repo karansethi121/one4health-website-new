@@ -1,8 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Mail, Phone, MapPin, MessageCircle, Clock, Send } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useContact } from '@/hooks/useSupabase';
+import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,25 +35,36 @@ const contactInfo = [
 
 export function ContactPage() {
   useDocumentTitle('Contact Us');
+  const { toast } = useToast();
+  const { sendMessage, submitting } = useContact();
   const heroRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // 1. Initialise Shopify global config for the Forms app
-    (window as any).Shopify = (window as any).Shopify || {};
-    (window as any).Shopify.shop = 'gcjkd0-x9.myshopify.com';
-    (window as any).Shopify.locale = 'en';
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
 
-    // 2. Load the Shopify Forms script
-    const scriptId = 'shopify-forms-script';
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.src = 'https://cdn.shopify.com/shopifycloud/forms/static/forms.js';
-      script.async = true;
-      document.body.appendChild(script);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await sendMessage(formData);
+      toast({
+        title: 'Message Sent!',
+        description: 'Successfully synced with Shopify. We will get back to you soon.',
+      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (err: any) {
+      toast({
+        title: 'Submission Failed',
+        description: err.message || 'Please try again later.',
+        variant: 'destructive',
+      });
     }
+  };
 
-    // 3. Entrance Animations
+  useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.contact-animate',
@@ -145,27 +162,82 @@ export function ContactPage() {
             </div>
           </div>
 
-          {/* Right: Shopify Native Form */}
-          <div className="contact-animate bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-soft-md border border-sage-100 min-h-[600px]">
+          {/* Right: Custom Form (Shopify Synced) */}
+          <div className="contact-animate bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-soft-md border border-sage-100">
             <div className="mb-8">
               <h2 className="text-2xl font-heading font-bold text-charcoal-900 mb-2">
                 Send a Message
               </h2>
               <p className="text-charcoal-600">
-                This form is powered by Shopify for secure and reliable delivery.
+                Your message will be synced directly with your Shopify profile for efficient support.
               </p>
             </div>
 
-            {/* SHOPIFY FORMS APP EMBED (ID: 913558) */}
-            <div 
-              className="shopify-forms-app-embed" 
-              data-form-id="913558"
-            >
-              <div className="flex flex-col items-center justify-center p-12 space-y-4 text-sage-400">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-700"></div>
-                <p className="text-sm font-medium">Initialising Shopify Form...</p>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input
+                    id="name"
+                    placeholder="John Doe"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="rounded-2xl border-sage-200 focus:ring-sage-400"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="john@example.com"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="rounded-2xl border-sage-200 focus:ring-sage-400"
+                  />
+                </div>
               </div>
-            </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="subject">Subject</Label>
+                <Input
+                  id="subject"
+                  placeholder="How can we help?"
+                  required
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  className="rounded-2xl border-sage-200 focus:ring-sage-400"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="message">Message</Label>
+                <Textarea
+                  id="message"
+                  placeholder="Tell us more about your inquiry..."
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="min-h-[150px] rounded-2xl border-sage-200 focus:ring-sage-400 resize-none"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={submitting}
+                className="w-full bg-sage-900 hover:bg-black text-white py-6 rounded-2xl font-bold text-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+              >
+                {submitting ? (
+                  'Syncing...'
+                ) : (
+                  <>
+                    Send Message <Send className="w-5 h-5" />
+                  </>
+                )}
+              </Button>
+            </form>
           </div>
         </div>
       </section>
