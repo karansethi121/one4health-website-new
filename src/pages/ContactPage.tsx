@@ -1,14 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { Mail, Phone, MapPin, Send, MessageCircle, Clock } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { Mail, Phone, MapPin, MessageCircle, Clock, Send } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { useContact } from '@/hooks/useSupabase';
-import { supabase } from '@/lib/supabase';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,24 +27,27 @@ const contactInfo = [
   },
 ];
 
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-
 export function ContactPage() {
   useDocumentTitle('Contact Us');
-  const { toast } = useToast();
-  const { sendMessage, submitting: dbSubmitting } = useContact();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
-  const finalSubmitting = isSubmitting || dbSubmitting;
-
   useEffect(() => {
+    // 1. Initialise Shopify global config for the Forms app
+    (window as any).Shopify = (window as any).Shopify || {};
+    (window as any).Shopify.shop = 'gcjkd0-x9.myshopify.com';
+    (window as any).Shopify.locale = 'en';
+
+    // 2. Load the Shopify Forms script
+    const scriptId = 'shopify-forms-script';
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://cdn.shopify.com/shopifycloud/forms/static/forms.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    // 3. Entrance Animations
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.contact-animate',
@@ -73,49 +70,6 @@ export function ContactPage() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      // 1. Submit to Supabase and Shopify via hook
-      await sendMessage(formData);
-
-      // 2. Sync to Shopify via Supabase Edge Function
-      const { error: shopifyError } = await supabase.functions.invoke('shopify-sync', {
-        body: {
-          email: formData.email,
-          name: formData.name,
-          type: 'contact',
-          subject: formData.subject,
-          message: formData.message
-        }
-      });
-
-      if (shopifyError) {
-        console.error('Shopify sync error:', shopifyError);
-        // We don't fail the whole submission if Shopify sync fails, 
-        // as long as it's saved in Supabase.
-      }
-
-      toast({
-        title: 'Message sent!',
-        description: 'We\'ll get back to you within 24 hours.',
-      });
-
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error: any) {
-      console.error('Contact form error:', error);
-      toast({
-        title: 'Submission failed',
-        description: error.message || 'Something went wrong. Please try again later.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <main className="w-full pt-24 pb-16">
       {/* Hero */}
@@ -132,106 +86,33 @@ export function ContactPage() {
         </div>
       </section>
 
-      {/* Contact Info Cards */}
-      <section className="section-container mb-16">
-        <div className="grid md:grid-cols-3 gap-6">
-          {contactInfo.map((info) => (
-            <div
-              key={info.title}
-              className="contact-animate bg-white rounded-3xl p-8 shadow-soft-sm text-center"
-            >
-              <div className="w-14 h-14 bg-sage-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <info.icon className="w-7 h-7 text-sage-700" />
-              </div>
-              <h3 className="text-lg font-semibold text-charcoal-900 mb-1">
-                {info.title}
-              </h3>
-              <p className="text-sage-700 font-medium mb-1">{info.content}</p>
-              <p className="text-sm text-charcoal-500">{info.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Contact Form */}
+      {/* Main Content */}
       <section className="section-container">
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Form */}
-          <div className="contact-animate">
-            <div className="bg-white rounded-3xl p-8 shadow-soft">
-              <h2 className="text-2xl font-heading font-bold text-charcoal-900 mb-6">
-                Send us a Message
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Your Name</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="John Doe"
-                      required
-                      className="rounded-xl border-charcoal-200 focus:border-sage-500 focus:ring-sage-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="john@example.com"
-                      required
-                      className="rounded-xl border-charcoal-200 focus:border-sage-500 focus:ring-sage-500"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="subject">Subject</Label>
-                  <Input
-                    id="subject"
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    placeholder="How can we help?"
-                    required
-                    className="rounded-xl border-charcoal-200 focus:border-sage-500 focus:ring-sage-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell us more about your question or feedback..."
-                    required
-                    rows={5}
-                    className="rounded-xl border-charcoal-200 focus:border-sage-500 focus:ring-sage-500 resize-none"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  disabled={finalSubmitting}
-                  className="w-full btn-primary py-4"
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Left: Info & FAQ */}
+          <div className="space-y-8">
+            <div className="grid sm:grid-cols-3 lg:grid-cols-1 gap-6">
+              {contactInfo.map((info) => (
+                <div
+                  key={info.title}
+                  className="contact-animate bg-white rounded-3xl p-8 shadow-soft-sm flex items-start gap-6"
                 >
-                  {finalSubmitting ? (
-                    'Sending...'
-                  ) : (
-                    <>
-                      Send Message
-                      <Send className="w-4 h-4 ml-2" />
-                    </>
-                  )}
-                </Button>
-              </form>
+                  <div className="w-12 h-12 bg-sage-100 rounded-2xl flex items-center justify-center shrink-0">
+                    <info.icon className="w-6 h-6 text-sage-700" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-charcoal-900 mb-1">
+                      {info.title}
+                    </h3>
+                    <p className="text-sage-700 font-medium mb-1">{info.content}</p>
+                    <p className="text-sm text-charcoal-500">{info.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
 
-          {/* FAQ Preview */}
-          <div className="contact-animate">
-            <div className="bg-sage-700 rounded-3xl p-8 text-white h-full">
+            {/* FAQ Preview */}
+            <div className="contact-animate bg-sage-700 rounded-3xl p-8 text-white">
               <Clock className="w-10 h-10 mb-6" />
               <h2 className="text-2xl font-heading font-bold mb-4">
                 Quick Answers
@@ -244,7 +125,6 @@ export function ContactPage() {
                   'How long does shipping take?',
                   'What is your return policy?',
                   'How do I track my order?',
-                  'Are your products vegan?',
                 ].map((question) => (
                   <a
                     key={question}
@@ -262,6 +142,29 @@ export function ContactPage() {
                 View all FAQs
                 <Send className="w-4 h-4" />
               </a>
+            </div>
+          </div>
+
+          {/* Right: Shopify Native Form */}
+          <div className="contact-animate bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-soft-md border border-sage-100 min-h-[600px]">
+            <div className="mb-8">
+              <h2 className="text-2xl font-heading font-bold text-charcoal-900 mb-2">
+                Send a Message
+              </h2>
+              <p className="text-charcoal-600">
+                This form is powered by Shopify for secure and reliable delivery.
+              </p>
+            </div>
+
+            {/* SHOPIFY FORMS APP EMBED (ID: 913558) */}
+            <div 
+              className="shopify-forms-app-embed" 
+              data-form-id="913558"
+            >
+              <div className="flex flex-col items-center justify-center p-12 space-y-4 text-sage-400">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-700"></div>
+                <p className="text-sm font-medium">Initialising Shopify Form...</p>
+              </div>
             </div>
           </div>
         </div>
