@@ -11,7 +11,7 @@ import { useProducts } from '@/hooks/useSupabase';
 gsap.registerPlugin(ScrollTrigger);
 
 export function ShopPage() {
-  useDocumentTitle('Shop All');
+  useDocumentTitle('Shop Premium Ashwagandha Gummies');
   const { addToCart, loading: cartLoading } = useCart();
   const { products, loading: productsLoading } = useProducts();
   const [searchQuery, setSearchQuery] = useState('');
