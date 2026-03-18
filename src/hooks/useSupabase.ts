@@ -33,8 +33,8 @@ export function useProducts() {
         name: p.name || 'Unknown Product',
         subtitle: p.subtitle || '',
         description: p.description || '',
-        price: (p.price || 0) / 100,
-        originalPrice: p.compare_at_price ? p.compare_at_price / 100 : undefined,
+        price: p.price || 0,
+        originalPrice: p.compare_at_price || undefined,
         image: p.featured_image || '',
         images: p.product_images && p.product_images.length > 0
           ? p.product_images.sort((a: any, b: any) => (a.position || 0) - (b.position || 0)).map((img: any) => img.image_url)

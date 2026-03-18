@@ -229,7 +229,7 @@ export function ShopPage() {
                           1, 
                           undefined, 
                           undefined, 
-                          ashwagandhaProduct.price * 100, // already in rupees, convert to paise
+                          ashwagandhaProduct.price, // already in Paise from useProducts()
                           ashwagandhaProduct.name
                         );
                       }}

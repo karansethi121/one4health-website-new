@@ -87,7 +87,7 @@ export function ProductPage() {
     if (packSize === 2) {
       return 59900; // Bundle price for 2 packs (60 gummies)
     }
-    return 34900; // Standard price for 1 pack (30 gummies) after discount
+    return product.price || 34900; // Standard price from DB
   };
   // Sync quantity for cart submission - always 1 for bundles as requested
   useEffect(() => {
@@ -110,7 +110,7 @@ export function ProductPage() {
     const cartQuantity = quantity * packSize;
     
     // Calculate per-unit price in paise (59900/2 = 29950, 34900/1 = 34900)
-    const pricePaise = isBundle ? 29950 : 34900;
+    const pricePaise = isBundle ? 29950 : (product.price || 34900);
 
     await addToCart(variantId, cartQuantity, attributes, undefined, pricePaise, product.name);
   };
@@ -132,7 +132,7 @@ export function ProductPage() {
   }
 
   const currentPrice = getCurrentPrice();
-  const originalPrice = packSize === 2 ? 99800 : 49900;
+  const originalPrice = packSize === 2 ? 99800 : (product.originalPrice || 49900);
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
@@ -200,7 +200,7 @@ export function ProductPage() {
                     </div>
                   </div>
                   <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>30-day supply</span>
-                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(34900)}</span>
+                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(product.price || 34900)}</span>
                 </button>
 
                 <button
@@ -473,7 +473,7 @@ export function ProductPage() {
         productName={product.name} 
         variantId={product.shopifyVariantId || product.id} 
         quantity={quantity * packSize}
-        price={packSize === 2 ? 29950 : 34900}
+        price={packSize === 2 ? 29950 : (product.price || 34900)}
         title={product.name}
       />
     </main>
