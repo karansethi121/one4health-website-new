@@ -25,7 +25,6 @@ export function TrustBar() {
                   className="h-16 w-16 lg:h-20 lg:w-20 object-contain transition-transform duration-300 hover:scale-110"
                   loading="lazy"
                 />
-                <span className="mt-3 text-[10px] lg:text-xs text-charcoal-500 text-center font-medium">{cert.alt}</span>
               </div>
             ))}
           </div>
@@ -39,7 +38,6 @@ export function TrustBar() {
                   className="h-16 w-16 lg:h-20 lg:w-20 object-contain transition-transform duration-300 hover:scale-110"
                   loading="lazy"
                 />
-                <span className="mt-3 text-[10px] lg:text-xs text-charcoal-500 text-center font-medium">{cert.alt}</span>
               </div>
             ))}
           </div>
