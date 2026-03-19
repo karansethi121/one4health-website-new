@@ -8,7 +8,6 @@ export function TrustBar() {
     { image: '/images/cert_iso22000.png', alt: 'ISO 22000 Certified' },
     { image: '/images/cert_cruelty_free.png', alt: 'Cruelty Free' },
     { image: '/images/cert_fssai.webp', alt: 'FSSAI Compliant' },
-    { image: '/images/cert_veg.svg', alt: '100% Vegetarian' },
     { image: '/images/cert_madeinindia.webp', alt: 'Made in India' },
   ];
 
