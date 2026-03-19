@@ -6,6 +6,17 @@ import { Button } from '@/components/ui/button';
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice, loading } = useCart();
 
+  const getResolvedImage = (item: any) => {
+    const title = (item.product_title || item.title || '').toLowerCase();
+    if (title.includes('ashwa') || title.includes('gumm')) {
+      // @ts-ignore
+      return (typeof window !== 'undefined' && window.ShopifyAssetsUrl)
+        ? window.ShopifyAssetsUrl + 'product_transparent.webp'
+        : '/images/product_transparent.webp';
+    }
+    return item.image;
+  };
+
   /** Shopify prices are stored in smallest currency unit (paise). Divide by 100 for display. */
   const formatPrice = (price: number) => {
     if (price == null || isNaN(price)) return '₹0';
@@ -56,7 +67,7 @@ export function CartDrawer() {
                   className="flex gap-4 p-4 bg-white rounded-2xl shadow-soft"
                 >
                   <img
-                    src={item.image}
+                    src={getResolvedImage(item)}
                     alt={item.product_title}
                     className="w-20 h-20 object-cover rounded-xl flex-shrink-0"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
