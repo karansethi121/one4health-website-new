@@ -1,9 +1,13 @@
 export function TrustBar() {
   const certifications = [
+    { image: '/images/cert_fssc.png', alt: 'FSSC 22000' },
+    { image: '/images/cert_usfda_new.png', alt: 'US FDA Registered Facility' },
+    { image: '/images/cert_gmp_new.png', alt: 'GMP Certified' },
+    { image: '/images/cert_haccp.png', alt: 'HACCP' },
+    { image: '/images/cert_iso9001_new.png', alt: 'ISO 9001 Certified' },
+    { image: '/images/cert_iso22000.png', alt: 'ISO 22000 Certified' },
+    { image: '/images/cert_cruelty_free.png', alt: 'Cruelty Free' },
     { image: '/images/cert_fssai.webp', alt: 'FSSAI Compliant' },
-    { image: '/images/cert_gmp.webp', alt: 'GMP Certified' },
-    { image: '/images/cert_fda.svg', alt: 'US FDA Facility' },
-    { image: '/images/cert_iso_clean.svg', alt: 'ISO 9001:2015' },
     { image: '/images/cert_veg.svg', alt: '100% Vegetarian' },
     { image: '/images/cert_madeinindia.webp', alt: 'Made in India' },
   ];
