@@ -11,8 +11,8 @@ export function CartDrawer() {
     if (title.includes('ashwa') || title.includes('gumm')) {
       // @ts-ignore
       return (typeof window !== 'undefined' && window.ShopifyAssetsUrl)
-        ? window.ShopifyAssetsUrl + 'product_main_new.webp'
-        : 'https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062';
+        ? window.ShopifyAssetsUrl + 'product_main_new.png'
+        : '/images/product_main_new.png';
     }
     return item.image;
   };

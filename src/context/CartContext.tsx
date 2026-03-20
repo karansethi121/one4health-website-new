@@ -62,7 +62,7 @@ const deriveCartTotals = (items: CartItem[]) => ({
 
 const MOCK_PRODUCT_PRICE = 34900; // paise = ₹349 (Shopify format)
 const MOCK_ORIGINAL_PRICE = 49900; // paise = ₹499 (Shopify format)
-const MOCK_IMAGE = 'https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062';
+const MOCK_IMAGE = '/images/product_main_new.png';
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 

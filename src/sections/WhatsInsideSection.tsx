@@ -159,7 +159,7 @@ export function WhatsInsideSection() {
           <div className="inside-image flex justify-center">
             <div className="relative">
               <img
-                src="https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062"
+                src="/images/product_main_new.png"
                 alt="One4Health™ Ashwagandha Gummies bottle - No added sugar, vegan, and mixed berry flavored"
                 className="w-64 sm:w-72 lg:w-80 xl:w-96 h-auto drop-shadow-2xl"
                 loading="lazy"
