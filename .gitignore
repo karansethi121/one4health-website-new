@@ -25,3 +25,4 @@ dist-ssr
 # Patch files (from my work)
 patch_assets.py
 *.bak
+.env
