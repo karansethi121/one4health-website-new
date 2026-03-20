@@ -179,7 +179,7 @@ export function ProductPage() {
                 {product.name}
               </h1>
               <p className="text-base lg:text-lg text-charcoal-600">{product.subtitle}</p>
-              <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Mixed Berry</p>
+              <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Strawberry</p>
             </div>
 
             {/* Premium Pack Size Selection */}

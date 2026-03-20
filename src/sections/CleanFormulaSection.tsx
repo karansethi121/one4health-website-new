@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const cleanPoints = [
-  { text: 'No artificial dyes or colors', emoji: '🎨', why: 'Just natural berry flavor' },
+  { text: 'No artificial dyes or colors', emoji: '🎨', why: 'Just natural strawberry flavor' },
   { text: 'No high-fructose corn syrup', emoji: '🌽', why: 'Sweetened naturally, not chemically' },
   { text: 'No artificial flavors', emoji: '🍓', why: 'Real fruit taste you can trust' },
   { text: 'Third-party tested', emoji: '✅', why: 'Every batch verified for purity' },
@@ -104,7 +104,7 @@ export function CleanFormulaSection() {
             <div className="relative rounded-3xl overflow-hidden shadow-soft-lg">
               <img
                 src="/images/product_main_new.png"
-                alt="Close-up of premium, natural berry flavored Ashwagandha gummies without artificial dyes"
+                alt="Close-up of premium, natural strawberry flavored Ashwagandha gummies without artificial dyes"
                 className="w-full h-80 lg:h-96 object-cover"
                 loading="lazy"
               />

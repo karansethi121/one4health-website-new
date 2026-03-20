@@ -112,7 +112,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'Are these gummies no added sugar?',
-    answer: 'Yes! Our gummies are completely no added sugar. We use natural sweeteners to create a delicious berry flavor without the sugar crash. They\'re also vegan, gluten-free, and contain no artificial dyes or flavors.',
+    answer: 'Yes! Our gummies are completely no added sugar. We use natural sweeteners to create a delicious strawberry flavor without the sugar crash. They\'re also vegan, gluten-free, and contain no artificial dyes or flavors.',
   },
   {
     question: 'Can I take these with other supplements?',

@@ -189,7 +189,7 @@ export function ShopPage() {
                           {ashwagandhaProduct.name}
                         </h3>
                       </Link>
-                      <p className="text-sm font-medium text-charcoal-400">Flavor: Mixed Berry</p>
+                      <p className="text-sm font-medium text-charcoal-400">Flavor: Strawberry</p>
                     </div>
                   </div>
 
