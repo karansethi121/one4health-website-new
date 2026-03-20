@@ -9,9 +9,7 @@ export const mainProduct: Product = {
   originalPrice: 49900,
   image: 'https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062',
   images: [
-    'https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062',
-    '/images/product_features_jar.webp',
-    '/images/product_lifestyle_2.webp'
+    'https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062'
   ],
   badge: 'New Launch',
   inStock: true,

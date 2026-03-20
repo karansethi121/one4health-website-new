@@ -153,7 +153,7 @@ export function ScienceSection() {
         {/* Right - Image */}
         <div className="science-image relative h-64 lg:h-auto">
           <img
-            src="/images/science_jar_table.webp"
+            src="https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062"
             alt="One4Health KSM-66 Ashwagandha jar on a table, symbolizing science-backed wellness and pure root extract technology"
             className="w-full h-full object-cover"
           />

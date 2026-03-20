@@ -172,7 +172,7 @@ export function HeroSection() {
                 {/* Main product image - transparent PNG */}
                 <div className="relative z-10">
                   <img
-                    src="/images/product_main_new.webp"
+                    src="https://one4health.com/cdn/shop/files/Gemini_Generated_Image_3rwek93rwek93rwe-Photoroom_d41753a8-02bc-4a2b-adb5-0fcb13f1684c.png?v=1771419062"
                     alt="One4Health™ Ashwagandha Gummies bottle containing 30-day supply of KSM-66 clinical grade gummies"
                     className="w-80 sm:w-96 lg:w-[32rem] xl:w-[38rem] h-auto drop-shadow-2xl"
                     loading="eager"
