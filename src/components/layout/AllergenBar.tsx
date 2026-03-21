@@ -15,30 +15,28 @@ export function AllergenBar() {
                     100% Allergen Free
                 </p>
                 <div className="relative flex overflow-hidden group">
-                    <div className="flex w-max animate-[scroll_35s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-10 lg:gap-14 pr-10 lg:pr-14 will-change-transform">
+                    <div className="flex w-max animate-[scroll_35s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-8 lg:gap-12 pr-8 lg:pr-12 will-change-transform">
                         {allergens.map((item, index) => (
-                            <div key={index} className="flex flex-col items-center shrink-0 w-20 lg:w-24">
+                            <div key={index} className="flex flex-col items-center shrink-0">
                                 <img
                                     src={item.image}
                                     alt={item.alt}
-                                    className="h-16 w-16 lg:h-20 lg:w-20 object-contain transition-transform duration-300 hover:scale-110"
+                                    className="h-12 w-12 lg:h-14 lg:w-14 object-contain transition-transform duration-300 hover:scale-110"
                                     loading="lazy"
                                 />
-                                <span className="mt-2 text-[10px] lg:text-xs text-charcoal-600 text-center font-medium leading-tight">{item.alt}</span>
                             </div>
                         ))}
                     </div>
                     {/* Duplicate for seamless loop */}
-                    <div className="flex w-max animate-[scroll_35s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-10 lg:gap-14 pr-10 lg:pr-14" aria-hidden="true">
+                    <div className="flex w-max animate-[scroll_35s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-8 lg:gap-12 pr-8 lg:pr-12" aria-hidden="true">
                         {allergens.map((item, index) => (
-                            <div key={`dup-${index}`} className="flex flex-col items-center shrink-0 w-20 lg:w-24">
+                            <div key={`dup-${index}`} className="flex flex-col items-center shrink-0">
                                 <img
                                     src={item.image}
                                     alt={item.alt}
-                                    className="h-16 w-16 lg:h-20 lg:w-20 object-contain transition-transform duration-300 hover:scale-110"
+                                    className="h-12 w-12 lg:h-14 lg:w-14 object-contain transition-transform duration-300 hover:scale-110"
                                     loading="lazy"
                                 />
-                                <span className="mt-2 text-[10px] lg:text-xs text-charcoal-600 text-center font-medium leading-tight">{item.alt}</span>
                             </div>
                         ))}
                     </div>
