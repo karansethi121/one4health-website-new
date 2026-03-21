@@ -328,7 +328,7 @@ export function ProductPage() {
                   { image: '/images/allergen_soy_free_new.png', alt: 'Soy Free' },
                 ].map((allergen) => (
                   <div key={allergen.alt} className="flex flex-col items-center justify-center">
-                    <img src={allergen.image} alt={allergen.alt} className="h-16 w-16 lg:h-20 lg:w-20 object-contain" loading="lazy" />
+                    <img src={allergen.image} alt={allergen.alt} className="h-20 w-20 lg:h-28 lg:w-28 object-contain" loading="lazy" />
                   </div>
                 ))}
               </div>

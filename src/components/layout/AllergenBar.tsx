@@ -17,11 +17,11 @@ export function AllergenBar() {
                 <div className="relative flex overflow-hidden group">
                     <div className="flex w-max animate-[scroll_35s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-10 lg:gap-14 pr-10 lg:pr-14 will-change-transform">
                         {allergens.map((item, index) => (
-                            <div key={index} className="flex flex-col items-center shrink-0 w-20">
+                            <div key={index} className="flex flex-col items-center shrink-0 w-32 lg:w-40">
                                 <img
                                     src={item.image}
                                     alt={item.alt}
-                                    className="h-20 w-20 lg:h-24 lg:w-24 object-contain transition-transform duration-300 hover:scale-110"
+                                    className="h-32 w-32 lg:h-40 lg:w-40 object-contain transition-transform duration-300 hover:scale-110"
                                     loading="lazy"
                                 />
                             </div>
@@ -30,11 +30,11 @@ export function AllergenBar() {
                     {/* Duplicate for seamless loop */}
                     <div className="flex w-max animate-[scroll_35s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-10 lg:gap-14 pr-10 lg:pr-14" aria-hidden="true">
                         {allergens.map((item, index) => (
-                            <div key={`dup-${index}`} className="flex flex-col items-center shrink-0 w-20">
+                            <div key={`dup-${index}`} className="flex flex-col items-center shrink-0 w-32 lg:w-40">
                                 <img
                                     src={item.image}
                                     alt={item.alt}
-                                    className="h-20 w-20 lg:h-24 lg:w-24 object-contain transition-transform duration-300 hover:scale-110"
+                                    className="h-32 w-32 lg:h-40 lg:w-40 object-contain transition-transform duration-300 hover:scale-110"
                                     loading="lazy"
                                 />
                             </div>
