@@ -101,11 +101,11 @@ export function CleanFormulaSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left - Image */}
           <div className="clean-image relative w-full max-w-sm sm:max-w-md lg:max-w-full mx-auto">
-            <div className="relative rounded-3xl overflow-hidden shadow-soft-lg w-full">
+            <div className="relative w-full flex justify-center py-6">
               <img
-                src="/images/clean-formula-creative.jpeg"
-                alt="One4Health Natural strawberry flavored Ashwagandha gummies lifestyle"
-                className="w-full h-64 sm:h-80 lg:h-96 object-cover object-center"
+                src="/images/clean-formula-splash.png"
+                alt="One4Health Natural strawberry splash transparent background"
+                className="w-full max-w-[280px] sm:max-w-sm lg:max-w-md h-auto object-contain object-center drop-shadow-2xl"
                 loading="lazy"
               />
             </div>

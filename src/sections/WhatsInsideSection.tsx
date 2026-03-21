@@ -159,8 +159,8 @@ export function WhatsInsideSection() {
           <div className="inside-image flex justify-center w-full">
             <div className="relative w-full max-w-[260px] sm:max-w-xs lg:max-w-sm xl:max-w-md mx-auto">
               <img
-                src="/images/whats-inside-creative.png"
-                alt="One4Health™ Ashwagandha Gummies layout with ingredients"
+                src="/images/whats-inside-gummies.png"
+                alt="One4Health™ shiny coin gummies floating"
                 className="w-full h-auto drop-shadow-2xl object-contain mx-auto"
                 loading="lazy"
               />
