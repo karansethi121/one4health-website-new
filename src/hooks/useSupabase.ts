@@ -48,9 +48,17 @@ export function useProducts() {
         price: p.price || 0,
         originalPrice: p.compare_at_price || undefined,
         image: resolveImageUrl(p.featured_image || ''),
-        images: p.product_images && p.product_images.length > 0
+        images: p.product_images && p.product_images.length > 1
           ? p.product_images.sort((a: any, b: any) => (a.position || 0) - (b.position || 0)).map((img: any) => resolveImageUrl(img.image_url))
-          : [resolveImageUrl(p.featured_image || '')],
+          : (p.handle === 'ashwagandha-gummies-ksm66' 
+              ? [
+                  resolveImageUrl(p.featured_image || '/images/hero-clean.png'),
+                  '/images/gallery-cortisol.png',
+                  '/images/gallery-lifestyle.jpeg',
+                  '/images/gallery-wellness.jpeg',
+                  '/images/gallery-ingredients.jpeg'
+                ]
+              : [resolveImageUrl(p.featured_image || '')]),
         badge: p.badge,
         inStock: p.in_stock ?? true,
         quantity: p.quantity || 0,

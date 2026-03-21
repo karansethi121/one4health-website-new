@@ -37,6 +37,7 @@ export function ProductPage() {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [packSize, setPackSize] = useState<PackSize>(1);
+  const [activeImage, setActiveImage] = useState(0);
 
   const { products, loading: productsLoading } = useProducts();
 
@@ -152,15 +153,40 @@ export function ProductPage() {
       <section className="section-container py-6 lg:py-12">
         <div className="product-content grid lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Left - Images */}
-          <div className="product-animate flex items-center justify-center">
-            <div className="relative">
+          <div className="product-animate flex flex-col items-center gap-6 lg:gap-8 overflow-hidden pl-2 pb-2">
+            <div className="relative w-full aspect-[4/5] sm:aspect-square bg-sage-50/30 rounded-[2rem] flex items-center justify-center p-6 sm:p-10 lg:p-14 border border-sage-100/50 shadow-soft">
               <img
-                src={product.image}
-                alt={`${product.name} Bottle - Premium ${product.id.replace(/-/g, ' ')} Stress Support Gummies`}
-                className="w-64 sm:w-72 lg:w-96 xl:w-[28rem] h-auto drop-shadow-2xl"
+                key={activeImage}
+                src={product.images && product.images.length > 0 ? product.images[activeImage] : product.image}
+                alt={`${product.name} - View ${activeImage + 1}`}
+                className="w-full h-full object-contain drop-shadow-2xl animate-fade-in"
                 loading="eager"
               />
             </div>
+            
+            {/* Thumbnail Gallery */}
+            {product.images && product.images.length > 1 && (
+              <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 w-full justify-start sm:justify-center scrollbar-hide px-1">
+                {product.images.map((imgUrl, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImage(idx)}
+                    className={`relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
+                      activeImage === idx 
+                        ? 'border-sage-700 ring-4 ring-sage-700/10 scale-105 bg-white' 
+                        : 'border-transparent bg-sage-50/50 hover:bg-sage-50 hover:border-sage-300 hover:scale-[1.02]'
+                    }`}
+                  >
+                    <img 
+                      src={imgUrl} 
+                      alt={`Thumbnail ${idx + 1}`}
+                      className="absolute inset-0 w-full h-full object-contain p-2 mix-blend-multiply"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right - Product Info */}
