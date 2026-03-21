@@ -151,12 +151,12 @@ export function ScienceSection() {
         </div>
 
         {/* Right - Image */}
-        <div className="science-image relative flex justify-center items-center py-8 lg:py-12 w-full bg-white/50 lg:bg-transparent">
-          <div className="w-full max-w-[280px] sm:max-w-sm lg:max-w-md mx-auto">
+        <div className="science-image relative flex justify-center items-center py-8 lg:py-12 w-full">
+          <div className="w-full max-w-[280px] sm:max-w-sm lg:max-w-md mx-auto relative flex justify-center">
             <img
-              src="/images/science-infographic.png"
-              alt="Clinical Cortisol Control - proven to lower cortisol levels by up to 27% in 60 days"
-              className="w-full h-auto object-contain mx-auto drop-shadow-xl"
+              src="/images/science-ashwagandha.png"
+              alt="Pristine organic Ashwagandha roots floating"
+              className="w-full h-auto object-contain mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
             />
           </div>
         </div>
