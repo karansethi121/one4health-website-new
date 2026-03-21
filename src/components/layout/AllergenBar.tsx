@@ -21,10 +21,9 @@ export function AllergenBar() {
                                 <img
                                     src={item.image}
                                     alt={item.alt}
-                                    className="h-14 w-14 lg:h-16 lg:w-16 object-contain transition-transform duration-300 hover:scale-110"
+                                    className="h-20 w-20 lg:h-24 lg:w-24 object-contain transition-transform duration-300 hover:scale-110"
                                     loading="lazy"
                                 />
-                                <span className="mt-2 text-[10px] lg:text-xs text-charcoal-500 text-center font-medium">{item.alt}</span>
                             </div>
                         ))}
                     </div>
@@ -35,10 +34,9 @@ export function AllergenBar() {
                                 <img
                                     src={item.image}
                                     alt={item.alt}
-                                    className="h-14 w-14 lg:h-16 lg:w-16 object-contain transition-transform duration-300 hover:scale-110"
+                                    className="h-20 w-20 lg:h-24 lg:w-24 object-contain transition-transform duration-300 hover:scale-110"
                                     loading="lazy"
                                 />
-                                <span className="mt-2 text-[10px] lg:text-xs text-charcoal-500 text-center font-medium">{item.alt}</span>
                             </div>
                         ))}
                     </div>
