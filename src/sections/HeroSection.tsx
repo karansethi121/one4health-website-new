@@ -172,7 +172,7 @@ export function HeroSection() {
                 {/* Main product image - transparent PNG */}
                 <div className="relative z-10 w-full max-w-[280px] sm:max-w-sm lg:max-w-[32rem] xl:max-w-[38rem]">
                   <img
-                    src="/images/hero-tilted-5.png"
+                    src="/images/hero-clean.png"
                     alt="One4Health™ Ashwagandha Gummies bottle transparent render"
                     className="w-full h-auto object-contain drop-shadow-2xl mx-auto tracking-[0.02em]"
                     loading="eager"
