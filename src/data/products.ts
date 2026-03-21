@@ -27,7 +27,7 @@ export const mainProduct: Product = {
     'Helps maintain daily balance',
     'Supports mood and well-being',
     'Enhanced absorption with BioPerine®',
-    '100% Allergen Free (No Soy, Gluten, Nuts, Gelatin, Dairy)',
+    '100% Allergen Free (No Soy, Gluten, Nuts, Gelatin, Milk)',
   ],
   ingredients: [
     {

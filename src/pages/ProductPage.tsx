@@ -320,12 +320,12 @@ export function ProductPage() {
               <h3 className="text-[10px] lg:text-xs font-bold text-charcoal-500 mb-4 uppercase tracking-widest">100% Allergen Free</h3>
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
                 {[
-                  { image: '/images/allergen_soy_free.svg', alt: 'Soy Free' },
-                  { image: '/images/allergen_nut_free.svg', alt: 'Nut Free' },
-                  { image: '/images/allergen_peanut_free.svg', alt: 'Peanut Free' },
-                  { image: '/images/allergen_dairy_free.svg', alt: 'Dairy Free' },
-                  { image: '/images/allergen_gluten_free.svg', alt: 'Gluten Free' },
-                  { image: '/images/allergen_gelatin_free.svg', alt: 'Gelatin Free' },
+                  { image: '/images/allergen_gelatin_free_new.png', alt: 'Gelatin Free' },
+                  { image: '/images/allergen_gluten_free_new.png', alt: 'Gluten Free' },
+                  { image: '/images/allergen_milk_free_new.png', alt: 'Milk Free' },
+                  { image: '/images/allergen_peanut_free_new.png', alt: 'Peanut Free' },
+                  { image: '/images/allergen_nut_free_new.png', alt: 'Nut Free' },
+                  { image: '/images/allergen_soy_free_new.png', alt: 'Soy Free' },
                 ].map((allergen) => (
                   <div key={allergen.alt} className="flex flex-col items-center gap-1.5">
                     <img src={allergen.image} alt={allergen.alt} className="h-10 w-10 lg:h-12 lg:w-12 object-contain" loading="lazy" />
