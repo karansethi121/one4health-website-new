@@ -1,11 +1,11 @@
 export function AllergenBar() {
     const allergens = [
-        { image: '/images/allergen_gelatin_free_v5.png', alt: 'Gelatin Free' },
-        { image: '/images/allergen_gluten_free_v5.png', alt: 'Gluten Free' },
-        { image: '/images/allergen_milk_free_v5.png', alt: 'Milk Free' },
-        { image: '/images/allergen_peanut_free_v5.png', alt: 'Peanut Free' },
-        { image: '/images/allergen_nut_free_v5.png', alt: 'Nut Free' },
-        { image: '/images/allergen_soy_free_v5.png', alt: 'Soy Free' },
+        { image: '/images/allergen_gelatin_free_v6.png', alt: 'Gelatin Free' },
+        { image: '/images/allergen_gluten_free_v6.png', alt: 'Gluten Free' },
+        { image: '/images/allergen_milk_free_v6.png', alt: 'Milk Free' },
+        { image: '/images/allergen_peanut_free_v6.png', alt: 'Peanut Free' },
+        { image: '/images/allergen_nut_free_v6.png', alt: 'Nut Free' },
+        { image: '/images/allergen_soy_free_v6.png', alt: 'Soy Free' },
     ];
 
     return (
