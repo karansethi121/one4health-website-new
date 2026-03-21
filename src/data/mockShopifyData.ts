@@ -13,10 +13,10 @@ const MOCK_PRODUCT = {
   featured_image: '/images/hero-clean.png',
   images: [
     '/images/hero-clean.png',
-    '/images/clean-gallery-cortisol.png',
-    '/images/clean-gallery-lifestyle.jpeg',
-    '/images/clean-gallery-wellness.jpeg',
-    '/images/clean-gallery-ingredients.jpeg'
+    '/images/gallery-cortisol.png',
+    '/images/gallery-lifestyle.jpeg',
+    '/images/gallery-wellness.jpeg',
+    '/images/gallery-ingredients.jpeg'
   ],
   options: [{ name: 'Title', values: ['Default Title'] }],
   variants: [
