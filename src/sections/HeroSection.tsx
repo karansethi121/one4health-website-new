@@ -168,13 +168,13 @@ export function HeroSection() {
 
             {/* Right - Product Image */}
             <div className="hero-image relative flex justify-center items-center order-1 lg:order-2">
-              <div className="relative">
+              <div className="relative w-full flex justify-center">
                 {/* Main product image - transparent PNG */}
-                <div className="relative z-10">
+                <div className="relative z-10 w-full max-w-[280px] sm:max-w-sm lg:max-w-[32rem] xl:max-w-[38rem]">
                   <img
-                    src="/images/product_main_new.png"
+                    src="/images/hero-tilted.png"
                     alt="One4Health™ Ashwagandha Gummies bottle containing 30-day supply of KSM-66 clinical grade gummies"
-                    className="w-80 sm:w-96 lg:w-[32rem] xl:w-[38rem] h-auto drop-shadow-2xl"
+                    className="w-full h-auto object-contain drop-shadow-2xl mx-auto"
                     loading="eager"
                   />
                 </div>

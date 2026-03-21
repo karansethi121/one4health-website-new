@@ -100,17 +100,17 @@ export function CleanFormulaSection() {
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left - Image */}
-          <div className="clean-image">
-            <div className="relative rounded-3xl overflow-hidden shadow-soft-lg">
+          <div className="clean-image relative w-full max-w-sm sm:max-w-md lg:max-w-full mx-auto">
+            <div className="relative rounded-3xl overflow-hidden shadow-soft-lg w-full">
               <img
-                src="/images/product_main_new.png"
-                alt="Close-up of premium, natural strawberry flavored Ashwagandha gummies without artificial dyes"
-                className="w-full h-80 lg:h-96 object-cover"
+                src="/images/clean-formula-creative.jpeg"
+                alt="One4Health Natural strawberry flavored Ashwagandha gummies lifestyle"
+                className="w-full h-64 sm:h-80 lg:h-96 object-cover object-center"
                 loading="lazy"
               />
             </div>
             {/* Floating badge */}
-            <div className="absolute -bottom-6 right-6 bg-white rounded-2xl px-5 py-4 shadow-soft animate-gentle-bounce">
+            <div className="absolute -bottom-6 right-6 lg:right-4 bg-white rounded-2xl px-5 py-4 shadow-soft animate-gentle-bounce z-20">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">🏆</span>
                 <div>

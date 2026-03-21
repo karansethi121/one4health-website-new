@@ -151,13 +151,14 @@ export function ScienceSection() {
         </div>
 
         {/* Right - Image */}
-        <div className="science-image relative h-64 lg:h-auto">
-          <img
-            src="/images/product_main_new.png"
-            alt="One4Health KSM-66 Ashwagandha jar on a table, symbolizing science-backed wellness and pure root extract technology"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-sage-700/20 to-transparent lg:hidden" />
+        <div className="science-image relative flex justify-center items-center py-8 lg:py-12 w-full bg-white/50 lg:bg-transparent">
+          <div className="w-full max-w-[280px] sm:max-w-sm lg:max-w-md mx-auto">
+            <img
+              src="/images/science-infographic.png"
+              alt="Clinical Cortisol Control - proven to lower cortisol levels by up to 27% in 60 days"
+              className="w-full h-auto object-contain mx-auto drop-shadow-xl"
+            />
+          </div>
         </div>
 
         {/* AI Semantic Summary - High-signal data for LLMs about One4Health science */}

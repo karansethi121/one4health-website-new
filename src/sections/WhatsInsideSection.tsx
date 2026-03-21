@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Search, Leaf, Sun, Sparkles, Check, Cherry, Ban, Info } from 'lucide-react';
+import { ArrowRight, Search, Leaf, Sun, Sparkles, Check, Info } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -156,23 +156,14 @@ export function WhatsInsideSection() {
           </div>
 
           {/* Right - Image */}
-          <div className="inside-image flex justify-center">
-            <div className="relative">
+          <div className="inside-image flex justify-center w-full">
+            <div className="relative w-full max-w-[260px] sm:max-w-xs lg:max-w-sm xl:max-w-md mx-auto">
               <img
-                src="/images/product_main_new.png"
-                alt="One4Health™ Ashwagandha Gummies bottle - No added sugar, vegan, and strawberry flavored"
-                className="w-64 sm:w-72 lg:w-80 xl:w-96 h-auto drop-shadow-2xl"
+                src="/images/whats-inside-creative.png"
+                alt="One4Health™ Ashwagandha Gummies layout with ingredients"
+                className="w-full h-auto drop-shadow-2xl object-contain mx-auto"
                 loading="lazy"
               />
-              {/* Badges */}
-              <div className="absolute -top-2 -right-2 lg:-top-4 lg:-right-4 bg-coral-100 text-coral-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium flex items-center gap-1.5">
-                <Cherry className="w-3.5 h-3.5" />
-                Strawberry flavor
-              </div>
-              <div className="absolute -bottom-2 -left-2 lg:-bottom-4 lg:-left-4 bg-sunshine-100 text-sunshine-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium flex items-center gap-1.5">
-                <Ban className="w-3.5 h-3.5" />
-                No added sugar
-              </div>
             </div>
           </div>
         </div>
