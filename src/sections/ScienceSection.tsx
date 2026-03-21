@@ -54,11 +54,12 @@ export function ScienceSection() {
 
       gsap.fromTo(
         '.science-image',
-        { x: 80, opacity: 0 },
+        { x: 80, opacity: 0, rotation: 10 },
         {
           x: 0,
           opacity: 1,
-          duration: 0.8,
+          rotation: 0,
+          duration: 1,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -67,6 +68,17 @@ export function ScienceSection() {
           },
         }
       );
+
+      gsap.to('.science-image img', {
+        y: 80,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        }
+      });
 
       gsap.fromTo(
         '.science-stat',

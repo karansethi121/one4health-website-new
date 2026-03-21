@@ -37,12 +37,13 @@ export function CleanFormulaSection() {
 
       gsap.fromTo(
         '.clean-image',
-        { x: -50, opacity: 0 },
+        { x: -50, opacity: 0, scale: 0.7 },
         {
           x: 0,
           opacity: 1,
-          duration: 0.7,
-          ease: 'power3.out',
+          scale: 1,
+          duration: 1.4,
+          ease: 'elastic.out(1, 0.6)',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 65%',

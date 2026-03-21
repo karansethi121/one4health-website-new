@@ -70,13 +70,13 @@ export function WhatsInsideSection() {
 
       gsap.fromTo(
         '.inside-image',
-        { x: 50, opacity: 0, scale: 0.95 },
+        { x: 50, opacity: 0, scale: 0.9 },
         {
           x: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.8,
-          ease: 'power3.out',
+          duration: 1,
+          ease: 'back.out(1.2)',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 60%',
@@ -84,6 +84,16 @@ export function WhatsInsideSection() {
           },
         }
       );
+
+      gsap.to('.inside-image img', {
+        y: -15,
+        rotation: 3,
+        duration: 2.5,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 0.5
+      });
     }, sectionRef);
 
     return () => ctx.revert();

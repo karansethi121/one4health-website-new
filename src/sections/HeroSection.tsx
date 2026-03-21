@@ -53,9 +53,14 @@ export function HeroSection() {
         )
         .fromTo(
           '.hero-image',
-          { y: 60, opacity: 0, scale: 0.95 },
-          { y: 0, opacity: 1, scale: 1, duration: 0.9 },
+          { y: 60, opacity: 0, scale: 0.95, rotateZ: -5 },
+          { y: 0, opacity: 1, scale: 1, rotateZ: 0, duration: 1.2 },
           0.4
+        )
+        .to(
+          '.hero-image img',
+          { y: -15, rotateZ: 2, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+          1.6
         )
         .fromTo(
           '.hero-float',
