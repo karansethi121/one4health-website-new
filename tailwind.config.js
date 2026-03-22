@@ -40,16 +40,16 @@ module.exports = {
         },
         // OneforHealth brand colors - more playful
         sage: {
-          50: '#F8F9F6',
-          100: '#EDF1EA',
-          200: '#D9E3D3',
-          300: '#BDD1B3',
-          400: '#9BB88E',
-          500: '#7A9B6A',
-          600: '#5D7F4F',
-          700: '#4A6B3E',
-          800: '#3D5535',
-          900: '#33462D',
+          50: '#FAFCF8',  // Clean, elegant global background
+          100: '#EFFFE9', // User's brand light green (Accent containers)
+          200: '#D4F5C9',
+          300: '#AEE59D',
+          400: '#81D06C',
+          500: '#55B53D',
+          600: '#359120',
+          700: '#1A6D24', // User's Dark Green
+          800: '#15561D',
+          900: '#114418',
         },
         // Fun accent colors
         coral: {
