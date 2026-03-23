@@ -279,22 +279,26 @@ export function useContact() {
       // 2. Submit to Shopify Form (ID: 913558)
       // This ensures it shows up in Shopify Admin -> Forms and triggers Shopify's email notifications
       try {
-        const formData = new FormData();
-        formData.append('form_type', 'contact');
-        formData.append('utf8', '✓');
+        const params = new URLSearchParams();
+        params.append('form_type', 'contact');
+        params.append('utf8', '✓');
         // This links relevant fields with Shopify's expectations
-        formData.append('contact[name]', data.name);
-        formData.append('contact[email]', data.email);
-        formData.append('contact[body]', `Subject: ${data.subject}\n\n${data.message}`);
+        params.append('contact[name]', data.name);
+        params.append('contact[email]', data.email);
+        params.append('contact[body]', `Subject: ${data.subject}\n\n${data.message}`);
         
         // Link with specific Shopify Form ID provided by the user
-        formData.append('id', '913558');
+        params.append('id', '913558');
 
         // We use relative path because this app is injected into the Shopify theme
-        // If it's local development, it will likely 404/CORS-fail, but we'll try/catch it
+        // Shopify /contact endpoint specifically requires application/x-www-form-urlencoded
         await fetch('/contact', {
           method: 'POST',
-          body: formData,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'text/html,application/xhtml+xml,application/xml',
+          },
+          body: params.toString(),
         });
         
         console.log('[Contact] Shopify Form submission sent successfully');
