@@ -269,14 +269,40 @@ export function useContact() {
       setError(null);
       setSuccess(false);
 
-      // 1. Save to Supabase contact_messages table
+      // 1. Save to Supabase contact_messages table for internal logging
       const { error: dbError } = await supabase
         .from('contact_messages')
         .insert([data]);
 
       if (dbError) throw dbError;
 
-      // 2. Sync to Shopify Customers via Edge Function (non-blocking)
+      // 2. Submit to Shopify Form (ID: 913558)
+      // This ensures it shows up in Shopify Admin -> Forms and triggers Shopify's email notifications
+      try {
+        const formData = new FormData();
+        formData.append('form_type', 'contact');
+        formData.append('utf8', '✓');
+        // This links relevant fields with Shopify's expectations
+        formData.append('contact[name]', data.name);
+        formData.append('contact[email]', data.email);
+        formData.append('contact[body]', `Subject: ${data.subject}\n\n${data.message}`);
+        
+        // Link with specific Shopify Form ID provided by the user
+        formData.append('id', '913558');
+
+        // We use relative path because this app is injected into the Shopify theme
+        // If it's local development, it will likely 404/CORS-fail, but we'll try/catch it
+        await fetch('/contact', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        console.log('[Contact] Shopify Form submission sent successfully');
+      } catch (shopifyFormErr) {
+        console.warn('[Contact] Shopify direct form submission failed (expected in local dev):', shopifyFormErr);
+      }
+
+      // 3. Sync to Shopify Customers via Edge Function (legacy/redundant but kept for sync)
       try {
         const { data: session } = await supabase.auth.getSession();
         const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -295,9 +321,9 @@ export function useContact() {
             source: 'Contact Page'
           }),
         });
-        console.log('[Contact] Shopify sync triggered for', data.email);
+        console.log('[Contact] Supabase Edge Shopify sync triggered');
       } catch (shopifyErr) {
-        console.warn('[Contact] Shopify sync failed (non-blocking):', shopifyErr);
+        console.warn('[Contact] Supabase Edge Shopify sync failed:', shopifyErr);
       }
 
       setSuccess(true);
