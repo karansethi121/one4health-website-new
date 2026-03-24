@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { Mail, Phone, MapPin, MessageCircle, Clock, Send } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { useToast } from '@/hooks/use-toast';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -35,20 +34,7 @@ const contactInfo = [
 
 export function ContactPage() {
   useDocumentTitle('Contact Us');
-  const { toast } = useToast();
-  const [searchParams] = useSearchParams();
   const heroRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (searchParams.get('contact_posted') === 'true') {
-      toast({
-        title: 'Message Sent!',
-        description: 'Thanks for reaching out! We will get back to you soon.',
-      });
-      // Clean up URL so refresh doesn't re-trigger toast
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  }, [searchParams, toast]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -162,7 +148,7 @@ export function ContactPage() {
             <form action="/contact#contact_form" method="post" className="space-y-6">
               <input type="hidden" name="form_type" value="contact" />
               <input type="hidden" name="utf8" value="✓" />
-              <input type="hidden" name="id" value="913558" />
+              <input type="hidden" name="return_to" value="/?contact_posted=true" />
 
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">

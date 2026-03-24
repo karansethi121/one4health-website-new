@@ -1,5 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { CartProvider } from '@/context/CartContext';
+import { useToast } from '@/hooks/use-toast';
 import { Navigation } from '@/components/layout/Navigation';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Footer } from '@/components/layout/Footer';
@@ -21,7 +23,21 @@ import './App.css';
 
 function AppContent() {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   const isComingSoon = location.pathname === '/coming-soon';
+
+  useEffect(() => {
+    if (searchParams.get('contact_posted') === 'true') {
+      toast({
+        title: 'Message Sent!',
+        description: 'Thanks for reaching out! We will get back to you soon.',
+      });
+      // Clean up URL so refresh doesn't re-trigger toast
+      const newUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, [searchParams, toast]);
   const isAdminPage = location.pathname.startsWith('/admin');
   const hideLayout = isComingSoon || isAdminPage;
 
