@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Mail, Phone, MapPin, MessageCircle, Clock, Send } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { supabase } from '@/lib/supabase';
+import { useToast } from '@/hooks/use-toast';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,7 +36,45 @@ const contactInfo = [
 
 export function ContactPage() {
   useDocumentTitle('Contact Us');
+  const { toast } = useToast();
   const heroRef = useRef<HTMLDivElement>(null);
+  const [submitting, setSubmitting] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSubmitting(true);
+      
+      const { data, error } = await supabase.functions.invoke('shopify-contact-sync', {
+        body: formData
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      toast({
+        title: 'Message Sent!',
+        description: 'Your message has been synced with Shopify. We will get back to you soon.',
+      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (err: any) {
+      console.error('[Contact] Submission error:', err);
+      toast({
+        title: 'Submission Failed',
+        description: err.message || 'Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -145,34 +185,17 @@ export function ContactPage() {
               </p>
             </div>
 
-            <form 
-              action="/contact#contact_form" 
-              method="post" 
-              className="space-y-6"
-              onSubmit={(e) => {
-                // We merge Subject and Message into the 'body' field
-                // so Shopify's default email template doesn't break
-                const form = e.currentTarget;
-                const subject = (form.querySelector('#subject') as HTMLInputElement).value;
-                const message = (form.querySelector('#message') as HTMLTextAreaElement).value;
-                const bodyInput = form.querySelector('input[name="contact[body]"]') as HTMLInputElement;
-                bodyInput.value = `Subject: ${subject}\n\n${message}`;
-              }}
-            >
-              <input type="hidden" name="form_type" value="contact" />
-              <input type="hidden" name="utf8" value="✓" />
-              <input type="hidden" name="id" value="913558" />
-              <input type="hidden" name="contact[body]" value="" />
-              <input type="hidden" name="return_to" value="/?contact_posted=true" />
-
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
                   <Input
                     id="name"
-                    name="contact[name]"
+                    name="name"
                     placeholder="John Doe"
                     required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="rounded-2xl border-sage-200 focus:ring-sage-400"
                   />
                 </div>
@@ -180,10 +203,12 @@ export function ContactPage() {
                   <Label htmlFor="email">Email Address</Label>
                   <Input
                     id="email"
-                    name="contact[email]"
+                    name="email"
                     type="email"
                     placeholder="john@example.com"
                     required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="rounded-2xl border-sage-200 focus:ring-sage-400"
                   />
                 </div>
@@ -193,8 +218,11 @@ export function ContactPage() {
                 <Label htmlFor="subject">Subject</Label>
                 <Input
                   id="subject"
+                  name="subject"
                   placeholder="How can we help?"
                   required
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                   className="rounded-2xl border-sage-200 focus:ring-sage-400"
                 />
               </div>
@@ -203,17 +231,25 @@ export function ContactPage() {
                 <Label htmlFor="message">Message</Label>
                 <Textarea
                   id="message"
+                  name="message"
                   placeholder="Tell us more about your inquiry..."
                   required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="min-h-[150px] rounded-2xl border-sage-200 focus:ring-sage-400 resize-none"
                 />
               </div>
 
               <Button
                 type="submit"
+                disabled={submitting}
                 className="w-full bg-sage-900 hover:bg-black text-white py-6 rounded-2xl font-bold text-lg transition-all active:scale-95 flex items-center justify-center gap-2"
               >
-                Send Message <Send className="w-5 h-5" />
+                {submitting ? 'Syncing...' : (
+                  <>
+                    Send Message <Send className="w-5 h-5" />
+                  </>
+                )}
               </Button>
             </form>
           </div>
