@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Mail, Phone, MapPin, MessageCircle, Clock, Send } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { useContact } from '@/hooks/useSupabase';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,33 +36,19 @@ const contactInfo = [
 export function ContactPage() {
   useDocumentTitle('Contact Us');
   const { toast } = useToast();
-  const { sendMessage, submitting } = useContact();
+  const [searchParams] = useSearchParams();
   const heroRef = useRef<HTMLDivElement>(null);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await sendMessage(formData);
+  useEffect(() => {
+    if (searchParams.get('contact_posted') === 'true') {
       toast({
         title: 'Message Sent!',
-        description: 'Successfully synced with Shopify. We will get back to you soon.',
+        description: 'Thanks for reaching out! We will get back to you soon.',
       });
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (err: any) {
-      toast({
-        title: 'Submission Failed',
-        description: err.message || 'Please try again later.',
-        variant: 'destructive',
-      });
+      // Clean up URL so refresh doesn't re-trigger toast
+      window.history.replaceState({}, '', window.location.pathname);
     }
-  };
+  }, [searchParams, toast]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -173,16 +159,19 @@ export function ContactPage() {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form action="/contact#contact_form" method="post" className="space-y-6">
+              <input type="hidden" name="form_type" value="contact" />
+              <input type="hidden" name="utf8" value="✓" />
+              <input type="hidden" name="id" value="913558" />
+
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
                   <Input
                     id="name"
+                    name="contact[name]"
                     placeholder="John Doe"
                     required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="rounded-2xl border-sage-200 focus:ring-sage-400"
                   />
                 </div>
@@ -190,11 +179,10 @@ export function ContactPage() {
                   <Label htmlFor="email">Email Address</Label>
                   <Input
                     id="email"
+                    name="contact[email]"
                     type="email"
                     placeholder="john@example.com"
                     required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="rounded-2xl border-sage-200 focus:ring-sage-400"
                   />
                 </div>
@@ -204,10 +192,9 @@ export function ContactPage() {
                 <Label htmlFor="subject">Subject</Label>
                 <Input
                   id="subject"
+                  name="contact[subject]"
                   placeholder="How can we help?"
                   required
-                  value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                   className="rounded-2xl border-sage-200 focus:ring-sage-400"
                 />
               </div>
@@ -216,26 +203,18 @@ export function ContactPage() {
                 <Label htmlFor="message">Message</Label>
                 <Textarea
                   id="message"
+                  name="contact[body]"
                   placeholder="Tell us more about your inquiry..."
                   required
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="min-h-[150px] rounded-2xl border-sage-200 focus:ring-sage-400 resize-none"
                 />
               </div>
 
               <Button
                 type="submit"
-                disabled={submitting}
                 className="w-full bg-sage-900 hover:bg-black text-white py-6 rounded-2xl font-bold text-lg transition-all active:scale-95 flex items-center justify-center gap-2"
               >
-                {submitting ? (
-                  'Syncing...'
-                ) : (
-                  <>
-                    Send Message <Send className="w-5 h-5" />
-                  </>
-                )}
+                Send Message <Send className="w-5 h-5" />
               </Button>
             </form>
           </div>
