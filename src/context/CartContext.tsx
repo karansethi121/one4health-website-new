@@ -87,7 +87,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const cart = await response.json();
       setItems(cart.items || []);
     } catch (error) {
-      console.error('[Cart] Failed to refresh:', error);
+      // silently fail — cart will be refreshed on next interaction
     } finally {
       setLoading(false);
     }
@@ -103,12 +103,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed)) {
             setItems(parsed);
-            console.info('[Dev] Restored mock cart from localStorage.');
+            // restored mock cart from localStorage
             return;
           }
         }
       } catch (e) {
-        console.error('[Dev] Failed to parse saved cart:', e);
+        // failed to parse saved cart — start fresh
       }
       return;
     }
@@ -140,7 +140,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     overridePrice?: number, // in paise
     overrideTitle?: string
   ) => {
-    console.log('[Cart] addToCart:', { variantId, quantity, attributes, sellingPlanId, overridePrice });
+
     setIsOpen(true);
     setLoading(true);
 
@@ -218,7 +218,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       await refreshCart();
       toast.success('Added to cart!');
     } catch (error: any) {
-      console.error('[Cart] addToCart error:', error);
+
       toast.error(error?.message || 'Failed to add to cart. Please try again.');
       await refreshCart();
     } finally {
@@ -246,7 +246,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (!response.ok) throw new Error('Failed to remove item');
       await refreshCart();
     } catch (error) {
-      console.error('[Cart] removeFromCart error:', error);
+
       // Restore from ref on failure
       setItems(itemsRef.current);
       await refreshCart();
@@ -290,7 +290,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (!response.ok) throw new Error('Failed to update quantity');
       await refreshCart();
     } catch (error) {
-      console.error('[Cart] updateQuantity error:', error);
+
       setItems(itemsRef.current);
       await refreshCart();
     } finally {
@@ -313,7 +313,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (!response.ok) throw new Error('Failed to clear cart');
       await refreshCart();
     } catch (error) {
-      console.error('[Cart] clearCart error:', error);
+
       await refreshCart();
     } finally {
       setLoading(false);

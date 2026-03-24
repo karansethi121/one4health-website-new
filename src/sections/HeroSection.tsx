@@ -15,7 +15,7 @@ export function HeroSection() {
   const handleAddToCart = () => {
     const product = products.find(p => p.id === 'ashwagandha-gummies-ksm66') || products[0];
     if (product) {
-      console.log('[Hero] Clicking Buy Now for:', product.id);
+
       addToCart(product.shopifyVariantId || product.id, 1);
     } else {
       window.location.href = "/product/ashwagandha-gummies-ksm66";

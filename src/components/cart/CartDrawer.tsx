@@ -2,6 +2,7 @@ import { Minus, Plus, X, ShoppingBag, Leaf, Sparkles, Shield, Loader2 } from 'lu
 import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { formatPrice } from '@/lib/format';
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice, loading } = useCart();
@@ -15,16 +16,6 @@ export function CartDrawer() {
         : '/images/product_main_new.png';
     }
     return item.image;
-  };
-
-  /** Shopify prices are stored in smallest currency unit (paise). Divide by 100 for display. */
-  const formatPrice = (price: number) => {
-    if (price == null || isNaN(price)) return '₹0';
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0,
-    }).format(price / 100);
   };
 
   const handleCheckout = () => {

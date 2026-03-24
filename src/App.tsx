@@ -1,25 +1,31 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { CartProvider } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { Navigation } from '@/components/layout/Navigation';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Footer } from '@/components/layout/Footer';
-import { HomePage } from '@/pages/HomePage';
-import { ShopPage } from '@/pages/ShopPage';
-import { ProductPage } from '@/pages/ProductPage';
-import { AboutPage } from '@/pages/AboutPage';
-import { SciencePage } from '@/pages/SciencePage';
-import { FAQPage } from '@/pages/FAQPage';
-import { ShippingPage } from '@/pages/ShippingPage';
-import { ContactPage } from '@/pages/ContactPage';
-import { PrivacyPage } from '@/pages/PrivacyPage';
-import { TermsPage } from '@/pages/TermsPage';
-import { ComingSoonPage } from '@/pages/ComingSoonPage';
-import { AdminPage } from '@/pages/AdminPage';
+import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
+import { LoadingState } from '@/components/ui/LoadingState';
 import { Toaster } from '@/components/ui/sonner';
 import ScrollToTop from '@/components/layout/ScrollToTop';
 import './App.css';
+
+// Eagerly loaded — these are the primary landing pages
+import { HomePage } from '@/pages/HomePage';
+import { ShopPage } from '@/pages/ShopPage';
+import { ProductPage } from '@/pages/ProductPage';
+
+// Lazy loaded — secondary pages that are rarely visited on first load
+const AboutPage = lazy(() => import('@/pages/AboutPage').then(m => ({ default: m.AboutPage })));
+const SciencePage = lazy(() => import('@/pages/SciencePage').then(m => ({ default: m.SciencePage })));
+const FAQPage = lazy(() => import('@/pages/FAQPage').then(m => ({ default: m.FAQPage })));
+const ShippingPage = lazy(() => import('@/pages/ShippingPage').then(m => ({ default: m.ShippingPage })));
+const ContactPage = lazy(() => import('@/pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const PrivacyPage = lazy(() => import('@/pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const TermsPage = lazy(() => import('@/pages/TermsPage').then(m => ({ default: m.TermsPage })));
+const ComingSoonPage = lazy(() => import('@/pages/ComingSoonPage').then(m => ({ default: m.ComingSoonPage })));
+const AdminPage = lazy(() => import('@/pages/AdminPage').then(m => ({ default: m.AdminPage })));
 
 function AppContent() {
   const location = useLocation();
@@ -53,21 +59,25 @@ function AppContent() {
       {!hideLayout && <CartDrawer />}
 
       {/* Main Content */}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/shop" element={<ShopPage />} />
-        <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/science" element={<SciencePage />} />
-        <Route path="/faq" element={<FAQPage />} />
-        <Route path="/shipping" element={<ShippingPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/terms" element={<TermsPage />} />
-        <Route path="/coming-soon" element={<ComingSoonPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-      </Routes>
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingState message="Loading page..." />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/science" element={<SciencePage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/shipping" element={<ShippingPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/coming-soon" element={<ComingSoonPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
 
       {/* Footer - Hidden on special pages */}
       {!hideLayout && <Footer />}

@@ -32,6 +32,7 @@ gsap.registerPlugin(ScrollTrigger);
 type PackSize = 1 | 2;
 
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { formatPrice } from '@/lib/format';
 
 export function ProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -75,13 +76,6 @@ export function ProductPage() {
     return () => ctx.revert();
   }, []);
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0,
-    }).format(price / 100);
-  };
 
   const getCurrentPrice = () => {
     // Starting with 499 as original base price for 1 pack of 30 gummies

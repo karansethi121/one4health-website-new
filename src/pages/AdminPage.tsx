@@ -30,9 +30,12 @@ export function AdminPage() {
   
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple password protection for demonstration
-    // Replaced with actual env variable or Supabase Auth in production
-    if (password === 'admin123') {
+    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+    if (!adminPassword) {
+      setAuthError('Admin access is not configured.');
+      return;
+    }
+    if (password === adminPassword) {
       setIsAuthenticated(true);
       setAuthError('');
     } else {
