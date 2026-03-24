@@ -145,9 +145,24 @@ export function ContactPage() {
               </p>
             </div>
 
-            <form action="/contact#contact_form" method="post" className="space-y-6">
+            <form 
+              action="/contact#contact_form" 
+              method="post" 
+              className="space-y-6"
+              onSubmit={(e) => {
+                // We merge Subject and Message into the 'body' field
+                // so Shopify's default email template doesn't break
+                const form = e.currentTarget;
+                const subject = (form.querySelector('#subject') as HTMLInputElement).value;
+                const message = (form.querySelector('#message') as HTMLTextAreaElement).value;
+                const bodyInput = form.querySelector('input[name="contact[body]"]') as HTMLInputElement;
+                bodyInput.value = `Subject: ${subject}\n\n${message}`;
+              }}
+            >
               <input type="hidden" name="form_type" value="contact" />
               <input type="hidden" name="utf8" value="✓" />
+              <input type="hidden" name="id" value="913558" />
+              <input type="hidden" name="contact[body]" value="" />
               <input type="hidden" name="return_to" value="/?contact_posted=true" />
 
               <div className="grid sm:grid-cols-2 gap-6">
@@ -178,7 +193,6 @@ export function ContactPage() {
                 <Label htmlFor="subject">Subject</Label>
                 <Input
                   id="subject"
-                  name="contact[subject]"
                   placeholder="How can we help?"
                   required
                   className="rounded-2xl border-sage-200 focus:ring-sage-400"
@@ -189,7 +203,6 @@ export function ContactPage() {
                 <Label htmlFor="message">Message</Label>
                 <Textarea
                   id="message"
-                  name="contact[body]"
                   placeholder="Tell us more about your inquiry..."
                   required
                   className="min-h-[150px] rounded-2xl border-sage-200 focus:ring-sage-400 resize-none"
