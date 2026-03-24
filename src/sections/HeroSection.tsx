@@ -174,15 +174,18 @@ export function HeroSection() {
             {/* Right - Product Image */}
             <div className="hero-image relative flex justify-center items-center order-1 lg:order-2">
               <div className="relative w-full flex justify-center">
-                {/* Main product image - transparent PNG */}
-                <div className="relative z-10 w-full max-w-[280px] sm:max-w-sm lg:max-w-[32rem] xl:max-w-[38rem]">
+                {/* Main product image - clickable link to product page */}
+                <Link 
+                  to="/product/ashwagandha-gummies-ksm66"
+                  className="relative z-10 w-full max-w-[280px] sm:max-w-sm lg:max-w-[32rem] xl:max-w-[38rem] block hover:opacity-95 transition-all duration-300"
+                >
                   <img
                     src="/images/hero-clean.png"
                     alt="One4Health™ Ashwagandha Gummies bottle transparent render"
                     className="w-full h-auto object-contain drop-shadow-2xl mx-auto tracking-[0.02em]"
                     loading="eager"
                   />
-                </div>
+                </Link>
 
               </div>
             </div>
