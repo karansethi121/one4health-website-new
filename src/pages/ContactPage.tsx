@@ -242,14 +242,10 @@ export function ContactPage() {
 
               <Button
                 type="submit"
-                disabled={submitting}
+                loading={submitting}
                 className="w-full bg-sage-900 hover:bg-black text-white py-6 rounded-2xl font-bold text-lg transition-all active:scale-95 flex items-center justify-center gap-2"
               >
-                {submitting ? 'Syncing...' : (
-                  <>
-                    Send Message <Send className="w-5 h-5" />
-                  </>
-                )}
+                Send Message <Send className="w-5 h-5" />
               </Button>
             </form>
           </div>

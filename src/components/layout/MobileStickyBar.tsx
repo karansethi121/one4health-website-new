@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MessageCircle, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { Button } from '@/components/ui/button';
 
 interface MobileStickyBarProps {
   productName?: string;
@@ -17,7 +18,7 @@ export function MobileStickyBar({
   price,
   title
 }: MobileStickyBarProps) {
-  const { addToCart } = useCart();
+  const { addToCart, loading: cartLoading } = useCart();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -53,23 +54,24 @@ export function MobileStickyBar({
     >
       <div className="flex items-center gap-2 p-3">
         {/* WhatsApp Button */}
-        <button
+        <Button
           onClick={handleWhatsApp}
           className="flex items-center justify-center gap-2 bg-sage-700 hover:bg-sage-800 text-white font-medium py-3.5 px-4 rounded-full transition-all duration-300 active:scale-95 min-h-[52px]"
           aria-label="Chat on WhatsApp"
         >
           <MessageCircle className="w-5 h-5" />
           <span className="text-sm">WhatsApp</span>
-        </button>
+        </Button>
 
         {/* Add to Cart Button */}
-        <button
+        <Button
           onClick={handleAddToCart}
+          loading={cartLoading}
           className="flex-1 flex items-center justify-center gap-2 bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 px-4 rounded-full transition-all duration-300 active:scale-95 min-h-[52px]"
         >
           <ShoppingCart className="w-5 h-5" />
           <span className="text-sm">Add to Cart</span>
-        </button>
+        </Button>
       </div>
 
       {/* Safe area padding for iOS */}

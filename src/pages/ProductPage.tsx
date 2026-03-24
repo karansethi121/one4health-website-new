@@ -25,6 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
 import { useProducts } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
+import { Button } from '@/components/ui/button';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,7 +35,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function ProductPage() {
   const { id } = useParams<{ id: string }>();
-  const { addToCart } = useCart();
+  const { addToCart, loading: cartLoading } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [packSize, setPackSize] = useState<PackSize>(1);
   const [activeImage, setActiveImage] = useState(0);
@@ -306,13 +307,14 @@ export function ProductPage() {
 
             {/* CTA Buttons */}
             <div className="space-y-2 lg:space-y-3">
-              <button
+              <Button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
+                loading={cartLoading}
                 className="w-full bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-[1.02] text-sm lg:text-base min-h-[52px] lg:min-h-[56px] disabled:bg-charcoal-200"
               >
                 {!product.inStock ? 'Out of Stock' : 'Add to Cart'}
-              </button>
+              </Button>
             </div>
 
             {/* Allergen Free Section */}

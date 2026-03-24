@@ -5,9 +5,10 @@ import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
 import { useProducts } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
+import { Button } from '@/components/ui/button';
 
 export function HeroSection() {
-  const { addToCart } = useCart();
+  const { addToCart, loading: cartLoading } = useCart();
   const { products, loading } = useProducts();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -133,13 +134,14 @@ export function HeroSection() {
 
               {/* Primary CTA */}
               <div className="hero-cta flex flex-col sm:flex-row gap-3 mb-5">
-                <button
+                <Button
                   onClick={handleAddToCart}
+                  loading={cartLoading}
                   className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-6 lg:px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-base min-h-[56px]"
                 >
                   Buy Now | Save 30%
                   <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </Button>
                 <Link
                   to="/science"
                   className="bg-white border-2 border-charcoal-200 text-charcoal-900 font-semibold px-6 lg:px-8 py-4 rounded-full hover:border-sage-300 hover:bg-sage-50 transition-all flex items-center justify-center min-h-[56px]"
