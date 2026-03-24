@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/Footer';
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
 import { Toaster } from '@/components/ui/sonner';
 import ScrollToTop from '@/components/layout/ScrollToTop';
+import './App.css';
 import { HomePage } from '@/pages/HomePage';
 import { ShopPage } from '@/pages/ShopPage';
 import { ProductPage } from '@/pages/ProductPage';
