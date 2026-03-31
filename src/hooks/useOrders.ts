@@ -71,10 +71,16 @@ export function useOrders() {
         `)
         .eq('email', normalizedEmail)
         .eq('order_number', normalizedOrderNum)
-        .single();
+        .maybeSingle();
 
-      if (queryError || !data) {
-        setError('No order found. Please check your email and order number and try again.');
+      if (queryError) {
+        console.error('Order query error:', queryError);
+        setError('Something went wrong while searching. Please try again later.');
+        return null;
+      }
+
+      if (!data) {
+        setError(`No order found for ${email} with number #${orderNumber}. Please check the details in your confirmation email.`);
         return null;
       }
 
