@@ -21,6 +21,7 @@ import { PrivacyPage } from '@/pages/PrivacyPage';
 import { TermsPage } from '@/pages/TermsPage';
 import { ComingSoonPage } from '@/pages/ComingSoonPage';
 import { AdminPage } from '@/pages/AdminPage';
+import { AccountPage } from '@/pages/AccountPage';
 
 function AppContent() {
   const location = useLocation();
@@ -68,6 +69,7 @@ function AppContent() {
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/coming-soon" element={<ComingSoonPage />} />
+            <Route path="/account" element={<AccountPage />} />
             <Route path="/admin/*" element={<AdminPage />} />
           </Routes>
       </ErrorBoundary>

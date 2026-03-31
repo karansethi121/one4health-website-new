@@ -21,6 +21,7 @@ const footerLinks = {
     { label: 'Wholesale Info', href: '/contact' },
   ],
   support: [
+    { label: 'Track My Order', href: '/account' },
     { label: 'Help Center & FAQ', href: '/#faq' },
     { label: 'Shipping & Delivery', href: '/shipping' },
     { label: 'Returns & Refunds', href: '/shipping' },

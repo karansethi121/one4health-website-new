@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { ShoppingBag, Menu, X, User } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 const navItems = [
@@ -78,6 +78,15 @@ export function Navigation() {
 
             {/* Right Actions */}
             <div className="flex items-center gap-2 lg:gap-4">
+              {/* Account Button */}
+              <Link
+                to="/account"
+                className="relative p-3 rounded-full bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white/80 transition-all duration-500 hover:scale-110 shadow-soft-sm group"
+                aria-label="My orders"
+              >
+                <User className="w-5 h-5 text-charcoal-900 group-hover:text-sage-700 transition-colors" />
+              </Link>
+
               {/* Cart Button */}
               <button
                 onClick={toggleCart}
