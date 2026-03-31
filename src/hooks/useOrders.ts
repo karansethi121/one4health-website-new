@@ -61,7 +61,11 @@ export function useOrders() {
 
     try {
       const normalizedEmail = email.trim().toLowerCase();
-      const normalizedOrderNum = orderNumber.trim().replace(/^#/, '');
+      const rawOrderNum = orderNumber.trim();
+      const unhashedOrderNum = rawOrderNum.replace(/^#/, '');
+      const searchTerms = [rawOrderNum, unhashedOrderNum, `#${unhashedOrderNum}`];
+      // Filter unique terms to avoid redundant query parameters
+      const uniqueSearchTerms = [...new Set(searchTerms)];
 
       const { data, error: queryError } = await supabase
         .from('orders')
@@ -70,7 +74,7 @@ export function useOrders() {
           order_items (*)
         `)
         .eq('email', normalizedEmail)
-        .eq('order_number', normalizedOrderNum)
+        .in('order_number', uniqueSearchTerms)
         .maybeSingle();
 
       if (queryError) {
