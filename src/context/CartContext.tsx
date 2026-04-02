@@ -66,8 +66,49 @@ const MOCK_IMAGE = '/images/product_main_new.png';
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
+const transformCartItems = (rawItems: CartItem[]): CartItem[] => {
+  return rawItems.map(item => {
+    const isAshwa = (item.title || item.product_title || '').toLowerCase().includes('ashwa');
+    if (!isAshwa) return item;
+
+    const isBundle = item.properties && item.properties._bundle === 'true';
+    if (isBundle) {
+      const bundlesCount = Math.max(1, Math.floor(item.quantity / 2));
+      return {
+        ...item,
+        price: 34450,
+        original_price: 44900,
+        final_price: 34450,
+        line_price: 68900 * bundlesCount,
+        final_line_price: 68900 * bundlesCount,
+        original_line_price: 89800 * bundlesCount
+      };
+    } else {
+      return {
+        ...item,
+        price: 36900,
+        original_price: 44900,
+        final_price: 36900,
+        line_price: 36900 * item.quantity,
+        final_line_price: 36900 * item.quantity,
+        original_line_price: 44900 * item.quantity
+      };
+    }
+  });
+};
+
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [itemsState, setItemsState] = useState<CartItem[]>([]);
+  
+  // Wrapper to globally intercept and forcibly convert stale pricing from the live backend
+  const setItems = useCallback((action: React.SetStateAction<CartItem[]>) => {
+    setItemsState(prev => {
+      const nextItems = typeof action === 'function' ? action(prev) : action;
+      return transformCartItems(nextItems) as CartItem[];
+    });
+  }, []);
+  
+  const items = itemsState;
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   // Derived totals - always computed from `items` to prevent state drift / NaN bugs
