@@ -68,7 +68,7 @@ export const Footer = memo(function Footer() {
           <div className="col-span-2 lg:col-span-1">
             <Link to="/" className="inline-block mb-8">
               <img
-                src="/images/logo_cropped.webp"
+                src="/images/logo_v2.webp"
                 alt="One4Health™"
                 className="h-10 lg:h-12 w-auto brightness-0 invert"
               />
