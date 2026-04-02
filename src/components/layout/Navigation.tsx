@@ -53,7 +53,7 @@ export function Navigation() {
             {/* Logo */}
             <Link to="/" className="flex items-center group -ml-2 lg:-ml-6">
               <img
-                src="/images/logo_new.webp"
+                src="/images/logo_v2.webp"
                 alt="One4Health™"
                 className="h-20 lg:h-32 w-auto object-contain transition-transform duration-500 hover:scale-110 scale-100 origin-left"
               />
