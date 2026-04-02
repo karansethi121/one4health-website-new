@@ -70,7 +70,7 @@ export const Footer = memo(function Footer() {
               <img
                 src="/images/logo_v2.webp"
                 alt="One4Health™"
-                className="h-10 lg:h-12 w-auto brightness-0 invert"
+                className="h-10 lg:h-12 w-auto"
               />
             </Link>
             <p className="text-charcoal-400 text-sm mb-8 leading-relaxed max-w-xs">
