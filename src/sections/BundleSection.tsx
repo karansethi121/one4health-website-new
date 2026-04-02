@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const benefits = [
-  { icon: Zap, text: 'Save on 2 Jars', desc: 'Just ₹599 for 2 packs' },
+  { icon: Zap, text: 'Save on 2 Jars', desc: 'Just ₹689 for 2 packs' },
   { icon: Truck, text: 'Free shipping', desc: 'On all bundle orders' },
   { icon: Check, text: 'Clean Formula', desc: 'No sugar, no chemicals' },
 ];
@@ -124,8 +124,8 @@ export function BundleSection() {
             <div className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 shadow-soft">
               {/* Price comparison */}
               <div className="flex items-baseline gap-2 lg:gap-3 mb-5 lg:mb-6 flex-wrap">
-                <span className="text-3xl lg:text-4xl font-bold text-sage-700">₹599</span>
-                <span className="text-lg lg:text-xl text-charcoal-400 line-through">₹998</span>
+                <span className="text-3xl lg:text-4xl font-bold text-sage-700">₹689</span>
+                <span className="text-lg lg:text-xl text-charcoal-400 line-through">₹898</span>
                 <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-xs font-medium">
                   Special Rate
                 </span>

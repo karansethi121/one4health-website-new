@@ -60,8 +60,8 @@ const deriveCartTotals = (items: CartItem[]) => ({
   totalPrice: items.reduce((sum, item) => sum + (item.final_line_price || item.line_price || 0), 0),
 });
 
-const MOCK_PRODUCT_PRICE = 34900; // paise = ₹349 (Shopify format)
-const MOCK_ORIGINAL_PRICE = 49900; // paise = ₹499 (Shopify format)
+const MOCK_PRODUCT_PRICE = 36900; // paise = ₹369 (Shopify format)
+const MOCK_ORIGINAL_PRICE = 44900; // paise = ₹449 (Shopify format)
 const MOCK_IMAGE = '/images/product_main_new.png';
 
 // ─── Provider ─────────────────────────────────────────────────────────────────

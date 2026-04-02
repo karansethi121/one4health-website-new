@@ -78,12 +78,12 @@ export function ProductPage() {
 
 
   const getCurrentPrice = () => {
-    // Starting with 499 as original base price for 1 pack of 30 gummies
+    // Starting with 449 as original base price for 1 pack of 30 gummies
     // One-time purchase
     if (packSize === 2) {
-      return 59900; // Bundle price for 2 packs (60 gummies)
+      return 68900; // Bundle price for 2 packs (60 gummies)
     }
-    return product.price || 34900; // Standard price from DB
+    return product.price || 36900; // Standard price from DB
   };
   // Sync quantity for cart submission - always 1 for bundles as requested
   useEffect(() => {
@@ -105,8 +105,8 @@ export function ProductPage() {
     // Add physical units to cart (e.g. 1 qty of 2 Jars = 2 physical units)
     const cartQuantity = quantity * packSize;
     
-    // Calculate per-unit price in paise (59900/2 = 29950, 34900/1 = 34900)
-    const pricePaise = isBundle ? 29950 : (product.price || 34900);
+    // Calculate per-unit price in paise (68900/2 = 34450, 36900/1 = 36900)
+    const pricePaise = isBundle ? 34450 : (product.price || 36900);
 
     await addToCart(variantId, cartQuantity, attributes, undefined, pricePaise, product.name);
   };
@@ -128,7 +128,7 @@ export function ProductPage() {
   }
 
   const currentPrice = getCurrentPrice();
-  const originalPrice = packSize === 2 ? 99800 : (product.originalPrice || 49900);
+  const originalPrice = packSize === 2 ? 89800 : (product.originalPrice || 44900);
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
@@ -221,7 +221,7 @@ export function ProductPage() {
                     </div>
                   </div>
                   <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>30-day supply</span>
-                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(product.price || 34900)}</span>
+                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(product.price || 36900)}</span>
                 </button>
 
                 <button
@@ -239,7 +239,7 @@ export function ProductPage() {
                       </div>
                     </div>
                     <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 2 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>60-day supply</span>
-                    <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(59900)}</span>
+                    <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(68900)}</span>
                     
                     <div className={`mt-3 w-full text-[9px] sm:text-[10px] uppercase font-bold py-1.5 rounded text-center tracking-widest transition-colors ${
                       packSize === 2 ? 'bg-charcoal-900 text-white' : 'bg-charcoal-100 text-charcoal-600'
@@ -494,7 +494,7 @@ export function ProductPage() {
         productName={product.name} 
         variantId={product.shopifyVariantId || product.id} 
         quantity={quantity * packSize}
-        price={packSize === 2 ? 29950 : (product.price || 34900)}
+        price={packSize === 2 ? 34450 : (product.price || 36900)}
         title={product.name}
       />
     </main>

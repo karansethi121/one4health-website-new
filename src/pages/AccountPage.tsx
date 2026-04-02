@@ -348,6 +348,12 @@ export function AccountPage() {
   return (
     <div className="min-h-screen bg-sage-50 pt-24 lg:pt-32 pb-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2 mb-8 animate-in fade-in slide-in-from-top-4">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <p className="text-sm font-medium">{error}</p>
+          </div>
+        )}
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-sage-100 rounded-full px-4 py-2 mb-6">

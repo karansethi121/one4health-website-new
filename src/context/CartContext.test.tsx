@@ -33,7 +33,7 @@ describe('CartContext', () => {
             all_products: {
                 'ashwagandha-gummies-ksm66': {
                     title: 'Ashwagandha Gummies',
-                    variants: [{ id: 'ashwagandha-gummies-ksm66', price: 34900 }],
+                    variants: [{ id: 'ashwagandha-gummies-ksm66', price: 36900 }],
                 },
             },
             cart: { items: [], item_count: 0, total_price: 0 },
@@ -65,7 +65,7 @@ describe('CartContext', () => {
         });
 
         expect(screen.getByTestId('cart-items').textContent).toContain('Ashwagandha Gummies - 1');
-        expect(screen.getByTestId('total-price').textContent).toBe('34900');
+        expect(screen.getByTestId('total-price').textContent).toBe('36900');
     });
 
     it('should remove an item from the cart', async () => {
