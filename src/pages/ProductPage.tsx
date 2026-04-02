@@ -83,7 +83,7 @@ export function ProductPage() {
     if (packSize === 2) {
       return 68900; // Bundle price for 2 packs (60 gummies)
     }
-    return product.price || 36900; // Standard price from DB
+    return 36900; // Standard price from DB override
   };
   // Sync quantity for cart submission - always 1 for bundles as requested
   useEffect(() => {
@@ -106,7 +106,7 @@ export function ProductPage() {
     const cartQuantity = quantity * packSize;
     
     // Calculate per-unit price in paise (68900/2 = 34450, 36900/1 = 36900)
-    const pricePaise = isBundle ? 34450 : (product.price || 36900);
+    const pricePaise = isBundle ? 34450 : 36900;
 
     await addToCart(variantId, cartQuantity, attributes, undefined, pricePaise, product.name);
   };
@@ -128,7 +128,7 @@ export function ProductPage() {
   }
 
   const currentPrice = getCurrentPrice();
-  const originalPrice = packSize === 2 ? 89800 : (product.originalPrice || 44900);
+  const originalPrice = packSize === 2 ? 89800 : 44900;
   const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   return (
@@ -221,7 +221,7 @@ export function ProductPage() {
                     </div>
                   </div>
                   <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>30-day supply</span>
-                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(product.price || 36900)}</span>
+                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(36900)}</span>
                 </button>
 
                 <button
@@ -494,7 +494,7 @@ export function ProductPage() {
         productName={product.name} 
         variantId={product.shopifyVariantId || product.id} 
         quantity={quantity * packSize}
-        price={packSize === 2 ? 34450 : (product.price || 36900)}
+        price={packSize === 2 ? 34450 : 36900}
         title={product.name}
       />
     </main>
