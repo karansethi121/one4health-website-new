@@ -101,6 +101,9 @@ export function ProductPage() {
     
     const attributes: Record<string, string> = {};
     attributes['purchase_type'] = 'One-time';
+    if (isBundle) {
+      attributes['_bundle'] = 'true';
+    }
     
     // Add physical units to cart (e.g. 1 qty of 2 Jars = 2 physical units)
     const cartQuantity = quantity * packSize;

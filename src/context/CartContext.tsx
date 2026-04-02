@@ -71,17 +71,23 @@ const transformCartItems = (rawItems: CartItem[]): CartItem[] => {
     const isAshwa = (item.title || item.product_title || '').toLowerCase().includes('ashwa');
     if (!isAshwa) return item;
 
-    const isBundle = item.properties && item.properties._bundle === 'true';
+    const isBundle = (item.properties && item.properties._bundle === 'true') || item.quantity === 2;
     if (isBundle) {
       const bundlesCount = Math.max(1, Math.floor(item.quantity / 2));
+      const restCount = item.quantity % 2;
+      
+      const bundleTotal = 68900 * bundlesCount;
+      const individualTotal = 36900 * restCount;
+      const originalTotal = (89800 * bundlesCount) + (44900 * restCount);
+
       return {
         ...item,
-        price: 34450,
+        price: 34450, 
         original_price: 44900,
         final_price: 34450,
-        line_price: 68900 * bundlesCount,
-        final_line_price: 68900 * bundlesCount,
-        original_line_price: 89800 * bundlesCount
+        line_price: bundleTotal + individualTotal,
+        final_line_price: bundleTotal + individualTotal,
+        original_line_price: originalTotal
       };
     } else {
       return {
