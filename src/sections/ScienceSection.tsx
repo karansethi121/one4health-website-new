@@ -69,15 +69,18 @@ export function ScienceSection() {
         }
       );
 
-      gsap.to('.science-image img', {
-        y: 80,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.5,
-        }
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1024px)", () => {
+        gsap.to('.science-image img', {
+          y: 80,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5,
+          }
+        });
       });
 
       gsap.fromTo(
