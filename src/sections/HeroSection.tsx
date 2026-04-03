@@ -143,10 +143,10 @@ export function HeroSection() {
                   <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Link
-                  to="/science"
+                  to="/product/ashwagandha-gummies-ksm66"
                   className="bg-white border-2 border-charcoal-200 text-charcoal-900 font-semibold px-6 lg:px-8 py-4 rounded-full hover:border-sage-300 hover:bg-sage-50 transition-all flex items-center justify-center min-h-[56px]"
                 >
-                  See the Science
+                  View Product Details
                 </Link>
               </div>
 

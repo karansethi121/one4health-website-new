@@ -1,4 +1,5 @@
 import { Minus, Plus, X, ShoppingBag, Leaf, Sparkles, Shield, Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -57,18 +58,30 @@ export function CartDrawer() {
                   key={item.key}
                   className="flex gap-4 p-4 bg-white rounded-2xl shadow-soft"
                 >
-                  <img
-                    src={getResolvedImage(item)}
-                    alt={item.product_title}
-                    className="w-20 h-20 object-cover rounded-xl flex-shrink-0"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
+                  <Link 
+                    to="/product/ashwagandha-gummies-ksm66" 
+                    onClick={closeCart}
+                    className="flex-shrink-0 group/img"
+                  >
+                    <img
+                      src={getResolvedImage(item)}
+                      alt={item.product_title}
+                      className="w-20 h-20 object-cover rounded-xl transition-transform duration-300 group-hover/img:scale-110"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  </Link>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
                       <div className="min-w-0 flex-1 pr-2">
-                        <h4 className="font-semibold text-charcoal-900 text-sm truncate">
-                          {item.product_title || item.title}
-                        </h4>
+                        <Link 
+                          to="/product/ashwagandha-gummies-ksm66" 
+                          onClick={closeCart}
+                          className="hover:text-sage-700 transition-colors block"
+                        >
+                          <h4 className="font-semibold text-charcoal-900 text-sm truncate">
+                            {item.product_title || item.title}
+                          </h4>
+                        </Link>
                         <p className="text-xs text-charcoal-500 mt-0.5">
                           {item.variant_title !== 'Default Title' ? item.variant_title : ''}
                         </p>
