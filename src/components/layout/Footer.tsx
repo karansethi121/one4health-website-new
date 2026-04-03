@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Youtube, Mail, Sparkles, Shield } from 'lucide-react';
+import { Instagram, Mail, Sparkles, Shield } from 'lucide-react';
 
 const XLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -38,7 +38,6 @@ const footerLinks = {
 const socialLinks = [
   { icon: Instagram, href: 'https://www.instagram.com/one_4_health', label: 'Instagram' },
   { icon: XLogo, href: 'https://x.com/one_4_health', label: 'X' },
-  { icon: Youtube, href: '#', label: 'YouTube' },
   { icon: Mail, href: 'mailto:info@one4health.com', label: 'Email' },
 ];
 
