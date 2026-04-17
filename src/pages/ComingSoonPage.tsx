@@ -200,7 +200,7 @@ export const ComingSoonPage: React.FC = () => {
                             Honest Wellness, <br className="hidden lg:block" />
                             <span className="text-charcoal-700 relative inline-block">
                                 Reimagined.
-                                <div className="absolute -bottom-1 left-0 w-full h-1.5 bg-sunshine-300/40 rounded-full scale-x-0 origin-left animate-expand-x" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }} />
+                                <div className="absolute -bottom-1 left-0 w-full h-1.5 bg-sunshine-300/40 rounded-full scale-x-0 origin-left animate-expand-x [animation-delay:1.2s] [animation-fill-mode:forwards]" />
                             </span>
                         </h2>
                         <p className="text-sage-800 text-base sm:text-lg lg:text-2xl leading-relaxed opacity-80 font-medium max-w-lg mx-auto lg:mx-0">
@@ -235,7 +235,7 @@ export const ComingSoonPage: React.FC = () => {
                     <div className="backdrop-blur-[40px] bg-white/40 border border-white/80 rounded-[3rem] lg:rounded-[4rem] p-8 sm:p-12 lg:p-16 shadow-fun relative overflow-hidden group">
                         {/* Ambient inner glow */}
                         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-48 h-48 bg-sunshine-200/30 blur-3xl rounded-full animate-pulse" />
-                        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-48 h-48 bg-sage-200/30 blur-3xl rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+                        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-48 h-48 bg-sage-200/30 blur-3xl rounded-full animate-pulse [animation-delay:1s]" />
 
                         <div ref={contentRef} className="relative z-10 text-center space-y-8 lg:space-y-10">
                             <div className="inline-flex px-5 py-2 bg-sage-900 text-white rounded-full text-[10px] lg:text-xs font-black tracking-[0.2em] uppercase shadow-2xl">

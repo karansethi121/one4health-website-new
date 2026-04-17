@@ -289,6 +289,8 @@ export function ProductPage() {
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center hover:bg-white rounded-full transition-colors"
+                  aria-label="Decrease quantity"
+                  title="Decrease quantity"
                 >
                   <Minus className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                 </button>
@@ -296,6 +298,8 @@ export function ProductPage() {
                 <button
                   onClick={() => setQuantity(quantity + 1)}
                   className="w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center hover:bg-white rounded-full transition-colors"
+                  aria-label="Increase quantity"
+                  title="Increase quantity"
                 >
                   <Plus className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                 </button>
