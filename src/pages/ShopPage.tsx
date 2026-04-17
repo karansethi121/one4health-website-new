@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, Search, X } from 'lucide-react';
+import { ArrowRight, Search, X } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '@/context/CartContext';
@@ -158,13 +158,15 @@ export function ShopPage() {
             <div className="shop-animate md:col-span-2 lg:col-span-1 lg:col-start-2 group">
               <div className="bg-white rounded-[32px] overflow-hidden shadow-soft-sm hover:shadow-soft transition-all duration-500 transform hover:-translate-y-2 border border-charcoal-50/50">
                 {/* Image Section */}
-                <Link to={`/product/${ashwagandhaProduct.id}`} className="block relative overflow-hidden aspect-square">
-                  <img
-                    src={ashwagandhaProduct.image}
-                    alt={`One4Health™ ${ashwagandhaProduct.name}`}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                  />
+                <Link to={`/product/${ashwagandhaProduct.id}`} className="block relative overflow-hidden aspect-square bg-sage-50/50">
+                  <div className="w-full h-full p-8 transition-transform duration-700 group-hover:scale-110">
+                    <img
+                      src={ashwagandhaProduct.image}
+                      alt={`One4Health™ ${ashwagandhaProduct.name}`}
+                      className="w-full h-full object-contain drop-shadow-xl"
+                      loading="lazy"
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-sage-900/0 group-hover:bg-sage-900/5 transition-colors duration-500" />
 
                   {ashwagandhaProduct.badge && (
@@ -182,25 +184,15 @@ export function ShopPage() {
 
                 {/* Content Section */}
                 <div className="p-8">
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex justify-between items-start mb-6">
                     <div>
                       <Link to={`/product/${ashwagandhaProduct.id}`}>
-                        <h3 className="text-2xl font-bold text-charcoal-900 mb-1 hover:text-sage-700 transition-colors tracking-tight">
+                        <h3 className="text-2xl font-bold text-charcoal-900 mb-2 hover:text-sage-700 transition-colors tracking-tight">
                           {ashwagandhaProduct.name}
                         </h3>
                       </Link>
                       <p className="text-sm font-medium text-charcoal-400">Flavor: Strawberry</p>
                     </div>
-                  </div>
-
-                  {/* Features */}
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {ashwagandhaProduct.benefits.slice(0, 3).map((feat) => (
-                      <span key={feat} className="inline-flex items-center gap-1.5 px-3 py-1 bg-sage-50 text-sage-700 rounded-full text-[10px] font-bold uppercase tracking-wide">
-                        <Check className="w-3 h-3" />
-                        {feat}
-                      </span>
-                    ))}
                   </div>
 
                   <div className="flex items-center justify-between gap-4">
