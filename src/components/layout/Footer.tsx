@@ -171,7 +171,7 @@ export const Footer = memo(function Footer() {
 
             {/* Copyright */}
             <div className="text-[10px] text-charcoal-600 whitespace-nowrap pt-1">
-              © 2026 One4Health™. All rights reserved.
+              © 2025 One4Health™. All rights reserved.
             </div>
           </div>
         </div>
