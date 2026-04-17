@@ -11,26 +11,15 @@ const XLogo = ({ className }: { className?: string }) => (
 const footerLinks = {
   shop: [
     { label: 'Ashwagandha Gummies', href: '/product/ashwagandha-gummies-ksm66' },
-    { label: 'Shop All Products', href: '/shop' },
-    { label: 'Best Sellers', href: '/shop' },
+    { label: 'Shop All', href: '/shop' },
   ],
   learn: [
-    { label: 'The Science of KSM-66®', href: '/science' },
-    { label: 'Our Quality Promise', href: '/science' },
-    { label: 'Ingredient Breakdown', href: '/science' },
-    { label: 'Health Benefits', href: '/science' },
-  ],
-  company: [
-    { label: 'About Our Mission', href: '/about' },
-    { label: 'Our Story', href: '/about' },
-    { label: 'Contact Us', href: '/contact' },
-    { label: 'Wholesale Info', href: '/contact' },
+    { label: 'Our Science', href: '/science' },
+    { label: 'Our Mission', href: '/about' },
   ],
   support: [
-    { label: 'Track My Order', href: '/account' },
     { label: 'Help Center & FAQ', href: '/#faq' },
-    { label: 'Shipping & Delivery', href: '/shipping' },
-    { label: 'Returns & Refunds', href: '/shipping' },
+    { label: 'Shipping & Returns', href: '/shipping' },
     { label: 'Privacy & Terms', href: '/privacy' },
   ],
 };
@@ -45,20 +34,20 @@ export const Footer = memo(function Footer() {
   return (
     <footer className="bg-charcoal-900 text-white overflow-hidden">
       {/* CTA Section */}
-      <div className="bg-sage-700 py-16 lg:py-24 relative">
+      <div className="bg-sage-700 py-12 lg:py-24 relative">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 pointer-events-none" />
         <div className="section-container text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-2 mb-8">
+          <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-2 mb-6 lg:mb-8">
             <Sparkles className="w-4 h-4" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-white">The Daily Ritual Awaits</span>
           </div>
-          <p className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-white mb-8 leading-tight max-w-2xl mx-auto">
+          <p className="text-2xl sm:text-4xl lg:text-5xl font-heading font-bold text-white mb-6 lg:mb-8 leading-tight max-w-2xl mx-auto px-4">
             Experience the Daily Ritual
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/product/ashwagandha-gummies-ksm66"
-              className="inline-flex items-center justify-center px-10 py-5 bg-white text-sage-700 font-bold rounded-full hover:bg-sage-50 transition-all duration-300 hover:scale-105 shadow-xl text-base"
+              className="inline-flex items-center justify-center px-8 py-4 lg:px-10 lg:py-5 bg-white text-sage-700 font-bold rounded-full hover:bg-sage-50 transition-all duration-300 hover:scale-105 shadow-xl text-sm lg:text-base"
             >
               Shop Ashwagandha Gummies
             </Link>
@@ -68,7 +57,7 @@ export const Footer = memo(function Footer() {
 
       {/* Main Footer */}
       <div className="section-container section-padding pb-16">
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-1">
             <Link to="/" className="inline-block mb-8">
@@ -113,17 +102,6 @@ export const Footer = memo(function Footer() {
             <h4 className="text-[10px] font-bold uppercase tracking-widest text-charcoal-500">Learn</h4>
             <ul className="space-y-4">
               {footerLinks.learn.map((link) => (
-                <li key={link.label}>
-                  <Link to={link.href} className="text-charcoal-400 text-sm hover:text-white transition-colors">{link.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="space-y-6">
-            <h4 className="text-[10px] font-bold uppercase tracking-widest text-charcoal-500">Company</h4>
-            <ul className="space-y-4">
-              {footerLinks.company.map((link) => (
                 <li key={link.label}>
                   <Link to={link.href} className="text-charcoal-400 text-sm hover:text-white transition-colors">{link.label}</Link>
                 </li>
