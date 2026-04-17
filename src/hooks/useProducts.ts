@@ -84,7 +84,7 @@ export function useProducts() {
           ? p.product_images.sort((a, b) => (a.position || 0) - (b.position || 0)).map((img) => resolveImageUrl(img.image_url))
           : (p.handle === 'ashwagandha-gummies-ksm66' 
               ? [
-                  resolveImageUrl(p.featured_image || '/images/shop.png'),
+                  '/images/first.png',
                   '/images/gallery-bioavailability.png',
                   '/images/gallery-stress-sleep.png',
                   '/images/gallery-why-daily.png',
