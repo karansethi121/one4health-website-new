@@ -13,8 +13,8 @@ export function CartDrawer() {
     if (title.includes('ashwa') || title.includes('gumm')) {
       // @ts-ignore
       return (typeof window !== 'undefined' && window.ShopifyAssetsUrl)
-        ? window.ShopifyAssetsUrl + 'product_main_new.png'
-        : '/images/product_main_new.png';
+        ? window.ShopifyAssetsUrl + 'shop.png'
+        : '/images/shop.png';
     }
     return item.image;
   };

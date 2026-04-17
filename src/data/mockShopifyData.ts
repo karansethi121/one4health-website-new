@@ -10,13 +10,14 @@ const MOCK_PRODUCT = {
   title: 'Ashwagandha Gummies',
   type: 'Dietary Supplement',
   vendor: 'One4Health™',
-  featured_image: '/images/hero-clean.png',
+  featured_image: '/images/shop.png',
   images: [
-    '/images/hero-clean.png',
-    '/images/gallery-cortisol.png',
-    '/images/gallery-lifestyle.jpeg',
-    '/images/gallery-wellness.jpeg',
-    '/images/gallery-ingredients.jpeg'
+    '/images/first.png',
+    '/images/gallery-bioavailability.png',
+    '/images/gallery-stress-sleep.png',
+    '/images/gallery-why-daily.png',
+    '/images/gallery-design.png',
+    '/images/gallery-creative.png'
   ],
   options: [{ name: 'Title', values: ['Default Title'] }],
   variants: [

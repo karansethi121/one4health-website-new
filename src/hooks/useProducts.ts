@@ -84,11 +84,12 @@ export function useProducts() {
           ? p.product_images.sort((a, b) => (a.position || 0) - (b.position || 0)).map((img) => resolveImageUrl(img.image_url))
           : (p.handle === 'ashwagandha-gummies-ksm66' 
               ? [
-                  resolveImageUrl(p.featured_image || '/images/hero-clean.png'),
-                  '/images/gallery-cortisol.png',
-                  '/images/gallery-lifestyle.jpeg',
-                  '/images/gallery-wellness.jpeg',
-                  '/images/gallery-ingredients.jpeg'
+                  resolveImageUrl(p.featured_image || '/images/shop.png'),
+                  '/images/gallery-bioavailability.png',
+                  '/images/gallery-stress-sleep.png',
+                  '/images/gallery-why-daily.png',
+                  '/images/gallery-design.png',
+                  '/images/gallery-creative.png'
                 ]
               : [resolveImageUrl(p.featured_image || '')]),
         badge: p.badge,

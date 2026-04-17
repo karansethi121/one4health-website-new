@@ -62,7 +62,7 @@ const deriveCartTotals = (items: CartItem[]) => ({
 
 const MOCK_PRODUCT_PRICE = 36900; // paise = ₹369 (Shopify format)
 const MOCK_ORIGINAL_PRICE = 44900; // paise = ₹449 (Shopify format)
-const MOCK_IMAGE = '/images/product_main_new.png';
+const MOCK_IMAGE = '/images/shop.png';
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 

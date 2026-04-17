@@ -80,7 +80,7 @@ export function TestimonialsSection() {
       {/* Background */}
       <div className="absolute inset-0">
         <img
-          src="/images/product_main_new.png"
+          src="/images/shop.png"
           alt=""
           className="w-full h-full object-cover opacity-10"
         />
