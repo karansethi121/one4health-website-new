@@ -149,9 +149,16 @@ export const Footer = memo(function Footer() {
             {/* Certifications & Licensing */}
             <div className="flex-1">
               <div className="flex flex-wrap gap-x-6 gap-y-2 text-[10px] text-charcoal-500 uppercase tracking-wider mb-6">
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-3">
                   <Shield className="w-3.5 h-3.5 text-sage-500" />
-                  <span>FSSAI Lic. 12725998000541</span>
+                  <div className="flex flex-col gap-1">
+                    <span className="leading-none">FSSAI Lic. 12725998000541</span>
+                    <img 
+                      src="/images/fssai-license.png" 
+                      alt="FSSAI License" 
+                      className="h-6 w-auto opacity-80 brightness-0 invert" 
+                    />
+                  </div>
                 </div>
                 <span>GMP</span>
                 <span>FSSC 22000</span>
