@@ -151,20 +151,20 @@ export function ProductPage() {
       <section className="section-container py-6 lg:py-12">
         <div className="product-content grid lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Left - Images */}
-          <div className="product-animate flex flex-col items-center gap-4 lg:gap-6 overflow-hidden pl-2 pb-2">
-            <div className="relative w-full aspect-square bg-sage-50/30 rounded-[2rem] flex items-center justify-center p-2 sm:p-4 lg:p-6 border border-sage-100/50 shadow-soft">
+          <div className="product-animate flex flex-col items-center gap-4 lg:gap-6 overflow-hidden">
+            <div className="relative w-full aspect-square flex items-center justify-center p-2 sm:p-4 lg:p-6 transition-all duration-500">
               <img
                 key={activeImage}
                 src={product.images && product.images.length > 0 ? product.images[activeImage] : product.image}
                 alt={`${product.name} - View ${activeImage + 1}`}
-                className="w-full h-full object-contain drop-shadow-2xl animate-fade-in"
+                className="w-full h-full object-contain animate-fade-in"
                 loading="eager"
               />
             </div>
             
             {/* Thumbnail Gallery */}
             {product.images && product.images.length > 1 && (
-              <div className="flex gap-3 sm:gap-4 overflow-x-auto py-3 px-2 w-full justify-start sm:justify-center scrollbar-hide">
+              <div className="flex gap-3 sm:gap-4 overflow-x-auto py-3 px-2 w-full justify-start scrollbar-hide">
                 {product.images.map((imgUrl, idx) => (
                   <button
                     key={idx}
@@ -172,13 +172,13 @@ export function ProductPage() {
                     className={`relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-300 ${
                       activeImage === idx 
                         ? 'border-[3px] border-sage-700 scale-105 bg-white shadow-md' 
-                        : 'border-2 border-transparent bg-sage-50/50 hover:bg-sage-50 hover:border-sage-300 hover:scale-[1.02]'
+                        : 'border-2 border-charcoal-100/50 bg-white/50 hover:bg-white hover:border-sage-300 hover:scale-[1.02]'
                     }`}
                   >
                     <img 
                       src={imgUrl} 
                       alt={`Thumbnail ${idx + 1}`}
-                      className="absolute inset-0 w-full h-full object-contain p-2 mix-blend-multiply"
+                      className="absolute inset-0 w-full h-full object-contain p-2"
                       loading="lazy"
                     />
                   </button>
