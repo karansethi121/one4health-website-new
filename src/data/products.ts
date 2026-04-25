@@ -7,15 +7,14 @@ export const mainProduct: Product = {
   description: 'Clinically studied KSM-66® Ashwagandha with Vitamin D2 and black pepper extract to support your body\'s stress response, promote relaxation, and help maintain daily balance.',
   price: 36900,
   originalPrice: 44900,
-  image: '/images/shop.png',
+  image: '/images/p1.png',
   images: [
-    '/images/first.png',
-    '/images/gallery-lifestyle.jpeg',
-    '/images/gallery-bioavailability.png',
-    '/images/gallery-stress-sleep.png',
-    '/images/gallery-why-daily.png',
-    '/images/gallery-design.png',
-    '/images/gallery-ingredients.jpeg'
+    '/images/p1.png',
+    '/images/p2.png',
+    '/images/p3.png',
+    '/images/p4.png',
+    '/images/p5.png',
+    '/images/p6.png'
   ],
   badge: 'New Launch',
   inStock: true,
