@@ -4,6 +4,7 @@ import { CartProvider } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { Navigation } from '@/components/layout/Navigation';
 import { CartDrawer } from '@/components/cart/CartDrawer';
+import { StickyAddToCart } from '@/components/cart/StickyAddToCart';
 import { Footer } from '@/components/layout/Footer';
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
 import { Toaster } from '@/components/ui/sonner';
@@ -79,6 +80,9 @@ function AppContent() {
 
       {/* Toast Notifications */}
       <Toaster position="bottom-right" />
+
+      {/* Sticky Mobile Add to Cart */}
+      {!hideLayout && <StickyAddToCart />}
     </div>
   );
 }

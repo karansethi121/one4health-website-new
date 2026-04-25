@@ -9,6 +9,7 @@ import { CleanFormulaSection } from '@/sections/CleanFormulaSection';
 import { FAQSection } from '@/sections/FAQSection';
 import { TrustBar } from '@/components/layout/TrustBar';
 import { AllergenBar } from '@/components/layout/AllergenBar';
+import { ScrollReveal } from '@/components/animations/ScrollReveal';
 
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
@@ -18,19 +19,40 @@ export function HomePage() {
     <main className="w-full pt-16 lg:pt-24">
       <PromoMarquee />
       <HeroSection />
-      <TrustBar />
-      <div id="benefits">
-        <ProblemSolutionSection />
-      </div>
-      <div id="ingredients">
-        <WhatsInsideSection />
-      </div>
-      <ComparisonSection />
+      
+      <ScrollReveal>
+        <TrustBar />
+      </ScrollReveal>
 
-      <ScienceSection />
-      <CleanFormulaSection />
+      <div id="benefits">
+        <ScrollReveal>
+          <ProblemSolutionSection />
+        </ScrollReveal>
+      </div>
+
+      <div id="ingredients">
+        <ScrollReveal>
+          <WhatsInsideSection />
+        </ScrollReveal>
+      </div>
+
+      <ScrollReveal>
+        <ComparisonSection />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <ScienceSection />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CleanFormulaSection />
+      </ScrollReveal>
+
       <AllergenBar />
-      <FAQSection />
+
+      <ScrollReveal>
+        <FAQSection />
+      </ScrollReveal>
     </main>
   );
 }
