@@ -10,11 +10,12 @@ export const mainProduct: Product = {
   image: '/images/shop.png',
   images: [
     '/images/first.png',
+    '/images/gallery-lifestyle.jpeg',
     '/images/gallery-bioavailability.png',
     '/images/gallery-stress-sleep.png',
     '/images/gallery-why-daily.png',
     '/images/gallery-design.png',
-    '/images/gallery-creative.png'
+    '/images/gallery-ingredients.jpeg'
   ],
   badge: 'New Launch',
   inStock: true,
