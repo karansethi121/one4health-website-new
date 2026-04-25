@@ -104,7 +104,7 @@ export function CleanFormulaSection() {
           <div className="clean-image relative w-full max-w-sm sm:max-w-md lg:max-w-full mx-auto">
             <div className="relative w-full flex justify-center py-6">
               <img
-                src="/images/shop.png"
+                src="/images/shop-v2.png"
                 alt="One4Health Natural strawberry splash transparent background"
                 className="w-full max-w-[280px] sm:max-w-sm lg:max-w-md h-auto object-contain object-center drop-shadow-2xl"
                 loading="lazy"
