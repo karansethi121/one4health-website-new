@@ -19,10 +19,10 @@ git add .
 ```bash
 git commit -m "deploy: update live site"
 ```
-5. Push to the production branch:
+5. Push to both production branches:
 // turbo
 ```bash
-git push origin shopify-production
+git push origin shopify-production && git push origin shopify-production:main
 ```
 
 After these steps, Shopify will automatically detect the changes in the `shopify-production` branch and update the live theme.
