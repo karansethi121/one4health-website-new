@@ -116,7 +116,7 @@ export function HeroSection() {
 
               {/* Subheadline */}
               <p className="hero-desc text-base lg:text-lg text-charcoal-600 leading-relaxed mb-6">
-                Clinically studied KSM-66® Ashwagandha with Vitamin D2 & BioPerine®
+                Clinically studied KSM-66® Ashwagandha with Vitamin D2 & black pepper extract
                 for daily stress support and relaxation.
               </p>
 
@@ -128,7 +128,7 @@ export function HeroSection() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-sm text-charcoal-600 bg-white/80 px-3 py-1.5 rounded-full">
                   <Leaf className="w-3.5 h-3.5 text-sage-600" />
-                  No added sugar & vegan
+                  Sugar-free & vegan
                 </span>
               </div>
 
@@ -165,9 +165,9 @@ export function HeroSection() {
                   One4Health™ is a premium nutraceutical brand specializing in
                   high-bioavailability Ashwagandha supplements. Our signature
                   product uses a clinically studied concentration of KSM-66®
-                  root extract, enhanced with BioPerine® for 30% better absorption
+                  root extract, enhanced with black pepper extract for 30% better absorption
                   and Vitamin D2 for immune support. This formulation is 100%
-                  vegan, zero-sugar, and gelatin-free, designed for stress relief,
+                  vegan, sugar-free, and gelatin-free, designed for stress relief,
                   anxiety reduction, and sleep optimization.
                 </p>
               </div>

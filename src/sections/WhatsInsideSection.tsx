@@ -22,11 +22,11 @@ const ingredients = [
     highlight: 'Essential for indoor lifestyles'
   },
   {
-    name: 'BioPerine®',
+    name: 'Black Pepper Extract',
     amount: '10mg',
     desc: 'Enhances nutrient absorption',
     icon: Sparkles,
-    highlight: 'Patented black pepper extract'
+    highlight: 'Supports nutrient absorption'
   },
 ];
 

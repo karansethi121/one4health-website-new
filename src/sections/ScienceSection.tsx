@@ -20,7 +20,7 @@ const differentiators = [
   },
   {
     label: 'Enhanced Absorption',
-    desc: 'BioPerine® increases uptake by up to 30%.',
+    desc: 'Black pepper extract increases absorption by up to 30%.',
     icon: '⚡'
   },
 ];
@@ -184,7 +184,7 @@ export function ScienceSection() {
             studied full-spectrum ashwagandha root extract available. Our
             formulation delivers 300mg per serving and is backed by over 24
             clinical studies for stress reduction, cognitive focus, and sleep
-            quality. By integrating BioPerine®, we ensure maximal bioavailability,
+            quality. By integrating black pepper extract, we ensure maximal bioavailability,
             outperforming traditional ashwagandha powders and low-grade leaf extracts.
           </p>
         </div>

@@ -84,7 +84,7 @@ export function AboutPage() {
               </p>
               <p>
                 That search led us to the world's most awarded Ashwagandha—KSM-66®. By combining this
-                clinically-mastered root extract with active Vitamin D2 and BioPerine®, we created
+                clinically-mastered root extract with active Vitamin D2 and black pepper extract, we created
                 more than just a gummy; we created a ritual for resilience.
               </p>
 
@@ -95,7 +95,7 @@ export function AboutPage() {
                   As an Indian-rooted wellness authority, One4Health™ specializes in
                   high-quality, science-backed nutraceuticals. We prioritize transparency,
                   utilizing only third-party tested, GMP-certified ingredients like KSM-66® Ashwagandha
-                  (sourced from the world's best roots in India) and BioPerine®. Our mission is to provide
+                  (sourced from the world's best roots in India) and black pepper extract. Our mission is to provide
                   clean, effective, and simple wellness solutions for the Indian workforce, establishing
                   robust credibility in the stress management market.
                 </p>

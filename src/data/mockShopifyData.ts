@@ -44,7 +44,7 @@ const MOCK_PRODUCT = {
       option3: null,
     },
   ],
-  description: 'Clinically studied KSM-66® Ashwagandha with Vitamin D2 and BioPerine® for daily stress support and relaxation.',
+  description: 'Clinically studied KSM-66® Ashwagandha with Vitamin D2 and black pepper extract for daily stress support and relaxation.',
   published_at: '2026-01-01T00:00:00Z',
   created_at: '2026-01-01T00:00:00Z',
   updated_at: '2026-01-01T00:00:00Z',

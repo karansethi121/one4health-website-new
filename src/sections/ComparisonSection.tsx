@@ -19,13 +19,13 @@ const comparisonData = [
     capsules: 'partial',
   },
   {
-    feature: 'BioPerine® Enhanced',
+    feature: 'Black Pepper Extract',
     one4health: true,
     generic: false,
     capsules: false,
   },
   {
-    feature: 'No Added Sugar',
+    feature: 'Sugar-free',
     one4health: true,
     generic: 'partial',
     capsules: true,

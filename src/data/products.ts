@@ -4,7 +4,7 @@ export const mainProduct: Product = {
   id: 'ashwagandha-gummies-ksm66',
   name: 'Ashwagandha Gummies',
   subtitle: 'KSM-66® Ashwagandha Gummies',
-  description: 'Clinically studied KSM-66® Ashwagandha with Vitamin D2 and BioPerine® to support your body\'s stress response, promote relaxation, and help maintain daily balance.',
+  description: 'Clinically studied KSM-66® Ashwagandha with Vitamin D2 and black pepper extract to support your body\'s stress response, promote relaxation, and help maintain daily balance.',
   price: 36900,
   originalPrice: 44900,
   image: '/images/shop.png',
@@ -27,7 +27,7 @@ export const mainProduct: Product = {
     'Promotes relaxation and calm',
     'Helps maintain daily balance',
     'Supports mood and well-being',
-    'Enhanced absorption with BioPerine®',
+    'Enhanced absorption with black pepper extract',
     '100% Allergen Free (No Soy, Gluten, Nuts, Gelatin, Milk)',
   ],
   ingredients: [
@@ -44,7 +44,7 @@ export const mainProduct: Product = {
       description: 'Supports mood balance and healthy immune function',
     },
     {
-      name: 'BioPerine® (Black Pepper Extract)',
+      name: 'Black Pepper Extract',
       amount: '5 mg',
       dailyAmount: '10 mg',
       description: 'Enhances nutrient absorption by up to 30%',
@@ -108,16 +108,16 @@ export const faqs: FAQ[] = [
     answer: 'Vitamin D2 supports mood balance and healthy immune function. Many people, especially those with indoor lifestyles, may not get enough Vitamin D. We\'ve included 400 IU per daily serving to complement the stress-supporting benefits of ashwagandha.',
   },
   {
-    question: 'What does BioPerine® do?',
-    answer: 'BioPerine® is a patented black pepper extract that enhances nutrient absorption by up to 30%. This means your body can better utilize the ashwagandha and Vitamin D2 in each serving, making the formula more effective.',
+    question: 'What does black pepper extract do?',
+    answer: 'Black pepper extract enhances nutrient absorption by up to 30%. This means your body can better utilize the ashwagandha and Vitamin D2 in each serving, making the formula more effective.',
   },
   {
     question: 'How long until I notice changes?',
     answer: 'Everyone\'s body is different. Many people report feeling more balanced within the first week, with optimal support typically experienced after 2-4 weeks of consistent daily use. Consistency is key—take your two gummies at the same time each day.',
   },
   {
-    question: 'Are these gummies no added sugar?',
-    answer: 'Yes! Our gummies are completely no added sugar. We use natural sweeteners to create a delicious strawberry flavor without the sugar crash. They\'re also vegan, gluten-free, and contain no artificial dyes or flavors.',
+    question: 'Are these gummies sugar-free?',
+    answer: 'Yes! Our gummies are completely sugar-free. We use natural sweeteners to create a delicious strawberry flavor without the sugar crash. They\'re also vegan, gluten-free, and contain no artificial dyes or flavors.',
   },
   {
     question: 'Can I take these with other supplements?',

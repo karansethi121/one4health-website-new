@@ -189,24 +189,24 @@ export function SciencePage() {
         </div>
       </section>
 
-      {/* BioPerine Section */}
+      {/* Black Pepper Extract Section */}
       <section className="section-container mb-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="science-animate lg:order-2">
             <div className="bg-sage-700 rounded-3xl p-8 md:p-12 text-white">
               <Beaker className="w-10 h-10 mb-6" />
               <h2 className="text-3xl font-heading font-bold mb-4">
-                Why BioPerine®?
+                Why Black Pepper Extract?
               </h2>
               <p className="text-lg text-white/80 leading-relaxed mb-6">
-                BioPerine® is a patented extract from black pepper fruit that has been
+                Black pepper extract is derived from black pepper fruit and has been
                 clinically shown to enhance nutrient absorption by up to 30%. This means
                 you get more benefit from every gummy.
               </p>
               <ul className="space-y-3">
                 {[
                   'Enhances bioavailability of nutrients',
-                  'Clinically studied and patented',
+                  'Clinically studied for efficacy',
                   'Works synergistically with ashwagandha',
                   'Only 5mg per gummy needed',
                 ].map((item) => (
@@ -226,7 +226,7 @@ export function SciencePage() {
             </h3>
             <p className="text-charcoal-600 leading-relaxed mb-6">
               Many supplements pass through your body without being fully absorbed.
-              BioPerine® addresses this by inhibiting certain enzymes that break down
+              Black pepper extract addresses this by inhibiting certain enzymes that break down
               nutrients, allowing more of the active compounds to reach your bloodstream.
             </p>
             <div className="bg-sage-50 rounded-2xl p-6">
@@ -240,7 +240,7 @@ export function SciencePage() {
                 </div>
               </div>
               <p className="text-sm text-charcoal-600">
-                Studies show BioPerine® can increase the bioavailability of various
+                Studies show black pepper extract can increase the bioavailability of various
                 nutrients, making your supplement more effective.
               </p>
             </div>
