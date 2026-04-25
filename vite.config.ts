@@ -59,7 +59,11 @@ function shopifyAssetCleanup() {
 // https://vite.dev/config/
 export default defineConfig({
   base: './',
-  plugins: [inspectAttr(), react(), shopifyAssetCleanup()],
+  plugins: [
+    inspectAttr(), 
+    react(), 
+    !process.env.VERCEL && shopifyAssetCleanup()
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
