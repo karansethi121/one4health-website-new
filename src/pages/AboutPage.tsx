@@ -102,12 +102,12 @@ export function AboutPage() {
               </div>
             </div>
           </div>
-          <div className="about-animate relative flex items-center justify-center">
-            <div className="relative w-full max-w-3xl lg:-rotate-2 hover:rotate-0 transition-transform duration-700">
+          <div key="about-story-v10" id="about-story-section" className="about-animate relative flex items-center justify-center w-full">
+            <div className="relative w-full max-w-4xl lg:-rotate-1 hover:rotate-0 transition-all duration-700">
               <img
                 src="/images/about_lifestyle.webp"
                 alt="A peaceful and balanced lifestyle achieved through mindfulness and One4Health™ wellness rituals"
-                className="w-full h-auto object-contain rounded-[32px] shadow-2xl"
+                className="w-full h-auto object-contain rounded-[24px] shadow-2xl block"
                 loading="eager"
               />
             </div>
