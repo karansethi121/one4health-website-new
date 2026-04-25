@@ -5,7 +5,7 @@ import { ShoppingBag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function StickyAddToCart() {
-  const { addToCart } = useCart();
+  const { addToCart, isOpen } = useCart();
   const { products } = useProducts();
   const [isVisible, setIsVisible] = useState(false);
   
@@ -14,17 +14,19 @@ export function StickyAddToCart() {
   useEffect(() => {
     const handleScroll = () => {
       // Show when user has scrolled past the main hero (approx 700px)
+      // BUT only if the cart drawer is NOT open
       const scrollThreshold = 700;
-      if (window.scrollY > scrollThreshold) {
+      if (window.scrollY > scrollThreshold && !isOpen) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
       }
     };
 
+    handleScroll(); // Check immediately on mount
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isOpen]);
 
   if (!mainProduct) return null;
 
