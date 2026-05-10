@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# One4Health Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hybrid storefront for One4Health Ashwagandha Gummies. The customer experience is a React/Vite app, while Shopify provides theme hosting, cart, and checkout. Supabase provides dynamic product/content/order data, and Vercel can host lightweight API routes.
 
-Currently, two official plugins are available:
+## Common Commands
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm ci
+npm run dev
+npm test -- --run
+npm run build
+npm run build:vercel
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Runtime Architecture
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `src/` contains the React storefront, cart context, pages, sections, and Supabase hooks.
+- `layout/`, `templates/`, `sections/`, `config/`, and `locales/` contain the Shopify theme shell.
+- `supabase/functions/` contains Edge Functions for Shopify order/contact sync.
+- `api/` contains Vercel API routes, including the server-backed admin session endpoints.
+- `assets/` is the Shopify theme asset output for the main production build.
+- `public/images/` contains standalone/Vercel image assets used by the Vite app.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Environment Variables
+
+Frontend:
+
+```bash
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
 ```
+
+Admin API:
+
+```bash
+ADMIN_PASSWORD=
+ADMIN_SESSION_SECRET=
+```
+
+Supabase Edge Functions:
+
+```bash
+SHOPIFY_WEBHOOK_SECRET=
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+SHOPIFY_STORE_DOMAIN=
+SHOPIFY_CLIENT_ID=
+SHOPIFY_CLIENT_SECRET=
+```
+
+## Build Targets
+
+`npm run build` is the Shopify build. It runs TypeScript, builds Vite into `assets/`, patches Shopify asset URLs, then verifies the theme-facing artifacts with `scripts/verify-shopify-build.mjs`.
+
+`npm run build:vercel` is the standalone Vercel build. It skips Shopify post-processing and is intended for Vercel static output plus `/api` routes.
+
+## Roadmap
+
+See [ROADMAP.md](./ROADMAP.md) for the implementation roadmap, completed hardening work, and remaining cleanup backlog.

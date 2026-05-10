@@ -4,14 +4,14 @@ import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/lib/format';
+import type { CartItem } from '@/context/CartContext';
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice, loading } = useCart();
 
-  const getResolvedImage = (item: any) => {
+  const getResolvedImage = (item: CartItem) => {
     const title = (item.product_title || item.title || '').toLowerCase();
     if (title.includes('ashwa') || title.includes('gumm')) {
-      // @ts-ignore
       return (typeof window !== 'undefined' && window.ShopifyAssetsUrl)
         ? window.ShopifyAssetsUrl + 'shop-v2.png'
         : '/images/shop-v2.png';

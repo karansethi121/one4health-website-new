@@ -64,11 +64,12 @@ export function ContactPage() {
         description: 'Your message has been synced with Shopify. We will get back to you soon.',
       });
       setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[Contact] Submission error:', err);
+      const message = err instanceof Error ? err.message : 'Please try again later.';
       toast({
         title: 'Submission Failed',
-        description: err.message || 'Please try again later.',
+        description: message,
         variant: 'destructive',
       });
     } finally {

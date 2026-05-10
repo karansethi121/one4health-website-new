@@ -55,12 +55,38 @@ export interface NavItem {
   href: string;
 }
 
+export interface ShopifyVariant {
+  id: string | number;
+  title?: string;
+  price?: number;
+  compare_at_price?: number | null;
+  available?: boolean;
+  sku?: string | null;
+}
+
+export interface ShopifyProduct {
+  id?: string | number;
+  handle?: string;
+  title?: string;
+  type?: string;
+  vendor?: string;
+  featured_image?: string;
+  images?: string[];
+  variants?: ShopifyVariant[];
+}
+
+export interface ShopifyCart {
+  items?: unknown[];
+  item_count?: number;
+  total_price?: number;
+}
+
 declare global {
   interface Window {
     ShopifyData: {
-      product: any;
-      all_products: Record<string, any>;
-      cart: any;
+      product: ShopifyProduct;
+      all_products: Record<string, ShopifyProduct>;
+      cart: ShopifyCart;
       routes: {
         root: string;
         cart_add_url: string;

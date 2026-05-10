@@ -1,12 +1,15 @@
 import type { Product, Testimonial, FAQ } from '@/types';
+import { MAIN_PRODUCT_HANDLE, MAIN_PRODUCT_TITLE, getPackConfig } from '@/lib/productPricing';
+
+const singlePack = getPackConfig(1);
 
 export const mainProduct: Product = {
-  id: 'ashwagandha-gummies-ksm66',
-  name: 'Ashwagandha Gummies',
+  id: MAIN_PRODUCT_HANDLE,
+  name: MAIN_PRODUCT_TITLE,
   subtitle: 'KSM-66® Ashwagandha Gummies',
   description: 'Clinically studied KSM-66® Ashwagandha with Vitamin D2 and black pepper extract to support your body\'s stress response, promote relaxation, and help maintain daily balance.',
-  price: 36900,
-  originalPrice: 44900,
+  price: singlePack.totalPrice,
+  originalPrice: singlePack.originalTotalPrice,
   image: '/images/shop-v2.png',
   images: [
     '/images/img1.png',

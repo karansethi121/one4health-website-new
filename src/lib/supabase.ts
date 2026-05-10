@@ -4,7 +4,12 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase credentials missing. Check your .env file.');
+  console.warn('Supabase credentials missing. Using local fallback data where available.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const hasSupabaseCredentials = Boolean(supabaseUrl && supabaseAnonKey);
+
+export const supabase = createClient(
+  supabaseUrl || 'http://127.0.0.1:54321',
+  supabaseAnonKey || 'local-dev-anon-key'
+);

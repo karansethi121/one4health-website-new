@@ -151,9 +151,9 @@ export const ComingSoonPage: React.FC = () => {
                 duration: 5000,
             });
             reset();
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Waitlist submission error:', error);
-            const errorMessage = error instanceof Error ? error.message : (error?.text || JSON.stringify(error));
+            const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
             toast.error(`Error: ${errorMessage}. Please try again.`);
         }
     };

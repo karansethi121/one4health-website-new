@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { 
   BarChart3, 
   Settings, 
@@ -16,39 +16,32 @@ import {
 } from 'lucide-react';
 import { useFAQs, useTestimonials } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
+import { useAdminSession } from '@/hooks/useAdminSession';
 
 type AdminTab = 'overview' | 'faqs' | 'testimonials' | 'settings';
 
 export function AdminPage() {
-  const [activeTab, setActiveTab] = useState<AdminTab>('overview');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
-  const [authError, setAuthError] = useState('');
-  
-  const { faqs, loading: faqsLoading } = useFAQs();
-  const { testimonials } = useTestimonials();
-  
-  const handleLogin = (e: React.FormEvent) => {
+  const { authenticated, checking, submitting, error, login, logout } = useAdminSession();
+
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
-    if (!adminPassword) {
-      setAuthError('Admin access is not configured.');
-      return;
-    }
-    if (password === adminPassword) {
-      setIsAuthenticated(true);
-      setAuthError('');
-    } else {
-      setAuthError('Invalid administrator password');
+    const success = await login(password);
+    if (success) {
+      setPassword('');
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
+  const handleLogout = async () => {
+    await logout();
     setPassword('');
   };
 
-  if (!isAuthenticated) {
+  if (checking) {
+    return <LoadingState fullPage message="Verifying admin session..." />;
+  }
+
+  if (!authenticated) {
     return (
       <div className="min-h-screen bg-sage-50 flex items-center justify-center p-6 font-sans">
         <div className="max-w-md w-full bg-white rounded-[32px] p-10 shadow-soft border border-sage-100">
@@ -70,16 +63,24 @@ export function AdminPage() {
                 className="w-full px-5 py-4 bg-sage-50 border border-sage-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-sage-500/20 focus:border-sage-300 transition-all"
                 autoFocus
               />
-              {authError && <p className="text-red-500 text-sm mt-2 ml-1">{authError}</p>}
+              {error && <p className="text-red-500 text-sm mt-2 ml-1">{error}</p>}
             </div>
-            <button type="submit" className="btn-primary w-full py-4 text-sm tracking-widest">
-              ENTER DASHBOARD
+            <button type="submit" disabled={submitting} className="btn-primary w-full py-4 text-sm tracking-widest disabled:opacity-60">
+              {submitting ? 'SIGNING IN...' : 'ENTER DASHBOARD'}
             </button>
           </form>
         </div>
       </div>
     );
   }
+
+  return <AdminDashboard onLogout={handleLogout} />;
+}
+
+function AdminDashboard({ onLogout }: { onLogout: () => void }) {
+  const [activeTab, setActiveTab] = useState<AdminTab>('overview');
+  const { faqs, loading: faqsLoading } = useFAQs();
+  const { testimonials } = useTestimonials();
 
   return (
     <div className="min-h-screen bg-sage-50 flex font-sans">
@@ -126,7 +127,7 @@ export function AdminPage() {
         
         <div className="p-6 mt-auto border-t border-sage-50">
           <button 
-            onClick={handleLogout}
+            onClick={onLogout}
             className="flex items-center gap-3 w-full px-4 py-3 text-charcoal-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all font-medium text-sm"
           >
             <LogOut className="w-4 h-4" />

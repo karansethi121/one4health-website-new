@@ -4,10 +4,15 @@
  * This fallback ensures the product pages work during local development.
  */
 
+import { MAIN_PRODUCT_HANDLE, MAIN_PRODUCT_TITLE, getPackConfig } from '@/lib/productPricing';
+
+const singlePack = getPackConfig(1);
+const bundlePack = getPackConfig(2);
+
 const MOCK_PRODUCT = {
   id: 1,
-  handle: 'ashwagandha-gummies-ksm66',
-  title: 'Ashwagandha Gummies',
+  handle: MAIN_PRODUCT_HANDLE,
+  title: MAIN_PRODUCT_TITLE,
   type: 'Dietary Supplement',
   vendor: 'One4Health™',
   featured_image: '/images/shop.png',
@@ -22,24 +27,24 @@ const MOCK_PRODUCT = {
   options: [{ name: 'Title', values: ['Default Title'] }],
   variants: [
     {
-      id: 'ashwagandha-gummies-ksm66',
-      title: '1 Jar',
-      price: 36900,
-      compare_at_price: 44900,
+      id: MAIN_PRODUCT_HANDLE,
+      title: singlePack.optionLabel,
+      price: singlePack.totalPrice,
+      compare_at_price: singlePack.originalTotalPrice,
       available: true,
       sku: 'O4H-ASH-001',
-      option1: '1 Jar',
+      option1: singlePack.optionLabel,
       option2: null,
       option3: null,
     },
     {
       id: 'ashwagandha-gummies-bundle-2',
-      title: '2 Jars (Bundle)',
-      price: 68900,
-      compare_at_price: 89800,
+      title: `${bundlePack.optionLabel} (Bundle)`,
+      price: bundlePack.totalPrice,
+      compare_at_price: bundlePack.originalTotalPrice,
       available: true,
       sku: 'O4H-ASH-002',
-      option1: '2 Jars',
+      option1: bundlePack.optionLabel,
       option2: null,
       option3: null,
     },
@@ -72,7 +77,7 @@ export function injectMockShopifyDataIfNeeded(): void {
     window.ShopifyData = {
       product: MOCK_PRODUCT,
       all_products: {
-        'ashwagandha-gummies-ksm66': MOCK_PRODUCT,
+        [MAIN_PRODUCT_HANDLE]: MOCK_PRODUCT,
       },
       cart: {
         items: [],

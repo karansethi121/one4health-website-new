@@ -81,11 +81,11 @@ export default defineConfig({
     },
     emptyOutDir: false,
   },
-  // @ts-ignore - vitest types are not picked up by vite script but work at runtime
+  // @ts-expect-error - vitest types are not picked up by vite script but work at runtime
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
-    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    include: ['src/**/*.{test,spec}.{ts,tsx}', 'api/**/*.{test,spec}.ts'],
   },
 });

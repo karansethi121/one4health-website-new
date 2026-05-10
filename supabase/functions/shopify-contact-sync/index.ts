@@ -63,7 +63,7 @@ serve(async (req) => {
     }
 
     const { customers } = await searchRes.json();
-    let customerId = customers?.[0]?.id;
+    const customerId = customers?.[0]?.id;
 
     let shopifyRes;
     const bodyText = `[Website Contact Form Submission]\nSubject: ${subject}\n\nMessage: ${message}`;

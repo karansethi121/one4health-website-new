@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Testimonial } from '@/types';
+import { testimonials as fallbackTestimonials } from '@/data/products';
 
 export interface SupabaseTestimonial {
   id: string;
@@ -43,7 +44,7 @@ export function useTestimonials() {
       } else {
         setError(String(err));
       }
-      setTestimonials([]);
+      setTestimonials(fallbackTestimonials);
     } finally {
       setLoading(false);
     }

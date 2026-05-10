@@ -31,9 +31,14 @@ export function StickyAddToCart() {
   if (!mainProduct) return null;
 
   const handleQuickAdd = () => {
-    if (mainProduct.shopifyVariantId) {
-      addToCart(mainProduct.shopifyVariantId, 1);
-    }
+    addToCart(
+      mainProduct.shopifyVariantId || mainProduct.id,
+      1,
+      undefined,
+      undefined,
+      mainProduct.price,
+      mainProduct.name
+    );
   };
 
   return (

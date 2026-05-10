@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Product } from '@/types';
+import { mainProduct } from '@/data/products';
 
 // --- Types ---
 interface PositionedItem { position?: number | null }
@@ -38,7 +39,6 @@ const resolveImageUrl = (url: string) => {
   if (!url) return '';
   if (url.startsWith('/images/')) {
     const filename = url.replace('/images/', '');
-    // @ts-ignore - ShopifyAssetsUrl injected dynamically
     return (typeof window !== 'undefined' && window.ShopifyAssetsUrl) 
       ? window.ShopifyAssetsUrl + filename 
       : url;
@@ -136,7 +136,7 @@ export function useProducts() {
       } else {
         setError(String(err));
       }
-      setProducts([]); 
+      setProducts([mainProduct]); 
     } finally {
       setLoading(false);
     }

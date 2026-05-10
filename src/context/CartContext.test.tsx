@@ -18,6 +18,8 @@ const TestComponent = () => {
                 ))}
             </ul>
             <button onClick={() => addToCart('ashwagandha-gummies-ksm66', 1)}>Add Ashwagandha</button>
+            <button onClick={() => addToCart('ashwagandha-gummies-ksm66', 2)}>Add Two Singles</button>
+            <button onClick={() => addToCart('ashwagandha-gummies-ksm66', 2, { _bundle: 'true' }, undefined, 34450, 'Ashwagandha Gummies')}>Add Bundle</button>
         </div>
     );
 };
@@ -87,5 +89,37 @@ describe('CartContext', () => {
         await waitFor(() => {
             expect(screen.getByTestId('total-items').textContent).toBe('0');
         });
+    });
+
+    it('prices two regular jars as two singles', async () => {
+        render(
+            <CartProvider>
+                <TestComponent />
+            </CartProvider>
+        );
+
+        fireEvent.click(screen.getByText('Add Two Singles'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('total-items').textContent).toBe('2');
+        });
+
+        expect(screen.getByTestId('total-price').textContent).toBe('73800');
+    });
+
+    it('prices explicit bundles using bundle pricing', async () => {
+        render(
+            <CartProvider>
+                <TestComponent />
+            </CartProvider>
+        );
+
+        fireEvent.click(screen.getByText('Add Bundle'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('total-items').textContent).toBe('2');
+        });
+
+        expect(screen.getByTestId('total-price').textContent).toBe('68900');
     });
 });

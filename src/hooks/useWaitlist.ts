@@ -34,7 +34,7 @@ export function useWaitlist() {
           body: JSON.stringify({ email, source, type: 'waitlist' }),
         });
 
-      } catch (shopifyErr) {
+      } catch {
         // silently fail — Supabase insert succeeded, don't block user
       }
 

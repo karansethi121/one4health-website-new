@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { FAQ } from '@/types';
+import { faqs as fallbackFAQs } from '@/data/products';
 
 export interface SupabaseFAQ {
   position?: number | null;
@@ -38,7 +39,7 @@ export function useFAQs() {
       } else {
         setError(String(err));
       }
-      setFaqs([]);
+      setFaqs(fallbackFAQs);
     } finally {
       setLoading(false);
     }

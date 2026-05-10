@@ -26,10 +26,9 @@ import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
 import { useProducts } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { Button } from '@/components/ui/button';
+import { getPackConfig, getSavingsPercent, type PackSize } from '@/lib/productPricing';
 
 gsap.registerPlugin(ScrollTrigger);
-
-type PackSize = 1 | 2;
 
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { formatPrice } from '@/lib/format';
@@ -77,19 +76,7 @@ export function ProductPage() {
   }, []);
 
 
-  const getCurrentPrice = () => {
-    // Starting with 449 as original base price for 1 pack of 30 gummies
-    // One-time purchase
-    if (packSize === 2) {
-      return 68900; // Bundle price for 2 packs (60 gummies)
-    }
-    return 36900; // Standard price from DB override
-  };
-  // Sync quantity for cart submission - always 1 for bundles as requested
-  useEffect(() => {
-    setQuantity(1);
-  }, [packSize]);
-
+  const selectedPack = getPackConfig(packSize);
   const handleAddToCart = async () => {
     console.log('[Product] handleAddToCart called with:', { productId: product.id, packSize });
     if (!product) return;
@@ -106,10 +93,8 @@ export function ProductPage() {
     }
     
     // Add physical units to cart (e.g. 1 qty of 2 Jars = 2 physical units)
-    const cartQuantity = quantity * packSize;
-    
-    // Calculate per-unit price in paise (68900/2 = 34450, 36900/1 = 36900)
-    const pricePaise = isBundle ? 34450 : 36900;
+    const cartQuantity = quantity * selectedPack.jars;
+    const pricePaise = selectedPack.unitPrice;
 
     await addToCart(variantId, cartQuantity, attributes, undefined, pricePaise, product.name);
   };
@@ -130,9 +115,9 @@ export function ProductPage() {
     );
   }
 
-  const currentPrice = getCurrentPrice();
-  const originalPrice = packSize === 2 ? 89800 : 44900;
-  const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
+  const currentPrice = selectedPack.totalPrice;
+  const originalPrice = selectedPack.originalTotalPrice;
+  const savings = getSavingsPercent(currentPrice, originalPrice);
 
   return (
     <main className="w-full pt-20 lg:pt-24">
@@ -210,7 +195,10 @@ export function ProductPage() {
             <div className="flex flex-col gap-3 lg:gap-4 mt-2">
                <div className="grid grid-cols-2 gap-2 lg:gap-3 animate-fade-in w-full pb-1">
                   <button
-                  onClick={() => setPackSize(1)}
+                  onClick={() => {
+                    setPackSize(1);
+                    setQuantity(1);
+                  }}
                   className={`flex flex-col justify-center p-4 lg:p-5 rounded-2xl border-2 transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
                     packSize === 1
                       ? 'border-sage-700 bg-sage-50/80 shadow-soft ring-1 ring-sage-700/20'
@@ -223,12 +211,15 @@ export function ProductPage() {
                       {packSize === 1 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
                     </div>
                   </div>
-                  <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>30-day supply</span>
-                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(36900)}</span>
+                  <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>{getPackConfig(1).supplyLabel}</span>
+                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(getPackConfig(1).totalPrice)}</span>
                 </button>
 
                 <button
-                    onClick={() => setPackSize(2)}
+                    onClick={() => {
+                      setPackSize(2);
+                      setQuantity(1);
+                    }}
                     className={`flex flex-col justify-center p-4 lg:p-5 rounded-2xl border-2 transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
                       packSize === 2
                         ? 'border-sage-700 bg-sage-50/80 shadow-soft ring-1 ring-sage-700/20'
@@ -241,8 +232,8 @@ export function ProductPage() {
                         {packSize === 2 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
                       </div>
                     </div>
-                    <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 2 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>60-day supply</span>
-                    <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(68900)}</span>
+                    <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 2 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>{getPackConfig(2).supplyLabel}</span>
+                    <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(getPackConfig(2).totalPrice)}</span>
                     
                     <div className={`mt-3 w-full text-[9px] sm:text-[10px] uppercase font-bold py-1.5 rounded text-center tracking-widest transition-colors ${
                       packSize === 2 ? 'bg-charcoal-900 text-white' : 'bg-charcoal-100 text-charcoal-600'
@@ -274,7 +265,7 @@ export function ProductPage() {
             <div className="flex items-center gap-3 lg:gap-4 text-xs lg:text-sm text-charcoal-600 flex-wrap">
               <span className="flex items-center gap-1.5 px-2.5 py-1 bg-sage-50 rounded-lg text-sage-700 font-medium">
                 <Clock className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                {packSize === 2 ? '30-Day Supply (2 Jars)' : '15-Day Supply (1 Jar)'}
+                {selectedPack.durationLabel}
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700 font-bold" />
@@ -500,8 +491,8 @@ export function ProductPage() {
       <MobileStickyBar 
         productName={product.name} 
         variantId={product.shopifyVariantId || product.id} 
-        quantity={quantity * packSize}
-        price={packSize === 2 ? 34450 : 36900}
+        quantity={quantity * selectedPack.jars}
+        price={selectedPack.unitPrice}
         title={product.name}
       />
     </main>
