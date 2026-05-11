@@ -110,7 +110,7 @@ export function ScienceSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden"
+      className="relative w-full overflow-x-hidden"
       style={{ background: '#0F3D2E' }}
     >
       <div className="grid lg:grid-cols-2 min-h-[560px] lg:min-h-[680px]">
@@ -227,11 +227,11 @@ export function ScienceSection() {
         </div>
 
         {/* Right — Image */}
-        <div className="sci-image relative flex justify-center items-center py-10 lg:py-16">
+        <div className="sci-image relative flex justify-center items-center py-20 lg:py-24">
           {/* Decorative lime circle */}
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none opacity-10"
-            style={{ width: '360px', height: '360px', background: '#C7F25C' }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none opacity-10 w-[300px] h-[300px] sm:w-[340px] sm:h-[340px] lg:w-[380px] lg:h-[380px]"
+            style={{ background: '#C7F25C' }}
             aria-hidden="true"
           />
           <div className="relative z-10 w-full max-w-[260px] sm:max-w-sm lg:max-w-md mx-auto">
