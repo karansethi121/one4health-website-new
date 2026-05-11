@@ -93,9 +93,9 @@ export function ProductPage() {
           {/* ── Left: Image gallery ──────────────────────────────────── */}
           <div className="product-animate">
 
-            {/* Main image — page-matching background, no visible frame */}
+            {/* Main image — transparent container, photo itself is rounded */}
             <div
-              className="relative w-full aspect-square flex items-center justify-center overflow-hidden rounded-[28px] sm:rounded-[36px]"
+              className="relative w-full aspect-square flex items-center justify-center"
               style={{ background: '#F7F1E3' }}
             >
               {/* Subtle lime circle accent */}
@@ -104,12 +104,21 @@ export function ProductPage() {
                 style={{ width: '62%', height: '62%', background: '#C7F25C', opacity: 0.22 }}
                 aria-hidden="true"
               />
-              <img
-                src={product.images?.[activeImage] || product.image}
-                alt={product.name}
-                className="relative z-10 w-[80%] h-[80%] object-contain"
-                loading="eager"
-              />
+              {/* Inner wrapper clips the photo to rounded corners */}
+              <div
+                className="relative z-10 w-[84%] h-[84%] overflow-hidden"
+                style={{
+                  borderRadius: '28px',
+                  boxShadow: '0 16px 48px rgba(10,10,10,0.10), 0 4px 14px rgba(10,10,10,0.06)',
+                }}
+              >
+                <img
+                  src={product.images?.[activeImage] || product.image}
+                  alt={product.name}
+                  className="w-full h-full object-contain"
+                  loading="eager"
+                />
+              </div>
             </div>
 
             {/* Thumbnails — no borders, opacity-only selection state */}
@@ -119,14 +128,22 @@ export function ProductPage() {
                   <button
                     key={idx}
                     onClick={() => setActiveImage(idx)}
-                    className={`relative flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-200 ${
+                    className={`relative flex-shrink-0 overflow-hidden transition-all duration-200 ${
                       activeImage === idx
                         ? 'opacity-100 scale-100'
-                        : 'opacity-35 scale-95 hover:opacity-60 hover:scale-[0.97]'
+                        : 'opacity-70 scale-95 hover:opacity-90 hover:scale-[0.97]'
                     }`}
-                    style={{ width: '68px', height: '68px', background: '#F7F1E3' }}
+                    style={{
+                      width: '96px',
+                      height: '96px',
+                      background: '#F7F1E3',
+                      borderRadius: '18px',
+                      boxShadow: activeImage === idx
+                        ? '0 4px 14px rgba(10,10,10,0.10)'
+                        : '0 2px 6px rgba(10,10,10,0.05)',
+                    }}
                   >
-                    <img src={img} className="w-full h-full object-contain p-1.5" alt={`View ${idx + 1}`} />
+                    <img src={img} className="w-full h-full object-contain" alt={`View ${idx + 1}`} />
                     {activeImage === idx && (
                       <span
                         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-t-full"
