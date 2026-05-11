@@ -13,104 +13,108 @@ import {
   ShoppingBag,
   Hash,
   Mail,
-
   Loader2,
   AlertCircle,
-  Sparkles,
 } from 'lucide-react';
 import { useOrders, type Order } from '@/hooks/useOrders';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
-// ─── Status Helpers ──────────────────────────────────────────────────────────
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const statusConfig: Record<string, { label: string; color: string; bg: string; icon: typeof CheckCircle2 }> = {
-  paid: { label: 'Paid', color: 'text-green-700', bg: 'bg-green-50 border-green-200', icon: CheckCircle2 },
-  authorized: { label: 'Authorized', color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200', icon: CreditCard },
-  pending: { label: 'Pending', color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200', icon: Clock },
-  refunded: { label: 'Refunded', color: 'text-red-700', bg: 'bg-red-50 border-red-200', icon: AlertCircle },
-  voided: { label: 'Voided', color: 'text-charcoal-500', bg: 'bg-charcoal-50 border-charcoal-200', icon: AlertCircle },
+const financialStatus: Record<string, { label: string; bg: string; color: string; icon: typeof CheckCircle2 }> = {
+  paid:       { label: 'Paid',       bg: '#C7F25C', color: '#0F3D2E', icon: CheckCircle2 },
+  authorized: { label: 'Authorized', bg: '#FBF7EC', color: '#0A0A0A', icon: CreditCard   },
+  pending:    { label: 'Pending',    bg: '#FFF3CD', color: '#7A4F00', icon: Clock         },
+  refunded:   { label: 'Refunded',   bg: '#FFE5E8', color: '#C0001A', icon: AlertCircle  },
+  voided:     { label: 'Voided',     bg: '#F0EDE6', color: '#0A0A0A', icon: AlertCircle  },
 };
 
-const fulfillmentConfig: Record<string, { label: string; color: string; bg: string; icon: typeof Truck }> = {
-  fulfilled: { label: 'Shipped', color: 'text-green-700', bg: 'bg-green-50 border-green-200', icon: CheckCircle2 },
-  partial: { label: 'Partially Shipped', color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200', icon: CircleDot },
-  unfulfilled: { label: 'Processing', color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200', icon: Package },
-  null: { label: 'Processing', color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200', icon: Package },
+const fulfillmentStatus: Record<string, { label: string; bg: string; color: string; icon: typeof Truck }> = {
+  fulfilled:   { label: 'Shipped',            bg: '#C7F25C', color: '#0F3D2E', icon: CheckCircle2 },
+  partial:     { label: 'Partially Shipped',  bg: '#FFF3CD', color: '#7A4F00', icon: CircleDot    },
+  unfulfilled: { label: 'Processing',         bg: '#E8F0FF', color: '#1A3A8F', icon: Package      },
+  null:        { label: 'Processing',         bg: '#E8F0FF', color: '#1A3A8F', icon: Package      },
 };
 
-function getStatusBadge(status: string, type: 'financial' | 'fulfillment') {
-  const config = type === 'financial'
-    ? statusConfig[status] || statusConfig['pending']
-    : fulfillmentConfig[status || 'null'] || fulfillmentConfig['unfulfilled'];
-  const Icon = config.icon;
+function StatusBadge({ status, type }: { status: string; type: 'financial' | 'fulfillment' }) {
+  const map = type === 'financial' ? financialStatus : fulfillmentStatus;
+  const cfg = map[status] || (type === 'financial' ? map['pending'] : map['unfulfilled']);
+  const Icon = cfg.icon;
   return (
-    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${config.bg} ${config.color}`}>
+    <span
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-pill font-bold uppercase"
+      style={{
+        fontFamily: "'JetBrains Mono', monospace",
+        fontSize: '9px',
+        letterSpacing: '0.1em',
+        background: cfg.bg,
+        color: cfg.color,
+        border: '1.5px solid #0A0A0A',
+      }}
+    >
       <Icon className="w-3 h-3" />
-      {config.label}
+      {cfg.label}
     </span>
   );
 }
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
+    day: 'numeric', month: 'long', year: 'numeric',
   });
 }
 
 function formatPrice(price: number, currency = 'INR') {
   return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency,
-    maximumFractionDigits: 0,
+    style: 'currency', currency, maximumFractionDigits: 0,
   }).format(price);
 }
 
-// ─── Shipment Progress ──────────────────────────────────────────────────────
+// ─── Shipment Progress ───────────────────────────────────────────────────────
 
-function ShipmentProgress({ fulfillmentStatus }: { fulfillmentStatus: string }) {
-  const steps = [
-    { label: 'Order Placed', key: 'placed' },
-    { label: 'Processing', key: 'processing' },
-    { label: 'Shipped', key: 'shipped' },
-    { label: 'Delivered', key: 'delivered' },
-  ];
-
-  const getActiveStep = () => {
-    switch (fulfillmentStatus) {
-      case 'fulfilled': return 2;
-      case 'partial': return 1;
-      default: return 1; // unfulfilled = processing
-    }
-  };
-
-  const activeStep = getActiveStep();
+function ShipmentProgress({ fulfillmentStatus: status }: { fulfillmentStatus: string }) {
+  const steps = ['Order Placed', 'Processing', 'Shipped', 'Delivered'];
+  const activeStep = status === 'fulfilled' ? 2 : status === 'partial' ? 1 : 1;
 
   return (
-    <div className="flex items-center justify-between relative">
-      {/* Progress Line */}
-      <div className="absolute top-4 left-6 right-6 h-0.5 bg-charcoal-100" />
+    <div className="flex items-start justify-between relative pt-2">
       <div
-        className="absolute top-4 left-6 h-0.5 bg-sage-600 transition-all duration-700"
-        style={{ width: `${(activeStep / (steps.length - 1)) * 100}%`, maxWidth: 'calc(100% - 3rem)' }}
+        className="absolute top-5 left-6 right-6 h-0.5"
+        style={{ background: 'rgba(10,10,10,0.08)' }}
       />
-
-      {steps.map((step, i) => (
-        <div key={step.key} className="flex flex-col items-center relative z-10">
+      <div
+        className="absolute top-5 left-6 h-0.5 transition-all duration-700"
+        style={{
+          width: `${(activeStep / (steps.length - 1)) * 100}%`,
+          maxWidth: 'calc(100% - 3rem)',
+          background: '#0F3D2E',
+        }}
+      />
+      {steps.map((label, i) => (
+        <div key={label} className="flex flex-col items-center relative z-10 gap-2">
           <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-              i <= activeStep
-                ? 'bg-sage-600 text-white shadow-md'
-                : 'bg-white border-2 border-charcoal-200 text-charcoal-400'
-            }`}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500"
+            style={{
+              background: i <= activeStep ? '#0F3D2E' : '#F7F1E3',
+              border: `1.5px solid ${i <= activeStep ? '#0F3D2E' : 'rgba(10,10,10,0.15)'}`,
+            }}
           >
-            {i < activeStep ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
+            {i < activeStep
+              ? <CheckCircle2 className="w-4 h-4 text-white" />
+              : <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', color: i <= activeStep ? '#C7F25C' : 'rgba(10,10,10,0.35)', fontWeight: 700 }}>{i + 1}</span>
+            }
           </div>
-          <span className={`text-[10px] font-bold uppercase tracking-wider mt-2 ${
-            i <= activeStep ? 'text-sage-700' : 'text-charcoal-400'
-          }`}>
-            {step.label}
+          <span style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '9px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            color: i <= activeStep ? '#0F3D2E' : 'rgba(10,10,10,0.35)',
+            fontWeight: 700,
+            textAlign: 'center',
+            maxWidth: '56px',
+          }}>
+            {label}
           </span>
         </div>
       ))}
@@ -118,133 +122,138 @@ function ShipmentProgress({ fulfillmentStatus }: { fulfillmentStatus: string }) 
   );
 }
 
-// ─── Order Detail View ──────────────────────────────────────────────────────
+// ─── Order Detail ────────────────────────────────────────────────────────────
 
 function OrderDetail({ order, onBack }: { order: Order; onBack: () => void }) {
   return (
-    <div className="space-y-8 animate-fadeIn">
-      {/* Back Button */}
+    <div className="space-y-6">
       <button
         onClick={onBack}
-        className="flex items-center gap-2 text-sage-700 hover:text-sage-800 font-semibold transition-colors group"
+        className="flex items-center gap-2 group"
+        style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '14px', color: '#0F3D2E' }}
       >
         <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
         Back to lookup
       </button>
 
-      {/* Order Header */}
-      <div className="bg-white rounded-[32px] p-8 lg:p-10 shadow-soft border border-sage-100">
-        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-8">
+      {/* Order header */}
+      <div
+        className="p-6 sm:p-8 hover-hard"
+        style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '32px' }}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <Package className="w-6 h-6 text-sage-600" />
-              <h2 className="text-2xl font-heading font-bold text-charcoal-900">
+            <div className="flex items-center gap-3 mb-1">
+              <Package className="w-5 h-5 text-forest" />
+              <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '24px', color: '#0A0A0A', letterSpacing: '-0.025em' }}>
                 Order #{order.order_number}
               </h2>
             </div>
-            <p className="text-charcoal-500 text-sm">
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#0A0A0A', opacity: 0.4 }}>
               Placed on {formatDate(order.created_at)}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {getStatusBadge(order.financial_status, 'financial')}
-            {getStatusBadge(order.fulfillment_status, 'fulfillment')}
+            <StatusBadge status={order.financial_status} type="financial" />
+            <StatusBadge status={order.fulfillment_status} type="fulfillment" />
           </div>
         </div>
 
-        {/* Shipment Progress */}
-        <div className="bg-sage-50/50 rounded-2xl p-6 border border-sage-100">
+        {/* Progress */}
+        <div className="p-5 sm:p-6" style={{ background: '#F7F1E3', borderRadius: '20px', border: '1.5px solid rgba(10,10,10,0.08)' }}>
           <ShipmentProgress fulfillmentStatus={order.fulfillment_status} />
         </div>
       </div>
 
-      {/* Tracking & Delivery Info */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Estimated Delivery */}
-        <div className="bg-white rounded-[32px] p-8 shadow-soft border border-sage-100">
+      {/* Tracking & delivery */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div className="p-6 hover-hard" style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '28px' }}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-sage-50 rounded-xl flex items-center justify-center">
-              <Clock className="w-5 h-5 text-sage-600" />
+            <div className="w-10 h-10 rounded-2xl bg-lime flex items-center justify-center flex-shrink-0">
+              <Clock className="w-5 h-5 text-forest" />
             </div>
-            <h3 className="font-bold text-charcoal-900">Estimated Delivery</h3>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '16px', color: '#0A0A0A' }}>
+              Estimated Delivery
+            </h3>
           </div>
-          <p className="text-charcoal-600 text-lg font-semibold">
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '17px', color: '#0F3D2E' }}>
             {order.estimated_delivery || '5–7 business days'}
           </p>
         </div>
 
-        {/* Tracking */}
-        <div className="bg-white rounded-[32px] p-8 shadow-soft border border-sage-100">
+        <div className="p-6 hover-hard" style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '28px' }}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-sage-50 rounded-xl flex items-center justify-center">
-              <Truck className="w-5 h-5 text-sage-600" />
+            <div className="w-10 h-10 rounded-2xl bg-lime flex items-center justify-center flex-shrink-0">
+              <Truck className="w-5 h-5 text-forest" />
             </div>
-            <h3 className="font-bold text-charcoal-900">Tracking</h3>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '16px', color: '#0A0A0A' }}>
+              Tracking
+            </h3>
           </div>
           {order.tracking_number ? (
             <div className="space-y-2">
-              <p className="text-charcoal-600">
-                <span className="text-charcoal-400 text-sm">Carrier:</span>{' '}
-                <span className="font-semibold">{order.tracking_company || 'Courier'}</span>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#0A0A0A', opacity: 0.6 }}>
+                Carrier: <span style={{ fontWeight: 600, opacity: 1, color: '#0A0A0A' }}>{order.tracking_company || 'Courier'}</span>
               </p>
-              <p className="text-charcoal-600">
-                <span className="text-charcoal-400 text-sm">Tracking #:</span>{' '}
-                <span className="font-mono font-semibold">{order.tracking_number}</span>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '12px', color: '#0A0A0A' }}>
+                #{order.tracking_number}
               </p>
               {order.tracking_url && (
                 <a
                   href={order.tracking_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-sage-700 text-white rounded-xl font-bold text-sm hover:bg-sage-800 transition-all mt-2"
+                  className="inline-flex items-center gap-2 mt-2 btn-ink py-3 px-5 text-xs"
                 >
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-3.5 h-3.5" />
                   Track Shipment
                 </a>
               )}
             </div>
           ) : (
-            <p className="text-charcoal-500 italic">
-              Tracking information will appear here once your order ships.
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#0A0A0A', opacity: 0.45 }}>
+              Tracking will appear once your order ships.
             </p>
           )}
         </div>
       </div>
 
-      {/* Order Items */}
-      <div className="bg-white rounded-[32px] p-8 lg:p-10 shadow-soft border border-sage-100">
-        <h3 className="text-lg font-bold text-charcoal-900 mb-6 flex items-center gap-2">
-          <ShoppingBag className="w-5 h-5 text-sage-600" />
+      {/* Order items */}
+      <div className="p-6 sm:p-8 hover-hard" style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '32px' }}>
+        <h3 className="flex items-center gap-2 mb-5" style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '18px', color: '#0A0A0A' }}>
+          <ShoppingBag className="w-5 h-5 text-forest" />
           Items Ordered
         </h3>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {order.order_items?.map((item) => (
             <div
               key={item.id}
-              className="flex gap-4 p-4 bg-sage-50/50 rounded-2xl border border-sage-100 hover:shadow-soft-sm transition-all"
+              className="flex gap-4 p-4"
+              style={{ background: '#F7F1E3', borderRadius: '20px', border: '1.5px solid rgba(10,10,10,0.06)' }}
             >
               {item.image_url ? (
                 <img
                   src={item.image_url}
                   alt={item.title}
-                  className="w-20 h-20 object-cover rounded-xl flex-shrink-0"
+                  className="w-16 h-16 object-contain flex-shrink-0"
+                  style={{ borderRadius: '14px', background: '#FBF7EC' }}
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 />
               ) : (
-                <div className="w-20 h-20 bg-sage-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Package className="w-8 h-8 text-sage-400" />
+                <div className="w-16 h-16 flex items-center justify-center flex-shrink-0" style={{ borderRadius: '14px', background: '#C7F25C' }}>
+                  <Package className="w-7 h-7 text-forest" />
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-charcoal-900 mb-0.5">{item.title}</h4>
+                <h4 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '15px', color: '#0A0A0A' }}>{item.title}</h4>
                 {item.variant_title && item.variant_title !== 'Default Title' && (
-                  <p className="text-xs text-charcoal-500">{item.variant_title}</p>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#0A0A0A', opacity: 0.5 }}>{item.variant_title}</p>
                 )}
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-sm text-charcoal-500">
-                    Qty: <span className="font-semibold text-charcoal-700">{item.quantity}</span>
+                <div className="flex items-center justify-between mt-1.5">
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', color: '#0A0A0A', opacity: 0.4 }}>
+                    Qty: <strong style={{ opacity: 1 }}>{item.quantity}</strong>
                   </span>
-                  <span className="font-bold text-sage-700">
+                  <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '15px', color: '#0F3D2E' }}>
                     {formatPrice(item.price * item.quantity, order.currency)}
                   </span>
                 </div>
@@ -253,36 +262,35 @@ function OrderDetail({ order, onBack }: { order: Order; onBack: () => void }) {
           ))}
         </div>
 
-        {/* Order Total */}
-        <div className="mt-6 pt-6 border-t border-sage-100">
-          <div className="flex justify-between items-center">
-            <span className="text-charcoal-500 font-medium">Subtotal</span>
-            <span className="font-semibold text-charcoal-700">
-              {formatPrice(order.subtotal_price, order.currency)}
-            </span>
-          </div>
-          <div className="flex justify-between items-center mt-2">
-            <span className="text-charcoal-500 font-medium">Shipping</span>
-            <span className="text-sage-600 font-semibold text-sm">FREE</span>
-          </div>
-          <div className="flex justify-between items-center mt-4 pt-4 border-t border-sage-100">
-            <span className="text-lg font-bold text-charcoal-900">Total</span>
-            <span className="text-2xl font-bold text-charcoal-900">
+        {/* Totals */}
+        <div className="mt-6 pt-5" style={{ borderTop: '1.5px solid rgba(10,10,10,0.08)' }}>
+          {[
+            { label: 'Subtotal', value: formatPrice(order.subtotal_price, order.currency) },
+            { label: 'Shipping', value: 'FREE', highlight: true },
+          ].map((row) => (
+            <div key={row.label} className="flex justify-between items-center mb-2">
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#0A0A0A', opacity: 0.55 }}>{row.label}</span>
+              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '14px', color: row.highlight ? '#0F3D2E' : '#0A0A0A' }}>{row.value}</span>
+            </div>
+          ))}
+          <div className="flex justify-between items-center mt-4 pt-4" style={{ borderTop: '1.5px solid rgba(10,10,10,0.08)' }}>
+            <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '18px', color: '#0A0A0A' }}>Total</span>
+            <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '22px', color: '#0F3D2E' }}>
               {formatPrice(order.total_price, order.currency)}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Shipping Address */}
+      {/* Shipping address */}
       {order.shipping_address && (
-        <div className="bg-white rounded-[32px] p-8 shadow-soft border border-sage-100">
-          <h3 className="text-lg font-bold text-charcoal-900 mb-4 flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-sage-600" />
+        <div className="p-6 sm:p-8 hover-hard" style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '28px' }}>
+          <h3 className="flex items-center gap-2 mb-4" style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '18px', color: '#0A0A0A' }}>
+            <MapPin className="w-5 h-5 text-forest" />
             Shipping Address
           </h3>
-          <div className="text-charcoal-600 leading-relaxed">
-            <p className="font-semibold text-charcoal-900">
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '15px', color: '#0A0A0A', lineHeight: 1.65, opacity: 0.75 }}>
+            <p style={{ fontWeight: 700, opacity: 1 }}>
               {order.shipping_address.first_name} {order.shipping_address.last_name}
             </p>
             <p>{order.shipping_address.address1}</p>
@@ -294,7 +302,7 @@ function OrderDetail({ order, onBack }: { order: Order; onBack: () => void }) {
             </p>
             <p>{order.shipping_address.country}</p>
             {order.shipping_address.phone && (
-              <p className="mt-2 text-sm text-charcoal-500">📞 {order.shipping_address.phone}</p>
+              <p className="mt-2" style={{ fontSize: '13px' }}>📞 {order.shipping_address.phone}</p>
             )}
           </div>
         </div>
@@ -303,10 +311,10 @@ function OrderDetail({ order, onBack }: { order: Order; onBack: () => void }) {
   );
 }
 
-// ─── Main Page ──────────────────────────────────────────────────────────────
+// ─── Main Page ───────────────────────────────────────────────────────────────
 
 export function AccountPage() {
-  useDocumentTitle('My Orders — One4Health™');
+  useDocumentTitle('Track Your Order — One4Health™');
 
   const { selectedOrder, loading, error, lookupOrder, setSelectedOrder, reset } = useOrders();
   const [email, setEmail] = useState('');
@@ -316,16 +324,8 @@ export function AccountPage() {
   const handleLookup = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
-
-    if (!email.trim()) {
-      setFormError('Please enter your email address.');
-      return;
-    }
-    if (!orderNumber.trim()) {
-      setFormError('Please enter your order number.');
-      return;
-    }
-
+    if (!email.trim()) { setFormError('Please enter your email address.'); return; }
+    if (!orderNumber.trim()) { setFormError('Please enter your order number.'); return; }
     await lookupOrder(email, orderNumber);
   };
 
@@ -334,136 +334,161 @@ export function AccountPage() {
     setSelectedOrder(null);
   };
 
-  // Show order detail if an order is selected
   if (selectedOrder) {
     return (
-      <div className="min-h-screen bg-sage-50 pt-24 lg:pt-32 pb-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="w-full min-h-screen pt-[72px] lg:pt-[84px] pb-20" style={{ background: '#F7F1E3' }}>
+        <div className="section-container pt-8 max-w-3xl mx-auto">
           <OrderDetail order={selectedOrder} onBack={handleBack} />
         </div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="min-h-screen bg-sage-50 pt-24 lg:pt-32 pb-16">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2 mb-8 animate-in fade-in slide-in-from-top-4">
-            <AlertCircle className="w-5 h-5 flex-shrink-0" />
-            <p className="text-sm font-medium">{error}</p>
-          </div>
-        )}
+    <main className="w-full min-h-screen pt-[72px] lg:pt-[84px] pb-20" style={{ background: '#F7F1E3' }}>
+      <div className="section-container pt-10 lg:pt-16 max-w-xl mx-auto">
+
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-sage-100 rounded-full px-4 py-2 mb-6">
-            <Sparkles className="w-4 h-4 text-sage-600" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-sage-700">Order Tracking</span>
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-heading font-bold text-charcoal-900 mb-4">
-            Track Your Order
+        <div className="text-center mb-10">
+          <span className="eyebrow mb-5 block">Order Tracking</span>
+          <h1 style={{
+            fontFamily: "'Bricolage Grotesque', sans-serif",
+            fontWeight: 800,
+            letterSpacing: '-0.035em',
+            fontSize: 'clamp(36px, 6vw, 64px)',
+            color: '#0A0A0A',
+            lineHeight: 1.0,
+            marginBottom: '12px',
+          }}>
+            Track Your{' '}
+            <em style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', color: '#0F3D2E' }}>
+              Order.
+            </em>
           </h1>
-          <p className="text-charcoal-500 text-lg max-w-md mx-auto">
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '16px', color: '#0A0A0A', opacity: 0.55, lineHeight: 1.55 }}>
             Enter your email and order number to view your order details and tracking information.
           </p>
         </div>
 
-        {/* Lookup Form */}
-        <div className="bg-white rounded-[32px] p-8 lg:p-10 shadow-soft border border-sage-100">
-          <form onSubmit={handleLookup} className="space-y-6">
-            {/* Email Input */}
+        {/* Lookup form */}
+        <div
+          className="p-7 sm:p-10 hover-hard mb-6"
+          style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '36px' }}
+        >
+          <form onSubmit={handleLookup} className="space-y-5">
+            {/* Email */}
             <div>
-              <label htmlFor="account-email" className="block text-sm font-bold text-charcoal-700 mb-2">
+              <label
+                htmlFor="account-email"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#0A0A0A', opacity: 0.5, display: 'block', marginBottom: '8px' }}
+              >
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-charcoal-400" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'rgba(10,10,10,0.3)' }} />
                 <input
                   id="account-email"
                   type="email"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-12 pr-5 py-4 bg-sage-50 border border-sage-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-sage-500/20 focus:border-sage-300 transition-all text-charcoal-900 placeholder:text-charcoal-400"
+                  className="w-full pl-11 pr-5 py-4 outline-none transition-all"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '15px',
+                    color: '#0A0A0A',
+                    background: '#F7F1E3',
+                    border: '1.5px solid rgba(10,10,10,0.12)',
+                    borderRadius: '16px',
+                  }}
                   autoFocus
                 />
               </div>
             </div>
 
-            {/* Order Number Input */}
+            {/* Order number */}
             <div>
-              <label htmlFor="account-order" className="block text-sm font-bold text-charcoal-700 mb-2">
+              <label
+                htmlFor="account-order"
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#0A0A0A', opacity: 0.5, display: 'block', marginBottom: '8px' }}
+              >
                 Order Number
               </label>
               <div className="relative">
-                <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-charcoal-400" />
+                <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'rgba(10,10,10,0.3)' }} />
                 <input
                   id="account-order"
                   type="text"
                   placeholder="e.g. 1001"
                   value={orderNumber}
                   onChange={(e) => setOrderNumber(e.target.value)}
-                  className="w-full pl-12 pr-5 py-4 bg-sage-50 border border-sage-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-sage-500/20 focus:border-sage-300 transition-all text-charcoal-900 placeholder:text-charcoal-400"
+                  className="w-full pl-11 pr-5 py-4 outline-none transition-all"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '15px',
+                    color: '#0A0A0A',
+                    background: '#F7F1E3',
+                    border: '1.5px solid rgba(10,10,10,0.12)',
+                    borderRadius: '16px',
+                  }}
                 />
               </div>
             </div>
 
-            {/* Error Messages */}
+            {/* Error */}
             {(formError || error) && (
-              <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-2xl">
-                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                <p className="text-red-700 text-sm font-medium">{formError || error}</p>
+              <div className="flex items-start gap-3 p-4" style={{ background: '#FFE5E8', border: '1.5px solid #FF5A6B', borderRadius: '16px' }}>
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#C0001A' }} />
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#C0001A' }}>{formError || error}</p>
               </div>
             )}
 
-            {/* Submit Button */}
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-sage-700 hover:bg-sage-800 text-white font-bold py-4 rounded-2xl transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-3 text-base disabled:opacity-60 disabled:cursor-not-allowed"
+              className="btn-ink w-full py-4 flex items-center justify-center gap-3 text-base disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {loading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Search className="w-5 h-5" />
-              )}
-              {loading ? 'Looking up...' : 'Find My Order'}
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
+              {loading ? 'Looking up…' : 'Find My Order'}
             </button>
           </form>
 
-          {/* Help Text */}
-          <div className="mt-8 pt-6 border-t border-sage-100 text-center">
-            <p className="text-charcoal-400 text-sm">
-              You can find your order number in the confirmation email you received after checkout.
+          <div className="mt-7 pt-6 text-center" style={{ borderTop: '1.5px solid rgba(10,10,10,0.08)' }}>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#0A0A0A', opacity: 0.45, lineHeight: 1.6 }}>
+              Find your order number in the confirmation email you received after checkout.
             </p>
-            <p className="text-charcoal-400 text-sm mt-2">
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#0A0A0A', opacity: 0.45, marginTop: '6px' }}>
               Need help?{' '}
-              <a href="/contact" className="text-sage-700 font-semibold hover:text-sage-800 transition-colors underline underline-offset-2">
+              <a href="/contact" style={{ color: '#0F3D2E', fontWeight: 600, textDecoration: 'underline' }}>
                 Contact Support
               </a>
             </p>
           </div>
         </div>
 
-        {/* Features */}
-        <div className="grid grid-cols-3 gap-4 mt-10">
+        {/* Feature tiles */}
+        <div className="grid grid-cols-3 gap-3">
           {[
             { icon: Package, label: 'Order Details' },
-            { icon: Truck, label: 'Live Tracking' },
-            { icon: Clock, label: 'Delivery Estimate' },
-          ].map((feature) => (
+            { icon: Truck,   label: 'Live Tracking' },
+            { icon: Clock,   label: 'Delivery ETA'  },
+          ].map((f) => (
             <div
-              key={feature.label}
-              className="bg-white rounded-2xl p-5 shadow-soft-sm border border-sage-100 text-center hover:shadow-soft transition-all duration-300 hover:-translate-y-0.5"
+              key={f.label}
+              className="flex flex-col items-center gap-2 p-5 hover-hard"
+              style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '24px' }}
             >
-              <feature.icon className="w-6 h-6 text-sage-600 mx-auto mb-2" />
-              <span className="text-[10px] font-bold text-charcoal-500 uppercase tracking-widest">
-                {feature.label}
+              <div className="w-9 h-9 rounded-xl bg-lime flex items-center justify-center">
+                <f.icon className="w-4 h-4 text-forest" />
+              </div>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#0A0A0A', opacity: 0.5, textAlign: 'center' }}>
+                {f.label}
               </span>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

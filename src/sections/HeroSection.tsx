@@ -181,14 +181,14 @@ export function HeroSection() {
 
                 {/* Lime circle — always centered behind the product */}
                 <div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none w-[300px] h-[300px] sm:w-[360px] sm:h-[360px] lg:w-[440px] lg:h-[440px]"
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] lg:w-[520px] lg:h-[520px]"
                   style={{ background: '#C7F25C', opacity: 0.9 }}
                   aria-hidden="true"
                 />
 
                 <Link
                   to="/product/ashwagandha-gummies-ksm66"
-                  className="relative z-10 block w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[380px] xl:max-w-[420px]"
+                  className="relative z-10 block w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[460px] xl:max-w-[520px]"
                   style={{ filter: 'drop-shadow(0 24px 48px rgba(15,61,46,0.22))' }}
                   aria-label="View Ashwagandha Gummies product page"
                 >

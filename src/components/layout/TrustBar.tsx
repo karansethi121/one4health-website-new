@@ -32,7 +32,7 @@ export function TrustBar() {
         {doubled.map((cert, i) => (
           <div
             key={i}
-            className="flex-shrink-0 flex items-center justify-center px-5 lg:px-10"
+            className="flex-shrink-0 flex items-center justify-center px-6 lg:px-16"
           >
             <img
               src={cert.src}

@@ -97,7 +97,7 @@ export function WhatsInsideSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full section-padding overflow-hidden"
+      className="relative w-full section-padding overflow-x-hidden"
       style={{ background: '#FBF7EC' }}
     >
       <div className="section-container">
@@ -256,11 +256,11 @@ export function WhatsInsideSection() {
 
           {/* Right — Product image */}
           <div className="inside-image order-1 lg:order-2 flex justify-center w-full">
-            <div className="relative w-full max-w-[260px] sm:max-w-xs lg:max-w-sm xl:max-w-md mx-auto py-8">
-              {/* Lime circle bg */}
+            <div className="relative w-full max-w-[280px] sm:max-w-xs lg:max-w-sm xl:max-w-md mx-auto py-16">
+              {/* Lime circle bg — responsive, extra padding prevents bottom crop */}
               <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-                style={{ width: '260px', height: '260px', background: '#C7F25C', opacity: 0.25 }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] lg:w-[340px] lg:h-[340px]"
+                style={{ background: '#C7F25C', opacity: 0.25 }}
                 aria-hidden="true"
               />
               <img
