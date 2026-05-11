@@ -1,8 +1,7 @@
-import { Minus, Plus, X, ShoppingBag, Leaf, Sparkles, Shield, Loader2 } from 'lucide-react';
+import { Minus, Plus, X, ShoppingBag, Leaf, Shield, Loader2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/lib/format';
 import type { CartItem } from '@/context/CartContext';
 
@@ -13,8 +12,8 @@ export function CartDrawer() {
     const title = (item.product_title || item.title || '').toLowerCase();
     if (title.includes('ashwa') || title.includes('gumm')) {
       return (typeof window !== 'undefined' && window.ShopifyAssetsUrl)
-        ? window.ShopifyAssetsUrl + 'shop-v2.png'
-        : '/images/shop-v2.png';
+        ? window.ShopifyAssetsUrl + 'img1.png'
+        : '/images/img1.png';
     }
     return item.image;
   };
@@ -25,112 +24,236 @@ export function CartDrawer() {
 
   return (
     <Sheet open={isOpen} onOpenChange={closeCart}>
-      <SheetContent className="w-full sm:max-w-md bg-sage-50 flex flex-col border-none">
-        <SheetHeader className="space-y-2.5 pb-4">
-          <SheetTitle className="flex items-center gap-3 text-xl font-heading">
-            <ShoppingBag className="w-6 h-6 text-sage-600" />
-            Your Cart ({items.length})
-            {loading && <Loader2 className="w-4 h-4 animate-spin text-sage-600" />}
-          </SheetTitle>
+      <SheetContent
+        className="w-full sm:max-w-[420px] flex flex-col border-none p-0"
+        style={{ background: '#F7F1E3' }}
+      >
+        {/* ── Header ─────────────────────────────────────────────── */}
+        <SheetHeader
+          className="px-6 py-5 flex-shrink-0"
+          style={{ borderBottom: '1.5px solid #0A0A0A' }}
+        >
+          <div className="flex items-center justify-between">
+            <SheetTitle className="flex items-center gap-3">
+              <ShoppingBag className="w-5 h-5 text-forest" />
+              <span
+                style={{
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontWeight: 800,
+                  fontSize: '20px',
+                  letterSpacing: '-0.03em',
+                  color: '#0A0A0A',
+                }}
+              >
+                Cart
+                <span
+                  className="ml-2 px-2 py-0.5 rounded-full text-xs"
+                  style={{
+                    background: '#C7F25C',
+                    color: '#0F3D2E',
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontWeight: 700,
+                  }}
+                >
+                  {items.length}
+                </span>
+              </span>
+              {loading && <Loader2 className="w-4 h-4 animate-spin text-forest ml-2" />}
+            </SheetTitle>
+            <button
+              onClick={closeCart}
+              className="p-2 rounded-full hover:bg-ink/8 transition-colors"
+              aria-label="Close cart"
+            >
+              <X className="w-5 h-5 text-ink" />
+            </button>
+          </div>
         </SheetHeader>
 
         {items.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
-            <div className="w-24 h-24 bg-sage-100 rounded-full flex items-center justify-center mb-6 animate-gentle-bounce">
-              <Leaf className="w-12 h-12 text-sage-600" />
+          /* ── Empty State ─────────────────────────────────────── */
+          <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
+            <div
+              className="w-20 h-20 flex items-center justify-center mb-6 rounded-[20px]"
+              style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', boxShadow: '4px 4px 0 #0A0A0A' }}
+            >
+              <Leaf className="w-9 h-9 text-forest" />
             </div>
-            <h3 className="text-xl font-semibold text-charcoal-900 mb-2">
-              Your cart is empty
+            <h3
+              style={{
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontWeight: 800,
+                fontSize: '22px',
+                letterSpacing: '-0.03em',
+                color: '#0A0A0A',
+                marginBottom: '8px',
+              }}
+            >
+              Nothing here yet.
             </h3>
-            <p className="text-charcoal-500 text-sm mb-8 max-w-xs">
-              Add some products to get started on your wellness journey.
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: '15px',
+                color: '#0A0A0A',
+                opacity: 0.5,
+                marginBottom: '32px',
+                maxWidth: '220px',
+              }}
+            >
+              Add the gummies and start your wellness ritual.
             </p>
-            <Button onClick={closeCart} className="btn-primary" asChild>
-              <a href="/shop">Start Shopping</a>
-            </Button>
+            <Link
+              to="/shop"
+              onClick={closeCart}
+              className="flex items-center gap-2 px-6 py-3 rounded-full transition-all hover:-translate-y-0.5"
+              style={{
+                background: '#0A0A0A',
+                color: '#F7F1E3',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontWeight: 700,
+                fontSize: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                border: '1.5px solid #0A0A0A',
+                boxShadow: '4px 4px 0 #C7F25C',
+              }}
+            >
+              Shop Now
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         ) : (
           <>
-            {/* Cart Items */}
-            <div className="flex-1 overflow-auto py-4 space-y-4">
+            {/* ── Cart Items ──────────────────────────────────────── */}
+            <div className="flex-1 overflow-auto py-4 px-4 space-y-3">
               {items.map((item) => (
                 <div
                   key={item.key}
-                  className="flex gap-4 p-4 bg-white rounded-2xl shadow-soft"
+                  className="flex gap-4 p-4"
+                  style={{
+                    background: '#FBF7EC',
+                    border: '1.5px solid #0A0A0A',
+                    borderRadius: '20px',
+                  }}
                 >
-                  <Link 
-                    to="/product/ashwagandha-gummies-ksm66" 
+                  <Link
+                    to="/product/ashwagandha-gummies-ksm66"
                     onClick={closeCart}
-                    className="flex-shrink-0 group/img"
+                    className="flex-shrink-0"
                   >
                     <img
                       src={getResolvedImage(item)}
                       alt={item.product_title}
-                      className="w-20 h-20 object-cover rounded-xl transition-transform duration-300 group-hover/img:scale-110"
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      className="w-20 h-20 object-contain rounded-xl"
+                      style={{ background: '#F7F1E3' }}
+                      onError={(e) => { (e.target as HTMLImageElement).src = '/images/img1.png'; }}
                     />
                   </Link>
+
                   <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-start">
+                    <div className="flex justify-between items-start mb-1">
                       <div className="min-w-0 flex-1 pr-2">
-                        <Link 
-                          to="/product/ashwagandha-gummies-ksm66" 
-                          onClick={closeCart}
-                          className="hover:text-sage-700 transition-colors block"
+                        <h4
+                          style={{
+                            fontFamily: "'Bricolage Grotesque', sans-serif",
+                            fontWeight: 700,
+                            fontSize: '15px',
+                            color: '#0A0A0A',
+                            letterSpacing: '-0.02em',
+                          }}
+                          className="truncate"
                         >
-                          <h4 className="font-semibold text-charcoal-900 text-sm truncate">
-                            {item.product_title || item.title}
-                          </h4>
-                        </Link>
-                        <p className="text-xs text-charcoal-500 mt-0.5">
-                          {item.variant_title !== 'Default Title' ? item.variant_title : ''}
-                        </p>
+                          {item.product_title || item.title}
+                        </h4>
+                        {item.variant_title && item.variant_title !== 'Default Title' && (
+                          <p
+                            style={{
+                              fontFamily: "'JetBrains Mono', monospace",
+                              fontSize: '10px',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.08em',
+                              color: '#0A0A0A',
+                              opacity: 0.4,
+                              marginTop: '2px',
+                            }}
+                          >
+                            {item.variant_title}
+                          </p>
+                        )}
                       </div>
                       <button
                         onClick={() => removeFromCart(item.key)}
-                        className="p-1.5 hover:bg-sage-100 rounded-full transition-colors flex-shrink-0"
+                        className="p-1.5 rounded-full hover:bg-ink/8 transition-colors flex-shrink-0"
                         aria-label="Remove item"
                         disabled={loading}
                       >
-                        <X className="w-4 h-4 text-charcoal-400" />
+                        <X className="w-3.5 h-3.5 text-ink/40" />
                       </button>
                     </div>
+
                     <div className="flex justify-between items-center mt-3">
-                      <div className="flex items-center gap-2 bg-sage-50 rounded-full px-2 py-1">
+                      {/* Qty stepper */}
+                      <div
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+                        style={{ background: '#0A0A0A' }}
+                      >
                         <button
                           onClick={() => updateQuantity(item.key, item.quantity - 1)}
-                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors disabled:opacity-40"
-                          aria-label="Decrease quantity"
+                          className="w-5 h-5 flex items-center justify-center text-cream hover:text-lime transition-colors disabled:opacity-30"
                           disabled={loading}
+                          aria-label="Decrease"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="text-sm font-medium w-6 text-center">
+                        <span
+                          style={{
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontWeight: 700,
+                            fontSize: '13px',
+                            color: '#F7F1E3',
+                            minWidth: '16px',
+                            textAlign: 'center',
+                          }}
+                        >
                           {item.quantity}
                         </span>
                         <button
                           onClick={() => updateQuantity(item.key, item.quantity + 1)}
-                          className="w-7 h-7 flex items-center justify-center hover:bg-white rounded-full transition-colors disabled:opacity-40"
-                          aria-label="Increase quantity"
+                          className="w-5 h-5 flex items-center justify-center text-cream hover:text-lime transition-colors disabled:opacity-30"
                           disabled={loading}
+                          aria-label="Increase"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
                       </div>
+
+                      {/* Price */}
                       <div className="text-right">
                         {item.original_line_price > item.final_line_price && (
-                          <p className="text-[10px] text-charcoal-400 line-through">
+                          <p
+                            style={{
+                              fontFamily: "'DM Sans', sans-serif",
+                              fontSize: '11px',
+                              color: '#0A0A0A',
+                              opacity: 0.3,
+                              textDecoration: 'line-through',
+                            }}
+                          >
                             {formatPrice(item.original_line_price)}
                           </p>
                         )}
-                        <span className="font-semibold text-sage-700">
+                        <span
+                          style={{
+                            fontFamily: "'Bricolage Grotesque', sans-serif",
+                            fontWeight: 800,
+                            fontSize: '17px',
+                            color: '#0F3D2E',
+                            letterSpacing: '-0.02em',
+                          }}
+                        >
                           {formatPrice(item.final_line_price || item.line_price || item.price * item.quantity)}
                         </span>
-                        {item.original_line_price > item.final_line_price && (
-                          <p className="text-[8px] font-bold text-coral-600 uppercase tracking-tight">
-                            Save {Math.round(((item.original_line_price - item.final_line_price) / item.original_line_price) * 100)}%
-                          </p>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -138,45 +261,115 @@ export function CartDrawer() {
               ))}
             </div>
 
-            {/* Cart Footer */}
-            <div className="border-t border-charcoal-200 pt-6 pb-6 space-y-4 px-2">
-              {/* Trust Badges */}
-              <div className="flex items-center justify-center gap-4 text-[9px] text-charcoal-500 uppercase tracking-widest font-bold">
-                <div className="flex items-center gap-1.5 text-sage-700">
-                  <Leaf className="w-3.5 h-3.5" />
-                  <span className="text-[11px] font-semibold">Free shipping on all orders</span>
+            {/* ── Footer ────────────────────────────────────────────── */}
+            <div
+              className="flex-shrink-0 px-4 py-6 space-y-4"
+              style={{ borderTop: '1.5px solid #0A0A0A' }}
+            >
+              {/* Trust strip */}
+              <div className="flex items-center justify-center gap-5">
+                <div className="flex items-center gap-1.5">
+                  <Leaf className="w-3.5 h-3.5 text-forest" />
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: '9px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                      color: '#0A0A0A',
+                      opacity: 0.5,
+                    }}
+                  >
+                    Free Shipping
+                  </span>
                 </div>
-                <span className="flex items-center gap-1.5 opacity-80">
-                  <Shield className="w-2.5 h-2.5 text-sage-600" />
-                  30-day guarantee
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-forest" />
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: '9px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                      color: '#0A0A0A',
+                      opacity: 0.5,
+                    }}
+                  >
+                    30-Day Guarantee
+                  </span>
+                </div>
               </div>
 
               {/* Subtotal */}
-              <div className="flex justify-between items-center bg-white rounded-2xl p-5 shadow-soft-sm relative overflow-hidden">
+              <div
+                className="flex justify-between items-center px-5 py-4 relative overflow-hidden"
+                style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '16px' }}
+              >
                 {loading && (
-                  <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
-                    <Loader2 className="w-4 h-4 animate-spin text-sage-600" />
+                  <div className="absolute inset-0 bg-cream/60 flex items-center justify-center">
+                    <Loader2 className="w-4 h-4 animate-spin text-forest" />
                   </div>
                 )}
-                <span className="text-charcoal-600 font-medium">Subtotal</span>
-                <span className="text-2xl font-bold text-charcoal-900">
+                <span
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    color: '#0A0A0A',
+                    opacity: 0.5,
+                  }}
+                >
+                  Subtotal
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: 800,
+                    fontSize: '24px',
+                    color: '#0F3D2E',
+                    letterSpacing: '-0.03em',
+                  }}
+                >
                   {formatPrice(totalPrice)}
                 </span>
               </div>
 
-              {/* Checkout Button */}
-              <Button
+              {/* Checkout CTA */}
+              <button
                 onClick={handleCheckout}
                 disabled={loading || items.length === 0}
-                className="w-full bg-sage-700 hover:bg-sage-800 text-white font-bold py-6 rounded-xl transition-all duration-300 hover:shadow-lg text-base"
+                className="w-full flex items-center justify-center gap-3 py-4 rounded-full transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50"
+                style={{
+                  background: '#C7F25C',
+                  color: '#0F3D2E',
+                  border: '1.5px solid #0A0A0A',
+                  boxShadow: '4px 4px 0 #0A0A0A',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontWeight: 800,
+                  fontSize: '13px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                }}
               >
-                {loading ? <Loader2 className="w-5 h-5 animate-spin mr-3" /> : <Sparkles className="w-5 h-5 mr-3" />}
-                Proceed to Checkout
-              </Button>
+                {loading
+                  ? <Loader2 className="w-4 h-4 animate-spin" />
+                  : <>Checkout — {formatPrice(totalPrice)} <ArrowRight className="w-4 h-4" /></>
+                }
+              </button>
 
-              <p className="text-[10px] text-center text-charcoal-400 uppercase tracking-widest font-bold">
-                Shipping and taxes calculated at checkout
+              <p
+                className="text-center"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: '9px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: '#0A0A0A',
+                  opacity: 0.3,
+                }}
+              >
+                Taxes & shipping calculated at checkout
               </p>
             </div>
           </>

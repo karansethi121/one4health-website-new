@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MessageCircle, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-import { Button } from '@/components/ui/button';
 
 interface MobileStickyBarProps {
   productName?: string;
@@ -23,12 +22,10 @@ export function MobileStickyBar({
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show after scrolling past hero section (approximately 800px)
       setIsVisible(window.scrollY > 800);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Check initial state
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -45,37 +42,36 @@ export function MobileStickyBar({
     window.open(`https://wa.me/919876543210?text=${message}`, '_blank');
   };
 
-  // Removed formatPrice as it is no longer used in the button
-
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 bg-white border-t border-sage-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] transition-transform duration-300 z-50 lg:hidden ${isVisible ? 'translate-y-0' : 'translate-y-full'
-        }`}
+      className={`fixed bottom-0 left-0 right-0 transition-transform duration-300 z-50 lg:hidden ${isVisible ? 'translate-y-0' : 'translate-y-full'}`}
+      style={{ background: '#F7F1E3', borderTop: '1.5px solid #0A0A0A', boxShadow: '0 -8px 24px rgba(10,10,10,0.08)' }}
     >
-      <div className="flex items-center gap-2 p-3">
+      <div className="flex items-center gap-3 p-4">
         {/* WhatsApp Button */}
-        <Button
+        <button
           onClick={handleWhatsApp}
-          className="flex items-center justify-center gap-2 bg-sage-700 hover:bg-sage-800 text-white font-medium py-3.5 px-4 rounded-full transition-all duration-300 active:scale-95 min-h-[52px]"
+          className="flex items-center justify-center p-4 rounded-full transition-all duration-300 active:scale-95 border-1.5 border-ink"
+          style={{ background: '#FBF7EC' }}
           aria-label="Chat on WhatsApp"
         >
-          <MessageCircle className="w-5 h-5" />
-          <span className="text-sm">WhatsApp</span>
-        </Button>
+          <MessageCircle className="w-5 h-5 text-forest" />
+        </button>
 
         {/* Add to Cart Button */}
-        <Button
+        <button
           onClick={handleAddToCart}
-          loading={cartLoading}
-          className="flex-1 flex items-center justify-center gap-2 bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 px-4 rounded-full transition-all duration-300 active:scale-95 min-h-[52px]"
+          disabled={cartLoading}
+          className="flex-1 flex items-center justify-center gap-3 py-4 rounded-full transition-all duration-300 active:scale-95 shadow-hard-sm"
+          style={{ background: '#C7F25C', color: '#0F3D2E', border: '1.5px solid #0A0A0A', fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}
         >
           <ShoppingCart className="w-5 h-5" />
-          <span className="text-sm">Add to Cart</span>
-        </Button>
+          {cartLoading ? '...' : 'Add to Cart'}
+        </button>
       </div>
 
       {/* Safe area padding for iOS */}
-      <div className="h-[env(safe-area-inset-bottom,0px)] bg-white" />
+      <div className="h-[env(safe-area-inset-bottom,0px)]" style={{ background: '#F7F1E3' }} />
     </div>
   );
 }

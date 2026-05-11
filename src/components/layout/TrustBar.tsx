@@ -1,46 +1,48 @@
 export function TrustBar() {
-  const certifications = [
-    { image: '/images/cert_fssc.png', alt: 'FSSC 22000' },
-    { image: '/images/cert_usfda_new.png', alt: 'US FDA Registered Facility' },
-    { image: '/images/cert_gmp_new.png', alt: 'GMP Certified' },
-    { image: '/images/cert_haccp.png', alt: 'HACCP' },
-    { image: '/images/cert_iso9001_new.png', alt: 'ISO 9001 Certified' },
-    { image: '/images/cert_iso22000.png', alt: 'ISO 22000 Certified' },
-    { image: '/images/cert_cruelty_free.png', alt: 'Cruelty Free' },
-    { image: '/images/cert_fssai.webp', alt: 'FSSAI Compliant' },
-    { image: '/images/cert_madeinindia.webp', alt: 'Made in India' },
+  const certs = [
+    { src: '/images/cert_fssai.webp',       alt: 'FSSAI Compliant' },
+    { src: '/images/cert_fssc.png',          alt: 'FSSC 22000' },
+    { src: '/images/cert_usfda_new.png',     alt: 'US FDA Registered' },
+    { src: '/images/cert_gmp_new.png',       alt: 'GMP Certified' },
+    { src: '/images/cert_haccp.png',         alt: 'HACCP' },
+    { src: '/images/cert_iso9001_new.png',   alt: 'ISO 9001' },
+    { src: '/images/cert_iso22000.png',      alt: 'ISO 22000' },
+    { src: '/images/cert_cruelty_free.png',  alt: 'Cruelty Free' },
+    { src: '/images/cert_madeinindia.webp',  alt: 'Made in India' },
   ];
 
+  // Duplicate for seamless infinite scroll
+  const doubled = [...certs, ...certs];
+
   return (
-    <div className="w-full bg-white border-y border-sage-100 py-8 lg:py-12">
-      <div className="section-container">
-        <div className="relative flex overflow-hidden group">
-          <div className="flex w-max animate-[scroll_40s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-12 lg:gap-16 pr-12 lg:pr-16 will-change-transform">
-            {certifications.map((cert, index) => (
-              <div key={index} className="flex flex-col items-center shrink-0 w-24">
-                <img
-                  src={cert.image}
-                  alt={cert.alt}
-                  className="h-16 w-16 lg:h-20 lg:w-20 object-contain transition-transform duration-300 hover:scale-110"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+    <div
+      className="w-full overflow-hidden flex items-center"
+      style={{
+        background: '#FBF7EC',
+        borderTop: '1.5px solid #0A0A0A',
+        borderBottom: '1.5px solid #0A0A0A',
+        height: '88px',
+      }}
+      aria-label="Certifications"
+    >
+      <div
+        className="flex items-center whitespace-nowrap"
+        style={{ animation: 'marquee 50s linear infinite' }}
+      >
+        {doubled.map((cert, i) => (
+          <div
+            key={i}
+            className="flex-shrink-0 flex items-center justify-center px-5 lg:px-10"
+          >
+            <img
+              src={cert.src}
+              alt={cert.alt}
+              className="h-14 w-auto object-contain"
+              loading="lazy"
+              draggable={false}
+            />
           </div>
-          {/* Duplicate for infinite loop */}
-          <div className="flex w-max animate-[scroll_40s_linear_infinite] group-hover:[animation-play-state:paused] items-center gap-12 lg:gap-16 pr-12 lg:pr-16" aria-hidden="true">
-            {certifications.map((cert, index) => (
-              <div key={`dup-${index}`} className="flex flex-col items-center shrink-0 w-24">
-                <img
-                  src={cert.image}
-                  alt={cert.alt}
-                  className="h-16 w-16 lg:h-20 lg:w-20 object-contain transition-transform duration-300 hover:scale-110"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

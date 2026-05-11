@@ -2,47 +2,36 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   Check,
-  Sparkles,
-  Truck,
-  Shield,
-  Minus,
-  Plus,
   ChevronRight,
   Leaf,
   Beaker,
   Sun,
-  Info,
-  Heart,
   Clock,
   Moon,
-  Sun as SunIcon,
+  ArrowRight,
+  Star,
+  Shield,
+  Truck,
 } from 'lucide-react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '@/context/CartContext';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
+import { AllergenBar } from '@/components/layout/AllergenBar';
 import { useProducts } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
-import { Button } from '@/components/ui/button';
 import { getPackConfig, getSavingsPercent, type PackSize } from '@/lib/productPricing';
-
-gsap.registerPlugin(ScrollTrigger);
-
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { formatPrice } from '@/lib/format';
 
 export function ProductPage() {
   const { id } = useParams<{ id: string }>();
   const { addToCart, loading: cartLoading } = useCart();
-  const [quantity, setQuantity] = useState(1);
+  const quantity = 1;
   const [packSize, setPackSize] = useState<PackSize>(1);
   const [activeImage, setActiveImage] = useState(0);
-
   const { products, loading: productsLoading } = useProducts();
 
-  // Get dynamic product data from Supabase
   const product = useMemo(() => {
     if (!id) return products[0];
     return products.find(p => p.id === id) || products[0];
@@ -50,320 +39,333 @@ export function ProductPage() {
 
   useDocumentTitle(product?.name || 'Product');
 
-  // Handle initial purchase type from navigation state
-
   useEffect(() => {
+    if (productsLoading || !product) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.product-animate',
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.product-content',
-            start: 'top 70%',
-            toggleActions: 'play none none reverse',
-          },
-        }
+      gsap.fromTo('.product-animate',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }
       );
     });
-
     return () => ctx.revert();
-  }, []);
-
+  }, [productsLoading, product]);
 
   const selectedPack = getPackConfig(packSize);
+
   const handleAddToCart = async () => {
-    console.log('[Product] handleAddToCart called with:', { productId: product.id, packSize });
     if (!product) return;
-
-    // Use variant ID logic: if bundle (2 jars), use bundle variant if it exists
-    // Force base variant so cart displays individual units
-    const isBundle = packSize === 2;
     const variantId = product.shopifyVariantId || product.id;
-    
-    const attributes: Record<string, string> = {};
-    attributes['purchase_type'] = 'One-time';
-    if (isBundle) {
-      attributes['_bundle'] = 'true';
-    }
-    
-    // Add physical units to cart (e.g. 1 qty of 2 Jars = 2 physical units)
     const cartQuantity = quantity * selectedPack.jars;
-    const pricePaise = selectedPack.unitPrice;
-
-    await addToCart(variantId, cartQuantity, attributes, undefined, pricePaise, product.name);
+    await addToCart(variantId, cartQuantity, { 'purchase_type': 'One-time' }, undefined, selectedPack.unitPrice, product.name);
   };
 
-  if (productsLoading) {
-    return <LoadingState fullPage message="Fetching wellness essentials..." />;
-  }
-
-  if (!product && !productsLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-sage-50 pt-20">
-        <div className="text-center p-8 bg-white rounded-3xl shadow-soft border border-sage-100 max-w-md">
-          <h2 className="text-2xl font-bold text-charcoal-900 mb-4">Product Not Found</h2>
-          <p className="text-charcoal-500 mb-8">We couldn't find the product you're looking for. It might have been moved or is currently unavailable.</p>
-          <a href="/shop" className="btn-primary inline-flex py-4 px-8">Back to Shop</a>
-        </div>
+  if (productsLoading) return <LoadingState fullPage message="Fetching product details..." />;
+  if (!product) return (
+    <div className="min-h-screen flex items-center justify-center pt-24" style={{ background: '#F7F1E3' }}>
+      <div className="text-center p-12 bg-white rounded-[48px] border-2 border-ink shadow-hard max-w-md">
+        <h2 className="text-2xl font-bold mb-4">Product Not Found</h2>
+        <Link to="/shop" className="btn-ink py-4 px-8">Back to Shop</Link>
       </div>
-    );
-  }
+    </div>
+  );
 
-  const currentPrice = selectedPack.totalPrice;
-  const originalPrice = selectedPack.originalTotalPrice;
-  const savings = getSavingsPercent(currentPrice, originalPrice);
+  const savings = getSavingsPercent(selectedPack.totalPrice, selectedPack.originalTotalPrice);
 
   return (
-    <main className="w-full pt-20 lg:pt-24">
-      {/* Breadcrumb */}
-      <div className="section-container pt-4 pb-2 lg:pt-6 lg:pb-4">
-        <nav className="flex items-center gap-2 text-xs lg:text-sm text-charcoal-500">
-          <Link to="/" className="hover:text-sage-700">Home</Link>
-          <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
-          <Link to="/shop" className="hover:text-sage-700">Shop</Link>
-          <ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" />
-          <span className="text-charcoal-900" aria-current="page">{product.name}</span>
+    <main className="w-full pt-[72px] lg:pt-[84px]" style={{ background: '#F7F1E3' }}>
+
+      {/* ── Breadcrumb ─────────────────────────────────────────────────── */}
+      <div className="section-container pt-5 pb-0">
+        <nav
+          className="flex items-center gap-2"
+          style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em' }}
+        >
+          <Link to="/shop" className="text-ink/40 hover:text-ink transition-colors">Shop</Link>
+          <ChevronRight className="w-3 h-3 text-ink/20" />
+          <span className="text-ink">{product.name}</span>
         </nav>
       </div>
 
-      {/* Product Section */}
-      <section className="section-container py-6 lg:py-12">
-        <div className="product-content grid lg:grid-cols-2 gap-6 lg:gap-12">
-          {/* Left - Images */}
-          <div className="product-animate flex flex-col items-center gap-4 lg:gap-6 overflow-hidden">
-            <div className="relative w-full aspect-square flex items-center justify-center p-2 sm:p-4 lg:p-6 transition-all duration-500">
+      {/* ── Main Product Section ───────────────────────────────────────── */}
+      <section className="section-container py-5 lg:py-14">
+        <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-6 lg:gap-16 items-start">
+
+          {/* ── Left: Image gallery ──────────────────────────────────── */}
+          <div className="product-animate">
+
+            {/* Main image — page-matching background, no visible frame */}
+            <div
+              className="relative w-full aspect-square flex items-center justify-center overflow-hidden rounded-[28px] sm:rounded-[36px]"
+              style={{ background: '#F7F1E3' }}
+            >
+              {/* Subtle lime circle accent */}
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+                style={{ width: '62%', height: '62%', background: '#C7F25C', opacity: 0.22 }}
+                aria-hidden="true"
+              />
               <img
-                key={activeImage}
-                src={product.images && product.images.length > 0 ? product.images[activeImage] : product.image}
-                alt={`${product.name} - View ${activeImage + 1}`}
-                className="w-full h-full object-contain animate-fade-in"
+                src={product.images?.[activeImage] || product.image}
+                alt={product.name}
+                className="relative z-10 w-[80%] h-[80%] object-contain"
                 loading="eager"
               />
             </div>
-            
-            {/* Thumbnail Gallery */}
+
+            {/* Thumbnails — no borders, opacity-only selection state */}
             {product.images && product.images.length > 1 && (
-              <div className="flex gap-3 sm:gap-4 overflow-x-auto py-3 px-2 w-full justify-start scrollbar-hide">
-                {product.images.map((imgUrl, idx) => (
+              <div className="flex gap-3 mt-4 overflow-x-auto pb-1 scrollbar-hide">
+                {product.images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImage(idx)}
-                    className={`relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-300 ${
-                      activeImage === idx 
-                        ? 'border-[3px] border-sage-700 scale-105 bg-white shadow-md' 
-                        : 'border-2 border-charcoal-100/50 bg-white/50 hover:bg-white hover:border-sage-300 hover:scale-[1.02]'
+                    className={`relative flex-shrink-0 rounded-2xl overflow-hidden transition-all duration-200 ${
+                      activeImage === idx
+                        ? 'opacity-100 scale-100'
+                        : 'opacity-35 scale-95 hover:opacity-60 hover:scale-[0.97]'
                     }`}
+                    style={{ width: '68px', height: '68px', background: '#F7F1E3' }}
                   >
-                    <img 
-                      src={imgUrl} 
-                      alt={`Thumbnail ${idx + 1}`}
-                      className="absolute inset-0 w-full h-full object-contain p-2"
-                      loading="lazy"
-                    />
+                    <img src={img} className="w-full h-full object-contain p-1.5" alt={`View ${idx + 1}`} />
+                    {activeImage === idx && (
+                      <span
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-t-full"
+                        style={{ background: '#0F3D2E' }}
+                      />
+                    )}
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Right - Product Info */}
-          <div className="product-animate space-y-4 lg:space-y-6">
-            {/* Badge */}
-            <div className="flex flex-wrap gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-coral-100 text-coral-700 rounded-full text-xs font-medium">
-                <Sparkles className="w-3.5 h-3.5" />
-                New Launch
-              </span>
-            </div>
+          {/* ── Right: Purchase details ───────────────────────────────── */}
+          <div className="product-animate flex flex-col">
 
-            {/* Title */}
-            <div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-charcoal-900 mb-2">
-                {product.name}
-              </h1>
-              <p className="text-base lg:text-lg text-charcoal-600">{product.subtitle}</p>
-              <p className="text-sm font-medium text-sage-700 mt-1">Flavor: Strawberry</p>
-            </div>
-
-            {/* Premium Pack Size Selection */}
-            <div className="flex flex-col gap-3 lg:gap-4 mt-2">
-               <div className="grid grid-cols-2 gap-2 lg:gap-3 animate-fade-in w-full pb-1">
-                  <button
-                  onClick={() => {
-                    setPackSize(1);
-                    setQuantity(1);
-                  }}
-                  className={`flex flex-col justify-center p-4 lg:p-5 rounded-2xl border-2 transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
-                    packSize === 1
-                      ? 'border-sage-700 bg-sage-50/80 shadow-soft ring-1 ring-sage-700/20'
-                      : 'border-charcoal-100 hover:border-sage-300 hover:bg-sage-50/30'
-                  }`}
-                >
-                  <div className="flex items-center justify-between w-full mb-1">
-                    <span className="font-bold text-charcoal-900 text-base lg:text-lg">1 Jar</span>
-                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 1 ? 'border-sage-700' : 'border-charcoal-300'}`}>
-                      {packSize === 1 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
-                    </div>
-                  </div>
-                  <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 1 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>{getPackConfig(1).supplyLabel}</span>
-                  <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(getPackConfig(1).totalPrice)}</span>
-                </button>
-
-                <button
-                    onClick={() => {
-                      setPackSize(2);
-                      setQuantity(1);
-                    }}
-                    className={`flex flex-col justify-center p-4 lg:p-5 rounded-2xl border-2 transition-all bg-white relative translate-y-0 hover:-translate-y-0.5 ${
-                      packSize === 2
-                        ? 'border-sage-700 bg-sage-50/80 shadow-soft ring-1 ring-sage-700/20'
-                        : 'border-charcoal-100 hover:border-sage-300 hover:bg-sage-50/30'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between w-full mb-1">
-                      <span className="font-bold text-charcoal-900 text-base lg:text-lg">2 Jars</span>
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${packSize === 2 ? 'border-sage-700' : 'border-charcoal-300'}`}>
-                        {packSize === 2 && <div className="w-2 h-2 bg-sage-700 rounded-full" />}
-                      </div>
-                    </div>
-                    <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 2 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>{getPackConfig(2).supplyLabel}</span>
-                    <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(getPackConfig(2).totalPrice)}</span>
-                    
-                    <div className={`mt-3 w-full text-[9px] sm:text-[10px] uppercase font-bold py-1.5 rounded text-center tracking-widest transition-colors ${
-                      packSize === 2 ? 'bg-charcoal-900 text-white' : 'bg-charcoal-100 text-charcoal-600'
-                    }`}>
-                      Most Popular
-                    </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Price */}
-            <div className="flex items-baseline gap-2 lg:gap-3 flex-wrap">
-              <span className="text-2xl lg:text-3xl font-bold text-sage-700">
-                {formatPrice(currentPrice)}
-              </span>
-              {originalPrice && (
-                <>
-                  <span className="text-lg lg:text-xl text-charcoal-400 line-through">
-                    {formatPrice(originalPrice)}
-                  </span>
-                  <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wider">
-                    Save {savings}%
-                  </span>
-                </>
-              )}
-            </div>
-
-            {/* Supply Info */}
-            <div className="flex items-center gap-3 lg:gap-4 text-xs lg:text-sm text-charcoal-600 flex-wrap">
-              <span className="flex items-center gap-1.5 px-2.5 py-1 bg-sage-50 rounded-lg text-sage-700 font-medium">
-                <Clock className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                {selectedPack.durationLabel}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-700 font-bold" />
-                2 Gummies daily
-              </span>
-            </div>
-
-            {/* Quantity Selector */}
-            <div className="flex items-center gap-3 lg:gap-4">
-              <span className="text-sm font-medium text-charcoal-700">Quantity:</span>
-              <div className="flex items-center gap-2 lg:gap-3 bg-sage-50 rounded-full px-3 py-2">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center hover:bg-white rounded-full transition-colors"
-                  aria-label="Decrease quantity"
-                  title="Decrease quantity"
-                >
-                  <Minus className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                </button>
-                <span className="w-6 lg:w-8 text-center font-medium text-sm lg:text-base">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center hover:bg-white rounded-full transition-colors"
-                  aria-label="Increase quantity"
-                  title="Increase quantity"
-                >
-                  <Plus className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="space-y-2 lg:space-y-3">
-              <Button
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                loading={cartLoading}
-                className="w-full bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 lg:py-4 rounded-full transition-all duration-300 hover:scale-[1.02] text-sm lg:text-base min-h-[52px] lg:min-h-[56px] disabled:bg-charcoal-200"
-              >
-                {!product.inStock ? 'Out of Stock' : 'Add to Cart'}
-              </Button>
-            </div>
-
-            {/* Allergen Free Section */}
-            <div className="bg-sage-50/50 border border-sage-100 rounded-xl lg:rounded-2xl p-4 lg:p-5">
-              <h3 className="text-[10px] lg:text-xs font-bold text-charcoal-500 mb-4 uppercase tracking-widest">100% Allergen Free</h3>
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-                {[
-                  { image: '/images/allergen_gelatin_free_v8.png', alt: 'Gelatin Free' },
-                  { image: '/images/allergen_gluten_free_v8.png', alt: 'Gluten Free' },
-                  { image: '/images/allergen_milk_free_v8.png', alt: 'Milk Free' },
-                  { image: '/images/allergen_peanut_free_v8.png', alt: 'Peanut Free' },
-                  { image: '/images/allergen_nut_free_v8.png', alt: 'Nut Free' },
-                  { image: '/images/allergen_soy_free_v8.png', alt: 'Soy Free' },
-                ].map((allergen) => (
-                  <div key={allergen.alt} className="flex items-center justify-center">
-                    <img src={allergen.image} alt={allergen.alt} className="h-14 w-14 lg:h-16 lg:w-16 object-contain" loading="lazy" />
-                  </div>
+            {/* Star rating */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-forest text-forest" />
                 ))}
               </div>
-            </div>
-
-            {/* Trust Badges */}
-            <div className="flex flex-wrap gap-3 lg:gap-4 text-xs text-charcoal-500">
-              <span className="flex items-center gap-1.5">
-                <Truck className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                Free shipping on all orders
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-600" />
-                30-day guarantee
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-sage-600" />
-                ISO 9001 Certified
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                color: '#0A0A0A',
+                opacity: 0.5,
+              }}>
+                140 Reviews
               </span>
             </div>
 
-            {/* FDA/FSSAI Disclaimer */}
-            <div className="p-3 lg:p-4 bg-sage-50 rounded-xl">
-              <p className="text-xs text-charcoal-400 leading-relaxed">
-                *These statements have not been evaluated by the Food and Drug Administration or FSSAI.
-                This product is not intended to diagnose, treat, cure, or prevent any disease.
+            {/* Product name */}
+            <h1 style={{
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+              fontWeight: 800,
+              letterSpacing: '-0.035em',
+              fontSize: 'clamp(26px, 5vw, 54px)',
+              color: '#0A0A0A',
+              lineHeight: 1.0,
+              marginBottom: '10px',
+            }}>
+              {product.name}
+            </h1>
+
+            {/* Subtitle */}
+            <p className="mb-7" style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: '15px',
+              lineHeight: 1.55,
+              color: '#0A0A0A',
+              opacity: 0.55,
+            }}>
+              {product.subtitle}
+            </p>
+
+            {/* Pack selector */}
+            <div className="mb-6">
+              <span className="block mb-3" style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '10px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                color: '#0A0A0A',
+                opacity: 0.4,
+              }}>
+                Choose your pack
+              </span>
+              <div className="grid grid-cols-2 gap-3">
+                {([1, 2] as PackSize[]).map((size) => {
+                  const config = getPackConfig(size);
+                  const isSelected = packSize === size;
+                  return (
+                    <button
+                      key={size}
+                      onClick={() => setPackSize(size)}
+                      className={`relative flex flex-col p-5 text-left transition-all duration-200 ${
+                        isSelected
+                          ? 'border-2 border-ink shadow-hard -translate-y-0.5'
+                          : 'border-2 border-ink/10 hover:border-ink/25'
+                      }`}
+                      style={{ borderRadius: '22px', background: '#FBF7EC' }}
+                    >
+                      {size === 2 && (
+                        <span
+                          className="absolute -top-3 left-5 px-2.5 py-1 text-forest font-bold uppercase tracking-widest"
+                          style={{
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontSize: '9px',
+                            background: '#C7F25C',
+                            borderRadius: '999px',
+                            border: '1.5px solid #0A0A0A',
+                          }}
+                        >
+                          Best Deal
+                        </span>
+                      )}
+                      <span style={{
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                        fontWeight: 800,
+                        fontSize: '17px',
+                        color: '#0A0A0A',
+                        marginBottom: '2px',
+                      }}>
+                        {size} Jar{size > 1 ? 's' : ''}
+                      </span>
+                      <span style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: '12px',
+                        color: '#0A0A0A',
+                        opacity: 0.5,
+                        marginBottom: '10px',
+                      }}>
+                        {config.supplyLabel}
+                      </span>
+                      <div className="flex items-baseline gap-2 mt-auto">
+                        <span style={{
+                          fontFamily: "'Bricolage Grotesque', sans-serif",
+                          fontWeight: 800,
+                          fontSize: '16px',
+                          color: '#0F3D2E',
+                        }}>
+                          {formatPrice(config.totalPrice)}
+                        </span>
+                        {config.originalTotalPrice && (
+                          <span style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontSize: '12px',
+                            color: '#0A0A0A',
+                            opacity: 0.25,
+                            textDecoration: 'line-through',
+                          }}>
+                            {formatPrice(config.originalTotalPrice)}
+                          </span>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Price row */}
+            <div className="flex flex-wrap items-center gap-3 mb-7">
+              <span style={{
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontWeight: 800,
+                fontSize: 'clamp(24px, 5.5vw, 38px)',
+                color: '#0F3D2E',
+                letterSpacing: '-0.03em',
+              }}>
+                {formatPrice(selectedPack.totalPrice)}
+              </span>
+              {savings > 0 && (
+                <span className="px-3 py-1.5 rounded-pill bg-strawberry text-white font-bold uppercase tracking-widest"
+                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px' }}>
+                  Save {savings}%
+                </span>
+              )}
+              <span className="flex items-center gap-1.5" style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '10px',
+                color: '#0F3D2E',
+                opacity: 0.55,
+              }}>
+                <Clock className="w-3 h-3" />
+                {selectedPack.durationLabel}
+              </span>
+            </div>
+
+            {/* CTA */}
+            <div className="mb-7">
+              <button
+                onClick={handleAddToCart}
+                disabled={!product.inStock || cartLoading}
+                className={`btn-ink py-5 text-base w-full flex items-center justify-center gap-3 ${!product.inStock ? 'opacity-50 grayscale' : ''}`}
+              >
+                {cartLoading
+                  ? '…'
+                  : !product.inStock
+                  ? 'Out of Stock'
+                  : <><span>Add to Cart — {formatPrice(selectedPack.totalPrice)}</span><ArrowRight className="w-4 h-4" /></>
+                }
+              </button>
+              <p className="flex items-center justify-center gap-1.5 mt-2.5" style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '10px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                color: '#0A0A0A',
+                opacity: 0.4,
+              }}>
+                <Check className="w-3 h-3 text-forest" />
+                Free Shipping · 30-Day Guarantee
               </p>
+            </div>
+
+            {/* Trust grid */}
+            <div className="grid grid-cols-2 gap-y-3 gap-x-6 pt-6 border-t border-ink/8">
+              {[
+                { icon: Truck, label: 'Fast India Delivery' },
+                { icon: Shield, label: '30-Day Guarantee' },
+                { icon: Beaker, label: 'Clinically Studied' },
+                { icon: Leaf, label: '100% Vegan' },
+              ].map((t, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <t.icon className="w-4 h-4 text-forest flex-shrink-0" />
+                  <span style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: '10px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.07em',
+                    color: '#0A0A0A',
+                    opacity: 0.55,
+                  }}>
+                    {t.label}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Product Details Tabs - Mostly static content from Shopify would go here, currently using snippets from data/products.ts */}
-      <section className="section-container py-8 lg:py-12">
+      {/* ── Allergen Bar ─────────────────────────────────────────────── */}
+      <AllergenBar />
+
+      {/* ── Product Details Tabs ──────────────────────────────────────── */}
+      <section className="section-container py-6 lg:py-20">
         <Tabs defaultValue="benefits" className="w-full">
-          <TabsList className="w-full justify-start bg-transparent border-b border-charcoal-200 rounded-none h-auto p-0 mb-6 lg:mb-8 overflow-x-auto">
+          <TabsList className="w-full justify-start bg-transparent border-b border-ink/10 rounded-none h-auto p-0 mb-8 flex-nowrap overflow-x-auto scrollbar-hide">
             {['Benefits', 'Ingredients', 'How to Use', 'FAQ'].map((tab) => (
               <TabsTrigger
                 key={tab}
                 value={tab.toLowerCase().replace(/\s+/g, '-')}
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-sage-700 data-[state=active]:bg-transparent data-[state=active]:shadow-none py-2.5 lg:py-3 px-3 lg:px-4 text-charcoal-600 data-[state=active]:text-charcoal-900 text-sm lg:text-base whitespace-nowrap"
+                className="flex-shrink-0 rounded-none border-b-2 border-transparent data-[state=active]:border-ink data-[state=active]:bg-transparent data-[state=active]:shadow-none py-3 px-4 sm:py-4 sm:px-6 text-ink/40 data-[state=active]:text-ink font-bold uppercase tracking-widest text-[10px] sm:text-[11px]"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {tab}
               </TabsTrigger>
@@ -371,126 +373,169 @@ export function ProductPage() {
           </TabsList>
 
           <TabsContent value="benefits" className="mt-0">
-            <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
+            <div className="grid sm:grid-cols-2 gap-4">
               {product.benefits.map((benefit, idx) => (
-                <div key={idx} className="bg-white rounded-xl lg:rounded-2xl p-4 lg:p-6 shadow-soft-sm flex items-start gap-3 lg:gap-4">
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Heart className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" />
+                <div
+                  key={idx}
+                  className="p-6 sm:p-7 flex items-start gap-4 hover-hard"
+                  style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '24px' }}
+                >
+                  <div className="w-9 h-9 flex items-center justify-center rounded-xl bg-lime flex-shrink-0">
+                    <Check className="w-4 h-4 text-forest" />
                   </div>
-                  <p className="text-charcoal-700 font-medium text-sm lg:text-base">{benefit}</p>
+                  <p style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    color: '#0A0A0A',
+                    lineHeight: 1.55,
+                  }}>
+                    {benefit}
+                  </p>
                 </div>
               ))}
-            </div>
-
-
-            {/* Disclaimer */}
-            <div className="mt-4 lg:mt-6 p-3 lg:p-4 bg-amber-50 rounded-xl flex items-start gap-2 lg:gap-3">
-              <Info className="w-4 h-4 lg:w-5 lg:h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <p className="text-xs lg:text-sm text-amber-800">
-                *These statements have not been evaluated by the Food and Drug Administration or FSSAI.
-                This product is not intended to diagnose, treat, cure, or prevent any disease.
-              </p>
             </div>
           </TabsContent>
 
           <TabsContent value="ingredients" className="mt-0">
-            <div className="space-y-4 lg:space-y-6">
-              {product.ingredients.map((ingredient, idx) => (
-                <div key={idx} className="bg-white rounded-xl lg:rounded-2xl p-4 lg:p-6 shadow-soft-sm">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h4 className="font-semibold text-charcoal-900 text-sm lg:text-base">{ingredient.name}</h4>
-                      <p className="text-xs lg:text-sm text-charcoal-500">
-                        Per gummy: {ingredient.amount} • Daily: {ingredient.dailyAmount}
-                      </p>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
+              {product.ingredients.map((ing, idx) => (
+                <div
+                  key={idx}
+                  className="p-6 sm:p-8 flex flex-col hover-hard"
+                  style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '24px' }}
+                >
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-lime">
+                      <Beaker className="w-5 h-5 text-forest" />
                     </div>
-                    <div className="w-8 h-8 lg:w-10 lg:h-10 bg-sage-100 rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
-                      {ingredient.name.includes('Ashwagandha') ? <Leaf className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
-                        ingredient.name.includes('Vitamin') ? <Sun className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" /> :
-                          <Beaker className="w-4 h-4 lg:w-5 lg:h-5 text-sage-700" />}
-                    </div>
+                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '12px', fontWeight: 800, color: '#0F3D2E' }}>
+                      {ing.amount}
+                    </span>
                   </div>
-                  <p className="text-charcoal-600 text-sm">{ingredient.description}</p>
+                  <h4 style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: 800,
+                    fontSize: '18px',
+                    color: '#0A0A0A',
+                    marginBottom: '8px',
+                  }}>
+                    {ing.name}
+                  </h4>
+                  <p style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '14px',
+                    color: '#0A0A0A',
+                    opacity: 0.6,
+                    lineHeight: 1.6,
+                  }}>
+                    {ing.description}
+                  </p>
                 </div>
               ))}
             </div>
           </TabsContent>
 
           <TabsContent value="how-to-use" className="mt-0">
-            <div className="bg-white rounded-2xl lg:rounded-3xl p-5 lg:p-8 shadow-soft">
-              <h3 className="text-lg lg:text-xl font-semibold text-charcoal-900 mb-4 lg:mb-6">How to Use</h3>
-
-              {/* Dosage Instructions */}
-              <div className="space-y-4 lg:space-y-6">
-                <div className="flex items-start gap-3 lg:gap-4">
-                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-sage-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-5 h-5 lg:w-6 lg:h-6 text-sage-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-charcoal-900 text-sm lg:text-base mb-1">Daily Dosage</h4>
-                    <p className="text-charcoal-600 text-sm">Take <span className="font-semibold text-sage-700">2 gummies daily</span> — one in the morning and one in the evening/night, with or after food.</p>
+            <div
+              className="p-6 sm:p-10 lg:p-14"
+              style={{
+                background: '#0F3D2E',
+                border: '1.5px solid #0A0A0A',
+                borderRadius: '32px',
+                boxShadow: '8px 8px 0 #0A0A0A',
+                transform: 'translate(-4px,-4px)',
+              }}
+            >
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-14 items-center">
+                <div>
+                  <h3 style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: 800,
+                    fontSize: 'clamp(26px, 4vw, 36px)',
+                    color: '#F7F1E3',
+                    marginBottom: '24px',
+                  }}>
+                    How to Ritual.
+                  </h3>
+                  <div className="space-y-7">
+                    <div className="flex gap-4">
+                      <div className="w-11 h-11 rounded-2xl bg-lime flex items-center justify-center flex-shrink-0">
+                        <Sun className="w-5 h-5 text-forest" />
+                      </div>
+                      <div>
+                        <h4 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '17px', color: '#F7F1E3', marginBottom: '4px' }}>
+                          Morning Calm
+                        </h4>
+                        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#F7F1E3', opacity: 0.6, lineHeight: 1.6 }}>
+                          Take 1 gummy with breakfast to support calm focus throughout your day.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-11 h-11 rounded-2xl bg-butter flex items-center justify-center flex-shrink-0">
+                        <Moon className="w-5 h-5 text-ink" />
+                      </div>
+                      <div>
+                        <h4 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '17px', color: '#F7F1E3', marginBottom: '4px' }}>
+                          Night Ritual
+                        </h4>
+                        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#F7F1E3', opacity: 0.6, lineHeight: 1.6 }}>
+                          Take 1 gummy 30 mins before bed for optimal relaxation and sleep.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-sunshine-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <SunIcon className="w-5 h-5 lg:w-6 lg:h-6 text-sunshine-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-charcoal-900 text-sm lg:text-base mb-1">Morning Gummy</h4>
-                      <p className="text-charcoal-600 text-sm">Take with breakfast or mid-morning to support calm energy throughout your day.</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-lavender-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Moon className="w-5 h-5 lg:w-6 lg:h-6 text-lavender-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-charcoal-900 text-sm lg:text-base mb-1">Evening Gummy</h4>
-                      <p className="text-charcoal-600 text-sm">Take 30-60 minutes before bedtime for optimal relaxation and restful sleep.</p>
-                    </div>
-                  </div>
+                <div
+                  className="p-6 sm:p-8"
+                  style={{
+                    background: 'rgba(247,241,227,0.05)',
+                    borderRadius: '24px',
+                    border: '1.5px solid rgba(247,241,227,0.1)',
+                  }}
+                >
+                  <h4 style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    color: '#C7F25C',
+                    marginBottom: '16px',
+                  }}>
+                    Safety Notes
+                  </h4>
+                  <ul className="space-y-3">
+                    {product.whoShouldAvoid.map((point, i) => (
+                      <li key={i} className="flex gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-strawberry mt-2 flex-shrink-0" />
+                        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#F7F1E3', opacity: 0.7, lineHeight: 1.55 }}>
+                          {point}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
           </TabsContent>
 
           <TabsContent value="faq" className="mt-0">
-            <Accordion type="single" collapsible className="w-full">
-              {product.howToUse.length > 0 && product.whoShouldAvoid.length > 0 && (
-                <AccordionItem value="additional-info" className="bg-white rounded-xl lg:rounded-2xl mb-2 lg:mb-3 px-4 lg:px-6 border-none shadow-soft-sm">
-                  <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-3 lg:py-4 text-sm lg:text-base">
-                    Safety & Usage Info
-                  </AccordionTrigger>
-                  <AccordionContent className="text-charcoal-600 pb-3 lg:pb-4 text-sm">
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-semibold text-charcoal-900 mb-2">Instructions:</h4>
-                        <ul className="list-disc pl-5 space-y-1">
-                          {product.howToUse.map((step, i) => <li key={i}>{step}</li>)}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-charcoal-900 mb-2">Who should avoid:</h4>
-                        <ul className="list-disc pl-5 space-y-1">
-                          {product.whoShouldAvoid.map((point, i) => <li key={i}>{point}</li>)}
-                        </ul>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              )}
-            </Accordion>
+            <div className="max-w-3xl mx-auto py-6 text-center">
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '16px', color: '#0A0A0A', opacity: 0.5 }}>
+                Visit our{' '}
+                <Link to="/faq" className="text-forest font-bold underline">Full FAQ Page</Link>
+                {' '}for common questions about Ashwagandha, dosage, and shipping.
+              </p>
+            </div>
           </TabsContent>
         </Tabs>
       </section>
 
-      {/* Mobile Sticky Bottom Bar with WhatsApp */}
-      <MobileStickyBar 
-        productName={product.name} 
-        variantId={product.shopifyVariantId || product.id} 
+      {/* Mobile Sticky Bar */}
+      <MobileStickyBar
+        productName={product.name}
+        variantId={product.shopifyVariantId || product.id}
         quantity={quantity * selectedPack.jars}
         price={selectedPack.unitPrice}
         title={product.name}

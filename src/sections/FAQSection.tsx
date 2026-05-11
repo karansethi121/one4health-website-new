@@ -1,18 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ChevronDown } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 import { useFAQs } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
 
 gsap.registerPlugin(ScrollTrigger);
 
-
 export function FAQSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { faqs, loading } = useFAQs();
   const [openIndex, setOpenIndex] = useState<number>(-1);
-  
+
   useEffect(() => {
     if (loading) return;
     const ctx = gsap.context(() => {
@@ -31,14 +30,13 @@ export function FAQSection() {
           },
         }
       );
-
       gsap.fromTo(
         '.faq-item',
-        { y: 20, opacity: 0 },
+        { y: 16, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.5,
+          duration: 0.45,
           stagger: 0.08,
           ease: 'power3.out',
           scrollTrigger: {
@@ -49,63 +47,110 @@ export function FAQSection() {
         }
       );
     }, sectionRef);
-
     return () => ctx.revert();
   }, [loading]);
 
-  if (loading) {
-    return <LoadingState message="Loading FAQs..." />;
-  }
+  if (loading) return <LoadingState message="Loading FAQs..." />;
 
-  // Get top 6 FAQs for homepage
   const displayFaqs = faqs.slice(0, 6);
 
   return (
     <section
       ref={sectionRef}
       id="faq"
-      className="relative w-full section-padding bg-sage-50 overflow-hidden"
+      className="relative w-full section-padding overflow-hidden"
+      style={{ background: '#F7F1E3' }}
     >
       <div className="section-container">
         {/* Title */}
-        <div className="faq-title text-center max-w-2xl mx-auto mb-16">
-          <span className="inline-block text-4xl mb-6">❓</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-6">
-            Ashwagandha Gummies: Your Questions Answered
+        <div className="faq-title max-w-3xl mb-14 lg:mb-20">
+          <span className="eyebrow mb-5 block">Common questions</span>
+          <h2
+            className="text-balance"
+            style={{
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+              fontWeight: 800,
+              letterSpacing: '-0.035em',
+              fontSize: 'clamp(36px, 5vw, 60px)',
+              color: '#0A0A0A',
+              lineHeight: 1.05,
+            }}
+          >
+            You asked.{' '}
+            <em style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', color: '#0F3D2E' }}>
+              We answered.
+            </em>
           </h2>
-          <p className="text-lg text-charcoal-500">
-            Everything you need to know about the best wellness gummies in India.
-          </p>
         </div>
 
-        {/* FAQ List */}
-        <div className="max-w-2xl mx-auto space-y-4">
+        {/* FAQ Accordion */}
+        <div className="max-w-3xl space-y-3">
           {(!faqs || faqs.length === 0) ? (
-            <div className="text-center py-10 bg-white/50 rounded-3xl border border-sage-100">
-               <p className="text-charcoal-400 italic">No FAQs available at the moment.</p>
+            <div className="text-center py-10" style={{ color: '#0A0A0A', opacity: 0.4 }}>
+              <p style={{ fontFamily: "'DM Sans', sans-serif" }}>No FAQs available at the moment.</p>
             </div>
           ) : (
             displayFaqs.map((faq, index) => (
               <div
                 key={faq.question}
-                className="faq-item bg-white/80 backdrop-blur-sm border border-sage-100 rounded-3xl overflow-hidden shadow-soft-sm hover:shadow-soft transition-all duration-500"
+                className="faq-item overflow-hidden"
+                style={{
+                  background: openIndex === index ? '#FBF7EC' : '#F7F1E3',
+                  border: '1.5px solid #0A0A0A',
+                  borderRadius: '28px',
+                  ...(openIndex === index ? { boxShadow: '4px 4px 0 #0A0A0A' } : {}),
+                  transition: 'background 0.2s, box-shadow 0.25s, transform 0.25s',
+                  ...(openIndex === index ? { transform: 'translate(-2px, -2px)' } : {}),
+                }}
               >
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
-                  className="w-full px-6 py-6 flex items-center justify-between text-left group"
+                  className="w-full px-7 py-6 flex items-center justify-between text-left"
+                  aria-expanded={openIndex === index}
                 >
-                  <span className={`text-base lg:text-lg font-bold transition-colors duration-300 ${openIndex === index ? 'text-sage-700' : 'text-charcoal-800'}`}>
+                  <span
+                    style={{
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                      fontWeight: 700,
+                      fontSize: 'clamp(16px, 2vw, 19px)',
+                      letterSpacing: '-0.02em',
+                      color: '#0A0A0A',
+                    }}
+                  >
                     {faq.question}
                   </span>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${openIndex === index ? 'bg-sage-700 text-white rotate-180' : 'bg-sage-50 text-sage-600 group-hover:bg-sage-100'}`}>
-                    <ChevronDown className="w-4 h-4" />
+                  <div
+                    className="flex-shrink-0 ml-4 w-9 h-9 flex items-center justify-center rounded-full border-2 border-ink transition-colors duration-200"
+                    style={{
+                      background: openIndex === index ? '#0A0A0A' : 'transparent',
+                      color: openIndex === index ? '#C7F25C' : '#0A0A0A',
+                    }}
+                  >
+                    {openIndex === index
+                      ? <Minus className="w-4 h-4" />
+                      : <Plus className="w-4 h-4" />}
                   </div>
                 </button>
                 <div
-                  className={`transition-all duration-500 ease-in-out ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                    }`}
+                  style={{
+                    maxHeight: openIndex === index ? '500px' : '0',
+                    opacity: openIndex === index ? 1 : 0,
+                    overflow: 'hidden',
+                    transition: 'max-height 0.4s ease, opacity 0.3s ease',
+                  }}
                 >
-                  <div className="px-6 pb-6 text-charcoal-600 leading-relaxed text-sm lg:text-base border-t border-sage-50 pt-4">
+                  <div
+                    className="px-7 pb-7"
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: '16px',
+                      lineHeight: 1.65,
+                      color: '#0A0A0A',
+                      opacity: 0.65,
+                      borderTop: '1.5px solid rgba(10,10,10,0.08)',
+                      paddingTop: '16px',
+                    }}
+                  >
                     {faq.answer}
                   </div>
                 </div>

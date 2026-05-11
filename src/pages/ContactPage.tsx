@@ -101,7 +101,7 @@ export function ContactPage() {
   }, []);
 
   return (
-    <main className="w-full pt-24 pb-16">
+    <main className="w-full pt-[72px] lg:pt-[84px] pb-16">
       {/* Hero */}
       <section ref={heroRef} className="section-container mb-16">
         <div className="text-center max-w-2xl mx-auto contact-animate">

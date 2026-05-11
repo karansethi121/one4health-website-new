@@ -16,7 +16,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 export function HomePage() {
   useDocumentTitle('ONE4HEALTH | Stay Calm. Stay Sharp. | Daily Wellness Simplified', false);
   return (
-    <main className="w-full pt-16 lg:pt-24">
+    <main className="w-full pt-[72px] lg:pt-[84px]">
       <PromoMarquee />
       <HeroSection />
       
@@ -44,9 +44,11 @@ export function HomePage() {
         <ScienceSection />
       </ScrollReveal>
 
-      <ScrollReveal>
-        <CleanFormulaSection />
-      </ScrollReveal>
+      <div id="reviews">
+        <ScrollReveal>
+          <CleanFormulaSection />
+        </ScrollReveal>
+      </div>
 
       <AllergenBar />
 

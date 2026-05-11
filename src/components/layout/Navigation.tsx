@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Menu, X, User } from 'lucide-react';
+import { Menu, X, ShoppingBag, User } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 const navItems = [
   { label: 'Shop', href: '/shop' },
   { label: 'Science', href: '/science' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Our Story', href: '/about' },
-  { label: 'Contact', href: '/contact' },
 ];
 
 export function Navigation() {
@@ -17,58 +17,62 @@ export function Navigation() {
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isActive = (href: string) => {
+  // Handle hash anchor links (e.g. /#reviews)
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith('/#')) {
-      return location.pathname === '/' && location.hash === href.slice(1);
+      e.preventDefault();
+      const id = href.slice(2);
+      if (location.pathname !== '/') {
+        window.location.href = href;
+      } else {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }
+      setIsMobileMenuOpen(false);
     }
-    return location.pathname === href;
   };
 
-  const scrollToSection = (href: string) => {
-    if (href.startsWith('/#')) {
-      const element = document.querySelector(href.slice(1));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
+  const isActive = (href: string) => location.pathname === href;
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isScrolled
-          ? 'bg-white/95 backdrop-blur-xl shadow-soft py-0'
-          : 'bg-transparent py-1 lg:py-2'
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-cream/95 backdrop-blur-xl shadow-[0_1px_0_#0A0A0A]'
+            : 'bg-cream'
+        } border-b border-ink`}
+        style={{ borderBottomWidth: '1.5px' }}
       >
-        <nav className="w-full px-2 sm:px-4 lg:px-8 max-w-[1440px] mx-auto">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center group -ml-2 lg:-ml-6">
+        <nav className="section-container">
+          <div className="flex items-center justify-between h-[72px] lg:h-[84px]">
+
+            <Link to="/" className="flex items-center group flex-shrink-0">
               <img
-                src="/images/logo_v2.webp"
-                alt="One4Health™"
-                className="h-20 lg:h-32 w-auto object-contain transition-transform duration-500 hover:scale-110 scale-100 origin-left"
+                src="/images/logo_nav.webp"
+                alt="One4Health"
+                className="h-14 lg:h-16 w-auto object-contain transition-opacity group-hover:opacity-80"
+                draggable={false}
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1 bg-white/60 backdrop-blur-md border border-white/40 rounded-full px-1.5 py-1 shadow-soft-sm">
+            {/* ── Desktop Nav ───────────────────────────────────────── */}
+            <div className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   to={item.href}
-                  className={`relative px-5 py-2 text-[13px] font-bold uppercase tracking-widest rounded-full transition-all duration-500 ${isActive(item.href)
-                    ? 'bg-sage-700 text-white shadow-md'
-                    : 'text-charcoal-700 hover:bg-white/80 hover:text-sage-700'
-                    }`}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className={`px-4 py-2 rounded-pill text-sm font-semibold transition-all duration-200 ${
+                    isActive(item.href)
+                      ? 'bg-ink text-cream'
+                      : 'text-ink hover:bg-ink/8'
+                  }`}
+                  style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}
                   aria-current={isActive(item.href) ? 'page' : undefined}
                 >
                   {item.label}
@@ -76,98 +80,105 @@ export function Navigation() {
               ))}
             </div>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-2 lg:gap-4">
-              {/* Account Button */}
+            {/* ── Right Actions ──────────────────────────────────────── */}
+            <div className="flex items-center gap-2">
+              {/* Account */}
               <Link
                 to="/account"
-                className="relative p-3 rounded-full bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white/80 transition-all duration-500 hover:scale-110 shadow-soft-sm group"
+                className="p-2.5 rounded-full hover:bg-ink/8 transition-colors"
                 aria-label="My orders"
               >
-                <User className="w-5 h-5 text-charcoal-900 group-hover:text-sage-700 transition-colors" />
+                <User className="w-5 h-5 text-ink" />
               </Link>
 
-              {/* Cart Button */}
+              {/* Cart pill — "Cart · ₹369" */}
               <button
                 onClick={toggleCart}
-                className="relative p-3 rounded-full bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white/80 transition-all duration-500 hover:scale-110 shadow-soft-sm group"
+                className="relative flex items-center gap-2 bg-lime text-forest rounded-pill px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 shadow-hard-sm"
+                style={{ fontFamily: "'DM Sans', system-ui, sans-serif", border: '1.5px solid #0A0A0A' }}
                 aria-label="Open cart"
               >
-                <ShoppingBag className="w-5 h-5 text-charcoal-900 group-hover:text-sage-700 transition-colors" />
+                <ShoppingBag className="w-4 h-4" />
+                <span className="hidden sm:inline">
+                  Cart
+                  {totalItems > 0
+                    ? ` · ${totalItems}`
+                    : ' · ₹369'}
+                </span>
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-sage-700 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-bounce shadow-lg border-2 border-white">
+                  <span
+                    className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-cream"
+                    style={{ background: '#FF5A6B', color: '#fff' }}
+                  >
                     {totalItems}
                   </span>
                 )}
               </button>
 
-              {/* Shop Now Button - Desktop */}
-              <Link
-                to="/shop"
-                className="hidden md:inline-flex bg-sage-700 hover:bg-sage-800 text-white text-[11px] font-bold uppercase tracking-[0.2em] px-7 py-4 rounded-full transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5"
-              >
-                Shop All
-              </Link>
-
-              {/* Mobile Menu Button */}
+              {/* Mobile menu toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-3 rounded-full bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white/80 transition-all duration-300 flex items-center justify-center"
+                className="lg:hidden p-2.5 rounded-full hover:bg-ink/8 transition-colors"
                 aria-label="Toggle menu"
               >
-                {isMobileMenuOpen ? (
-                  <X className="w-5 h-5 text-charcoal-700" />
-                ) : (
-                  <Menu className="w-5 h-5 text-charcoal-700" />
-                )}
+                {isMobileMenuOpen
+                  ? <X className="w-5 h-5 text-ink" />
+                  : <Menu className="w-5 h-5 text-ink" />}
               </button>
             </div>
           </div>
         </nav>
       </header>
 
-      {/* Mobile Menu Overlay */}
+      {/* ── Mobile Menu ───────────────────────────────────────────────── */}
       <div
-        className={`fixed inset-0 z-40 lg:hidden transition-all duration-300 ${isMobileMenuOpen
-          ? 'opacity-100 pointer-events-auto'
-          : 'opacity-0 pointer-events-none'
-          }`}
+        className={`fixed inset-0 z-40 lg:hidden transition-all duration-250 ${
+          isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
       >
         <div
-          className="absolute inset-0 bg-black/20 backdrop-blur-sm"
+          className="absolute inset-0 bg-ink/20 backdrop-blur-sm"
           onClick={() => setIsMobileMenuOpen(false)}
         />
         <div
-          className={`absolute top-16 left-0 right-0 bg-white shadow-lg transition-transform duration-300 ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
-            }`}
+          className={`absolute top-[calc(72px+1.5px)] left-0 right-0 bg-cream border-b-2 border-ink transition-transform duration-250 ${
+            isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
+          }`}
         >
-          <div className="section-container py-4">
+          <div className="section-container py-5">
             <div className="flex flex-col gap-2">
+              <div className="px-5 mb-4">
+                <img
+                  src="/images/logo_nav.webp"
+                  alt="One4Health"
+                  className="h-14 lg:h-16 w-auto object-contain"
+                />
+              </div>
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   to={item.href}
-                  onClick={() => {
+                  onClick={(e) => {
+                    handleNavClick(e, item.href);
                     setIsMobileMenuOpen(false);
-                    if (item.href.startsWith('/#')) {
-                      setTimeout(() => scrollToSection(item.href), 100);
-                    }
                   }}
-                  className={`px-4 py-3 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center ${isActive(item.href)
-                    ? 'bg-sage-700 text-white'
-                    : 'text-charcoal-700 hover:bg-sage-50'
-                    }`}
+                  className={`px-5 py-4 rounded-card text-base font-semibold transition-all min-h-[52px] flex items-center ${
+                    isActive(item.href)
+                      ? 'bg-ink text-cream'
+                      : 'text-ink hover:bg-ink/8'
+                  }`}
+                  style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}
                 >
                   {item.label}
                 </Link>
               ))}
-              <hr className="border-charcoal-100 my-2" />
+              <div className="h-px bg-ink/10 my-1" />
               <Link
                 to="/product/ashwagandha-gummies-ksm66"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-4 py-3 rounded-xl text-center transition-all min-h-[48px] flex items-center justify-center"
+                className="btn-ink justify-center text-base"
               >
-                Shop Now
+                Shop Now · ₹369
               </Link>
             </div>
           </div>

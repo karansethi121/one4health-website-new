@@ -5,7 +5,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 export function TermsPage() {
   useDocumentTitle('Terms of Service');
   return (
-    <main className="w-full pt-24 pb-16">
+    <main className="w-full pt-[72px] lg:pt-[84px] pb-16">
       <div className="section-container max-w-3xl">
         <div className="text-center mb-12">
           <FileText className="w-12 h-12 text-sage-700 mx-auto mb-6" />

@@ -1,34 +1,46 @@
-import { Tag, Truck, Clock, Leaf } from 'lucide-react';
-
-const promoMessages = [
-    { text: "SAVE 23% OFF WITH CODE:", highlight: "HEALTH23", Icon: Tag },
-    { text: "FREE SHIPPING ON ALL ORDERS", highlight: "ACROSS INDIA", Icon: Truck },
-    { text: "LIMITED TIME OFFER", highlight: "ENDS SUNDAY", Icon: Clock },
-    { text: "NATURE BLESSED,", highlight: "SCIENCE BACKED", Icon: Leaf },
-];
-
-function PromoContent() {
-    return (
-        <div className="flex shrink-0 items-center gap-16 pr-16 bg-sage-800">
-            {[...promoMessages, ...promoMessages].map((msg, i) => (
-                <span key={`${msg.text}-${i}`} className="flex items-center gap-3">
-                    <msg.Icon className="w-4 h-4 text-sunshine-400" />
-                    <span className="flex items-center gap-2">
-                        {msg.text} <span className="text-sunshine-300">{msg.highlight}</span>
-                    </span>
-                </span>
-            ))}
-        </div>
-    );
-}
-
+// Marquee strip — ink bg, lime text, JetBrains Mono
 export function PromoMarquee() {
-    return (
-        <div className="w-full bg-sage-800 text-white overflow-hidden whitespace-nowrap py-2 text-[10px] lg:text-xs font-bold tracking-wider border-b border-sage-700 relative z-30">
-            <div className="flex w-max animate-marquee">
-                <PromoContent />
-                <PromoContent />
-            </div>
-        </div>
-    );
+  const items = [
+    'KSM-66®',
+    'Vegan',
+    'No sugar',
+    'No gelatin',
+    'Made in India',
+    '₹12/day',
+    '★ 5.0 (140 reviews)',
+    'Strawberry flavour',
+    '30 gummies/jar',
+    'Clinically studied',
+  ];
+
+  // Duplicate for seamless loop
+  const doubled = [...items, ...items];
+
+  return (
+    <div
+      className="w-full overflow-hidden flex items-center"
+      style={{ background: '#0A0A0A', borderBottom: '1.5px solid #0A0A0A', height: '44px' }}
+      aria-hidden="true"
+    >
+      <div className="flex animate-marquee whitespace-nowrap">
+        {doubled.map((item, i) => (
+          <span
+            key={i}
+            className="inline-flex items-center gap-3"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              color: '#C7F25C',
+              padding: '0 24px',
+            }}
+          >
+            {item}
+            <span style={{ color: '#C7F25C', opacity: 0.35 }}>·</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 }

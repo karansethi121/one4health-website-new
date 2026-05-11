@@ -1,135 +1,115 @@
-import { useEffect, useRef, useMemo } from 'react';
-import { HelpCircle, MessageCircle } from 'lucide-react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Plus, Minus } from 'lucide-react';
 import { useFAQs } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
-gsap.registerPlugin(ScrollTrigger);
-
 export function FAQPage() {
-  useDocumentTitle('FAQ');
+  useDocumentTitle('FAQ — One4Health');
   const { faqs, loading } = useFAQs();
-  const heroRef = useRef<HTMLDivElement>(null);
+  const [openIndex, setOpenIndex] = useState<number>(-1);
 
-  const productFAQs = useMemo(() => faqs.filter(f => !f.question.toLowerCase().includes('shipping')), [faqs]);
-  const shippingFAQs = useMemo(() => faqs.filter(f => f.question.toLowerCase().includes('shipping')), [faqs]);
-
-  useEffect(() => {
-    if (loading || !faqs.length) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.faq-animate',
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: 'top 70%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-    });
-
-    return () => ctx.revert();
-  }, [loading, faqs.length]);
-
-  if (loading) {
-    return <LoadingState fullPage message="Fetching answers..." />;
-  }
+  if (loading) return <LoadingState message="Loading FAQs..." />;
 
   return (
-    <main className="w-full pt-24 pb-16">
-      {/* Hero */}
-      <section ref={heroRef} className="section-container mb-16">
-        <div className="text-center max-w-2xl mx-auto faq-animate">
-          <HelpCircle className="w-12 h-12 text-sage-700 mx-auto mb-6" />
-          <h1 className="text-4xl md:text-5xl font-heading font-bold text-charcoal-900 mb-4">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-lg text-charcoal-600">
-            Everything you need to know about One4Health™ and our products.
-          </p>
-        </div>
-      </section>
+    <main className="w-full pt-[72px] lg:pt-[84px]" style={{ background: '#F7F1E3' }}>
+      <div className="section-container section-padding">
 
-      {/* Product FAQs */}
-      {productFAQs.length > 0 && (
-        <section className="section-container mb-16">
-          <h2 className="faq-animate text-2xl font-heading font-bold text-charcoal-900 mb-8">
-            Product Questions
-          </h2>
-          <Accordion type="single" collapsible className="w-full">
-            {productFAQs.map((faq, idx) => (
-              <AccordionItem
-                key={idx}
-                value={`product-${idx}`}
-                className="faq-animate bg-white rounded-2xl mb-3 px-6 border-none shadow-soft-sm"
-              >
-                <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-5">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-charcoal-600 pb-5 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </section>
-      )}
-
-      {/* Shipping FAQs */}
-      {shippingFAQs.length > 0 && (
-        <section className="section-container mb-16">
-          <h2 className="faq-animate text-2xl font-heading font-bold text-charcoal-900 mb-8">
-            Shipping & Delivery
-          </h2>
-          <Accordion type="single" collapsible className="w-full">
-            {shippingFAQs.map((faq, idx) => (
-              <AccordionItem
-                key={idx}
-                value={`shipping-${idx}`}
-                className="faq-animate bg-white rounded-2xl mb-3 px-6 border-none shadow-soft-sm"
-              >
-                <AccordionTrigger className="text-left font-medium text-charcoal-900 hover:no-underline py-5">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-charcoal-600 pb-5 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </section>
-      )}
-
-      {/* Contact CTA */}
-      <section className="section-container">
-        <div className="faq-animate bg-sage-700 rounded-3xl p-8 md:p-12 text-center">
-          <MessageCircle className="w-12 h-12 text-white mx-auto mb-6" />
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-white mb-4">
-            Still have questions?
-          </h2>
-          <p className="text-lg text-white/80 mb-8 max-w-lg mx-auto">
-            Our team is here to help. Reach out and we'll get back to you within 24 hours.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center justify-center px-8 py-4 bg-white text-sage-700 font-semibold rounded-full hover:bg-sage-50 transition-colors"
+        {/* Header */}
+        <div className="mb-14 lg:mb-20">
+          <span className="eyebrow mb-5 block">Got questions?</span>
+          <h1
+            className="text-balance"
+            style={{
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+              fontWeight: 800,
+              letterSpacing: '-0.035em',
+              fontSize: 'clamp(40px, 6vw, 80px)',
+              color: '#0A0A0A',
+              lineHeight: 1.0,
+              maxWidth: '800px',
+            }}
           >
-            Contact Us
-          </Link>
+            Ashwagandha Gummies:{' '}
+            <em style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', color: '#0F3D2E' }}>
+              answered.
+            </em>
+          </h1>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '17px', color: '#0A0A0A', opacity: 0.55, marginTop: '16px', maxWidth: '500px', lineHeight: 1.55 }}>
+            Everything you need to know before you buy. No wellness buzzwords, just straight answers.
+          </p>
         </div>
-      </section>
+
+        {/* Accordion */}
+        <div className="max-w-3xl space-y-3">
+          {(!faqs || faqs.length === 0) ? (
+            <div className="text-center py-16">
+              <p style={{ fontFamily: "'DM Sans', sans-serif", color: '#0A0A0A', opacity: 0.4 }}>No FAQs available right now.</p>
+            </div>
+          ) : (
+            faqs.map((faq, index) => (
+              <div
+                key={faq.question}
+                className="overflow-hidden"
+                style={{
+                  background: openIndex === index ? '#FBF7EC' : '#F7F1E3',
+                  border: '1.5px solid #0A0A0A',
+                  borderRadius: '28px',
+                  boxShadow: openIndex === index ? '4px 4px 0 #0A0A0A' : undefined,
+                  transform: openIndex === index ? 'translate(-2px, -2px)' : undefined,
+                  transition: 'background 0.2s, box-shadow 0.25s, transform 0.25s',
+                }}
+              >
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
+                  className="w-full px-7 py-6 flex items-center justify-between text-left"
+                  aria-expanded={openIndex === index}
+                >
+                  <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: 'clamp(16px, 2vw, 19px)', letterSpacing: '-0.02em', color: '#0A0A0A', paddingRight: '16px' }}>
+                    {faq.question}
+                  </span>
+                  <div
+                    className="flex-shrink-0 w-9 h-9 flex items-center justify-center rounded-full border-2 border-ink transition-colors"
+                    style={{
+                      background: openIndex === index ? '#0A0A0A' : 'transparent',
+                      color: openIndex === index ? '#C7F25C' : '#0A0A0A',
+                    }}
+                  >
+                    {openIndex === index ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                  </div>
+                </button>
+                <div style={{ maxHeight: openIndex === index ? '500px' : '0', opacity: openIndex === index ? 1 : 0, overflow: 'hidden', transition: 'max-height 0.4s ease, opacity 0.3s ease' }}>
+                  <div
+                    className="px-7 pb-7"
+                    style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '16px', lineHeight: 1.65, color: '#0A0A0A', opacity: 0.65, borderTop: '1.5px solid rgba(10,10,10,0.08)', paddingTop: '16px' }}
+                  >
+                    {faq.answer}
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Ask us anything CTA */}
+        <div
+          className="mt-14 p-8 lg:p-12"
+          style={{ background: '#0F3D2E', border: '1.5px solid #0A0A0A', borderRadius: '28px', boxShadow: '8px 8px 0 #0A0A0A', transform: 'translate(-4px,-4px)', maxWidth: '640px' }}
+        >
+          <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 'clamp(22px, 3vw, 32px)', letterSpacing: '-0.03em', color: '#F7F1E3', marginBottom: '8px', lineHeight: 1.1 }}>
+            Still have a question?
+          </h2>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '15px', color: '#F7F1E3', opacity: 0.6, marginBottom: '24px', lineHeight: 1.55 }}>
+            Email the founder directly. We read every single one.
+          </p>
+          <a
+            href="mailto:info@one4health.com"
+            className="btn-lime text-sm"
+          >
+            info@one4health.com
+          </a>
+        </div>
+      </div>
     </main>
   );
 }

@@ -185,7 +185,7 @@ export const ComingSoonPage: React.FC = () => {
                 <div ref={infoRef} className="flex-1 text-center lg:text-left space-y-1 lg:space-y-2 max-w-xl -mt-8 sm:-mt-12 lg:mt-0">
                     <div ref={logoRef} className="inline-block transform-gpu animate-bounce-subtle">
                         <img
-                            src="/images/logo_v2.webp"
+                            src="/images/logo_transparent.webp"
                             alt="One4Health™"
                             width="288"
                             height="288"

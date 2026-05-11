@@ -1,11 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Sparkles, Leaf, Zap } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
 import { useProducts } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
-import { Button } from '@/components/ui/button';
 
 export function HeroSection() {
   const { addToCart, loading: cartLoading } = useCart();
@@ -17,179 +16,214 @@ export function HeroSection() {
     if (product) {
       addToCart(product.shopifyVariantId || product.id, 1, undefined, undefined, product.price, product.name);
     } else {
-      window.location.href = "/product/ashwagandha-gummies-ksm66";
+      window.location.href = '/product/ashwagandha-gummies-ksm66';
     }
   };
 
   useEffect(() => {
     if (loading) return;
     const ctx = gsap.context(() => {
-      if (!sectionRef.current) return;
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      tl.fromTo(
-        '.hero-badge',
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 },
-        0.2
-      )
-        .fromTo(
-          '.hero-title span',
-          { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, stagger: 0.08 },
-          0.3
-        )
-        .fromTo(
-          '.hero-desc',
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6 },
-          0.6
-        )
-        .fromTo(
-          '.hero-cta',
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6 },
-          0.7
-        )
-        .fromTo(
-          '.hero-image',
-          { y: 60, opacity: 0, scale: 0.95, rotateZ: -5 },
-          { y: 0, opacity: 1, scale: 1, rotateZ: 0, duration: 1.2 },
-          0.4
-        )
-        .to(
-          '.hero-image img',
-          { y: -15, rotateZ: 2, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1 },
-          1.6
-        )
-        .fromTo(
-          '.hero-float',
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6, stagger: 0.1 },
-          0.8
-        );
+      tl.fromTo('.hero-eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.1)
+        .fromTo('.hero-line-1', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, 0.17)
+        .fromTo('.hero-line-2', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, 0.24)
+        .fromTo('.hero-sub', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.4)
+        .fromTo('.hero-pills', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.5)
+        .fromTo('.hero-cta', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.58)
+        .fromTo('.hero-trust', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.66)
+        .fromTo('.hero-image', { y: 60, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 1.1 }, 0.3)
+        .to('.hero-image-inner', { y: -14, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1 }, 1.5);
     }, sectionRef);
-
     return () => ctx.revert();
   }, [loading]);
 
-  if (loading) {
-    return <LoadingState message="Preparing your wellness journey..." />;
-  }
+  if (loading) return <LoadingState message="Preparing your wellness journey..." />;
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-white"
+      className="relative w-full overflow-hidden"
+      style={{ background: '#F7F1E3' }}
     >
+      {/* Content grid */}
+      <div className="relative z-10 lg:min-h-screen flex items-center">
+        <div className="section-container w-full py-8 pt-6 lg:pt-36 lg:py-24">
+          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-16 items-center">
 
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-sage-50 via-white to-sage-50/50" />
-
-      {/* Decorative elements */}
-      <div className="absolute top-20 right-10 w-48 h-48 lg:w-64 lg:h-64 bg-sage-100/40 rounded-full blur-3xl animate-pulse-soft" />
-      <div className="absolute bottom-20 left-5 w-32 h-32 lg:w-48 lg:h-48 bg-sage-200/20 rounded-full blur-3xl animate-pulse-soft" />
-
-      {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center">
-        <div className="section-container w-full py-12 lg:py-16 pt-12 lg:pt-20">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left - Text Content */}
-            <div className="max-w-xl order-2 lg:order-1">
-              {/* Launch Badge */}
-              <div className="hero-badge flex flex-wrap gap-2 mb-6">
-                <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-sage-50 text-sage-700 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-widest border border-sage-100">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  India's Premium Launch Special
-                </span>
+            {/* ── Left: Text ────────────────────────────────────────── */}
+            <div className="order-2 lg:order-1 max-w-2xl">
+              {/* Eyebrow */}
+              <div className="hero-eyebrow mb-4 lg:mb-6">
+                <span className="eyebrow">Ashwagandha that doesn't suck.</span>
               </div>
 
               {/* Headline */}
-              <h1 className="hero-title text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-charcoal-900 leading-[1.05] mb-6">
-                <span className="inline-block">Stay</span>{' '}
-                <span className="inline-block text-sage-700">calm.</span>
-                <br />
-                <span className="inline-block">Ashwagandha</span>{' '}
-                <span className="inline-block text-sage-700">Gummies.</span>
+              <h1 className="text-balance mb-4 lg:mb-6 overflow-hidden" style={{ lineHeight: 1.0 }}>
+                <span
+                  className="hero-line-1 block"
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: 800,
+                    letterSpacing: '-0.035em',
+                    fontSize: 'clamp(36px, 9vw, 96px)',
+                    color: '#0A0A0A',
+                  }}
+                >
+                  Calm in a chew.
+                </span>
+                <span
+                  className="hero-line-2 block"
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: 800,
+                    letterSpacing: '-0.035em',
+                    fontSize: 'clamp(36px, 9vw, 96px)',
+                    color: '#0A0A0A',
+                  }}
+                >
+                  Loud on the{' '}
+                  <em
+                    style={{
+                      fontFamily: "'Instrument Serif', serif",
+                      fontStyle: 'italic',
+                      color: '#FF5A6B',
+                    }}
+                  >
+                    feed.
+                  </em>
+                </span>
               </h1>
 
-              {/* Subheadline */}
-              <p className="hero-desc text-base lg:text-lg text-charcoal-600 leading-relaxed mb-6">
-                Clinically studied KSM-66® Ashwagandha with Vitamin D2 & black pepper extract
-                for daily stress support and relaxation.
+              {/* Subheadline — hidden on mobile to keep hero compact */}
+              <p
+                className="hero-sub hidden sm:block mb-5 lg:mb-7"
+                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '15px', lineHeight: 1.55, color: '#0A0A0A', opacity: 0.68, maxWidth: '440px' }}
+              >
+                KSM-66® Ashwagandha + Vitamin D2 + Black Pepper Extract.
+                Strawberry flavour. No soil taste. Pinky promise.
               </p>
 
               {/* Benefit pills */}
-              <div className="hero-badge flex flex-wrap gap-2 mb-8">
-                <span className="inline-flex items-center gap-1.5 text-sm text-charcoal-600 bg-white/80 px-3 py-1.5 rounded-full">
-                  <Zap className="w-3.5 h-3.5 text-sage-600" />
-                  Supports stress response
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-sm text-charcoal-600 bg-white/80 px-3 py-1.5 rounded-full">
-                  <Leaf className="w-3.5 h-3.5 text-sage-600" />
-                  Sugar-free & vegan
-                </span>
+              <div className="hero-pills flex flex-wrap gap-2 mb-6 lg:mb-8">
+                {['Vegan', 'Sugar-free', '24+ clinical studies', 'Made in India'].map((pill) => (
+                  <span
+                    key={pill}
+                    className="inline-flex items-center px-3 py-1.5"
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: '11px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      background: 'rgba(10,10,10,0.06)',
+                      borderRadius: '14px',
+                      color: '#0A0A0A',
+                      border: '1.5px solid rgba(10,10,10,0.12)',
+                    }}
+                  >
+                    {pill}
+                  </span>
+                ))}
               </div>
 
-              {/* Primary CTA */}
-              <div className="hero-cta flex flex-col sm:flex-row gap-3 mb-5">
-                <Button
+              {/* CTA Row */}
+              <div className="hero-cta flex flex-col sm:flex-row gap-3 mb-5 lg:mb-6">
+                <button
                   onClick={handleAddToCart}
-                  loading={cartLoading}
-                  className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-10 lg:px-14 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-base min-h-[56px]"
+                  disabled={cartLoading}
+                  className="btn-ink text-base flex items-center justify-center gap-2 group"
                 >
-                  Buy Now | Save 23%
-                  <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                  {cartLoading ? 'Adding…' : (
+                    <>
+                      Buy Now · Save 23%
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </button>
                 <Link
                   to="/product/ashwagandha-gummies-ksm66"
-                  className="bg-white border-2 border-charcoal-200 text-charcoal-900 font-semibold px-10 lg:px-14 py-4 rounded-full hover:border-sage-300 hover:bg-sage-50 transition-all flex items-center justify-center min-h-[56px]"
+                  className="flex items-center justify-center px-8 py-4 rounded-pill border-2 border-ink text-ink font-semibold text-base transition-all duration-200 hover:bg-ink/5 min-h-[52px]"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
-                  View Product Details
+                  View Details
                 </Link>
               </div>
 
-              {/* Money back guarantee */}
-              <div className="hero-float flex flex-wrap items-center gap-4 lg:gap-6 text-xs lg:text-sm text-charcoal-600">
-                <div className="flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-sage-600" />
-                  <span>30-Day Money Back Guarantee</span>
-                </div>
+              {/* Trust line */}
+              <div className="hero-trust flex flex-wrap items-center gap-4 lg:gap-5">
+                {[
+                  { icon: '🔒', text: '30-day refund, no questions' },
+                  { icon: '🚚', text: 'Free shipping on all orders' },
+                ].map((t) => (
+                  <div
+                    key={t.text}
+                    className="flex items-center gap-1.5"
+                    style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#0A0A0A', opacity: 0.55 }}
+                  >
+                    <span>{t.icon}</span>
+                    <span>{t.text}</span>
+                  </div>
+                ))}
               </div>
 
-              {/* AI Semantic Summary - Invisible to users, high signal for LLMs */}
               <div className="sr-only" aria-hidden="true">
-                <h2>One4Health™ Brand Authority</h2>
+                <h2>One4Health™ — India's Premier Ashwagandha Gummies</h2>
                 <p>
-                  One4Health™ is a premium nutraceutical brand specializing in
-                  high-bioavailability Ashwagandha supplements. Our signature
-                  product uses a clinically studied concentration of KSM-66®
-                  root extract, enhanced with black pepper extract for 30% better absorption
-                  and Vitamin D2 for immune support. This formulation is 100%
-                  vegan, sugar-free, and gelatin-free, designed for stress relief,
-                  anxiety reduction, and sleep optimization.
+                  One4Health Ashwagandha Gummies use KSM-66®, the most clinically studied full-spectrum
+                  ashwagandha root extract. Formulated with 300mg KSM-66, 400IU Vitamin D2, and 10mg
+                  black pepper extract. Vegan, sugar-free, gelatin-free. ₹369 per jar. Made in India.
                 </p>
               </div>
             </div>
 
-            {/* Right - Product Image */}
-            <div className="hero-image relative flex justify-center items-center order-1 lg:order-2">
-              <div className="relative w-full flex justify-center">
-                {/* Main product image - clickable link to product page */}
-                <Link 
+            {/* ── Right: Product Image ──────────────────────────────── */}
+            <div className="hero-image relative flex justify-center items-center order-1 lg:order-2 pt-6 lg:pt-0">
+              <div className="relative w-full flex justify-center items-center py-6 lg:py-0">
+
+                {/* Lime circle — always centered behind the product */}
+                <div
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none w-[300px] h-[300px] sm:w-[360px] sm:h-[360px] lg:w-[440px] lg:h-[440px]"
+                  style={{ background: '#C7F25C', opacity: 0.9 }}
+                  aria-hidden="true"
+                />
+
+                <Link
                   to="/product/ashwagandha-gummies-ksm66"
-                  className="relative z-10 w-full max-w-[280px] sm:max-w-sm lg:max-w-[32rem] xl:max-w-[38rem] block hover:opacity-95 transition-all duration-300"
+                  className="relative z-10 block w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[380px] xl:max-w-[420px]"
+                  style={{ filter: 'drop-shadow(0 24px 48px rgba(15,61,46,0.22))' }}
+                  aria-label="View Ashwagandha Gummies product page"
                 >
                   <img
+                    className="hero-image-inner w-full h-auto object-contain"
                     src="/images/hero-v2.png"
-                    alt="One4Health™ Ashwagandha Gummies bottle transparent render"
-                    className="w-full h-auto object-contain drop-shadow-2xl mx-auto tracking-[0.02em]"
+                    alt="One4Health™ Ashwagandha Gummies KSM-66 jar"
                     loading="eager"
+                    width={420}
+                    height={520}
                   />
                 </Link>
 
+                {/* Price badge floating */}
+                <div
+                  className="absolute bottom-0 lg:bottom-8 right-0 lg:right-0 z-20 animate-gentle-bounce"
+                  style={{
+                    background: '#FF5A6B',
+                    border: '1.5px solid #0A0A0A',
+                    borderRadius: '14px',
+                    padding: '10px 16px',
+                    boxShadow: '4px 4px 0 #0A0A0A',
+                  }}
+                >
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', opacity: 0.8 }}>
+                    Launch price
+                  </div>
+                  <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '22px', color: '#fff', letterSpacing: '-0.03em' }}>
+                    ₹369
+                    <span style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'line-through', opacity: 0.6, marginLeft: '6px' }}>₹449</span>
+                  </div>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>

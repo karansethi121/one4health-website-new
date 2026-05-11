@@ -26,3 +26,10 @@ dist-ssr
 patch_assets.py
 *.bak
 .env
+
+# Debug screenshots
+*.png
+*.jpg.bak
+
+# Playwright MCP session
+.playwright-mcp/
