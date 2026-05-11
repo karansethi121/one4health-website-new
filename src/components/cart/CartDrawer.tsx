@@ -60,13 +60,6 @@ export function CartDrawer() {
               </span>
               {loading && <Loader2 className="w-4 h-4 animate-spin text-forest ml-2" />}
             </SheetTitle>
-            <button
-              onClick={closeCart}
-              className="p-2 rounded-full hover:bg-ink/8 transition-colors"
-              aria-label="Close cart"
-            >
-              <X className="w-5 h-5 text-ink" />
-            </button>
           </div>
         </SheetHeader>
 
