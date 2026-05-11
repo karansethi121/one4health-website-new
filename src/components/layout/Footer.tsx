@@ -39,7 +39,7 @@ export const Footer = memo(function Footer() {
     <footer style={{ backgroundColor: '#0F3D2E', color: '#F7F1E3' }} className="overflow-hidden">
 
       {/* ── CTA Band ──────────────────────────────────────────────────── */}
-      <div className="border-b-2 border-lime/20 py-16 lg:py-24 relative overflow-hidden">
+      <div className="border-b-2 border-lime/20 py-12 lg:py-16 relative overflow-hidden">
         {/* Decorative lime blob */}
         <div
           className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full opacity-[0.08] pointer-events-none"
@@ -74,36 +74,36 @@ export const Footer = memo(function Footer() {
       </div>
 
       {/* ── Main Footer Grid ───────────────────────────────────────────── */}
-      <div className="section-container py-16 lg:py-20">
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
+      <div className="section-container py-10 lg:py-14">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-7 lg:gap-6">
 
           {/* Brand column */}
           <div className="col-span-2 lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-8 group">
+            <Link to="/" className="flex items-center gap-2 mb-4 group">
               <img
                 src="/images/logo_transparent.webp"
                 alt="One4Health"
-                className="h-16 w-auto object-contain brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                className="h-12 w-auto object-contain brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                 draggable={false}
               />
             </Link>
 
-            <p style={{ color: '#F7F1E3', opacity: 0.55, fontSize: '14px', fontFamily: "'DM Sans', sans-serif", lineHeight: 1.6 }} className="mb-8 max-w-xs">
+            <p style={{ color: '#F7F1E3', opacity: 0.55, fontSize: '13px', fontFamily: "'DM Sans', sans-serif", lineHeight: 1.55 }} className="mb-5 max-w-xs">
               Ashwagandha that doesn't taste like soil. Made in India, built for the driven.
             </p>
 
-            <div className="flex gap-3">
+            <div className="flex gap-2.5">
               {socialLinks.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full border border-lime/20 flex items-center justify-center transition-all duration-200 hover:border-lime hover:bg-lime/10"
+                  className="w-8 h-8 rounded-full border border-lime/20 flex items-center justify-center transition-all duration-200 hover:border-lime hover:bg-lime/10"
                   style={{ color: '#F7F1E3' }}
                   aria-label={s.label}
                 >
-                  <s.icon className="w-4 h-4" />
+                  <s.icon className="w-3.5 h-3.5" />
                 </a>
               ))}
             </div>
@@ -111,13 +111,13 @@ export const Footer = memo(function Footer() {
 
           {/* Link columns */}
           {Object.entries(footerLinks).map(([col, links]) => (
-            <div key={col} className="space-y-5">
+            <div key={col} className="space-y-3">
               <h4
-                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#C7F25C', opacity: 0.7 }}
+                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#C7F25C', opacity: 0.7 }}
               >
                 {col === 'reach' ? 'Reach us' : col.charAt(0).toUpperCase() + col.slice(1)}
               </h4>
-              <ul className="space-y-4">
+              <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith('http') || link.href.startsWith('mailto') ? (
@@ -125,7 +125,7 @@ export const Footer = memo(function Footer() {
                         href={link.href}
                         target={link.href.startsWith('http') ? '_blank' : undefined}
                         rel="noopener noreferrer"
-                        style={{ color: '#F7F1E3', opacity: 0.55, fontSize: '14px', fontFamily: "'DM Sans', sans-serif" }}
+                        style={{ color: '#F7F1E3', opacity: 0.55, fontSize: '13px', fontFamily: "'DM Sans', sans-serif" }}
                         className="hover:opacity-100 transition-opacity"
                       >
                         {link.label}
@@ -133,7 +133,7 @@ export const Footer = memo(function Footer() {
                     ) : (
                       <Link
                         to={link.href}
-                        style={{ color: '#F7F1E3', opacity: 0.55, fontSize: '14px', fontFamily: "'DM Sans', sans-serif" }}
+                        style={{ color: '#F7F1E3', opacity: 0.55, fontSize: '13px', fontFamily: "'DM Sans', sans-serif" }}
                         className="hover:opacity-100 transition-opacity"
                       >
                         {link.label}
@@ -147,7 +147,7 @@ export const Footer = memo(function Footer() {
         </div>
 
         {/* Bottom strip */}
-        <div className="mt-12 pt-8 border-t border-lime/10">
+        <div className="mt-8 pt-6 border-t border-lime/10">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <div
