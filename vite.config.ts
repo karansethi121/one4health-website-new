@@ -73,11 +73,19 @@ export default defineConfig({
     outDir: 'assets',
     assetsDir: '',
     rollupOptions: {
-      output: {
-        entryFileNames: 'bundle.js',
-        chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]',
-      },
+      output: process.env.VERCEL
+        ? {
+            manualChunks: {
+              vendor: ['react', 'react-dom', 'react-router-dom'],
+              gsap: ['gsap'],
+              ui: ['lucide-react', '@radix-ui/react-dialog'],
+            },
+          }
+        : {
+            entryFileNames: 'bundle.js',
+            chunkFileNames: '[name].js',
+            assetFileNames: '[name].[ext]',
+          },
     },
     emptyOutDir: false,
   },

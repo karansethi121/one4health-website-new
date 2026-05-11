@@ -3,12 +3,17 @@ import { Link } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEOMeta } from '@/hooks/useSEOMeta';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { useProducts } from '@/hooks/useSupabase';
 
 export function ShopPage() {
-  useDocumentTitle('Shop — One4Health');
+  useSEOMeta({
+    title: 'Shop — One4Health™ Ashwagandha Gummies KSM-66®',
+    description: 'Buy One4Health™ KSM-66® Ashwagandha gummies. ₹369 for 1 jar, ₹689 for 2 jars (save 23%). Free shipping across India. 30-day refund guarantee. 100% vegan, sugar-free.',
+    ogType: 'website',
+    canonical: 'https://one4health.com/shop',
+  });
   const { addToCart, loading: cartLoading } = useCart();
   const { products, loading: productsLoading } = useProducts();
   const [searchQuery, setSearchQuery] = useState('');

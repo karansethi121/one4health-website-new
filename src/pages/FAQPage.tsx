@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { useFAQs } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEOMeta } from '@/hooks/useSEOMeta';
 
 export function FAQPage() {
-  useDocumentTitle('FAQ — One4Health');
+  useSEOMeta({
+    title: 'Frequently Asked Questions — One4Health™ Ashwagandha',
+    description: 'Answers to common questions about One4Health™ Ashwagandha gummies: dosage, safety, results timeline, vegan certifications, shipping, and the 30-day refund guarantee.',
+    canonical: 'https://one4health.com/faq',
+  });
   const { faqs, loading } = useFAQs();
   const [openIndex, setOpenIndex] = useState<number>(-1);
 

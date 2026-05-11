@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEOMeta } from '@/hooks/useSEOMeta';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +14,11 @@ const values = [
 
 export function AboutPage() {
   const heroRef = useRef<HTMLDivElement>(null);
-  useDocumentTitle('Our Story — One4Health');
+  useSEOMeta({
+    title: 'Our Story — One4Health™ | India\'s Science-Backed Wellness Brand',
+    description: 'One4Health™ was founded in 2024 with one mission: bring clinically credible, genuinely effective supplements to India. Learn about our science-first philosophy and commitment to clean ingredients.',
+    canonical: 'https://one4health.com/about',
+  });
 
   useEffect(() => {
     const ctx = gsap.context(() => {

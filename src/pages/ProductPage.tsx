@@ -21,7 +21,7 @@ import { AllergenBar } from '@/components/layout/AllergenBar';
 import { useProducts } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { getPackConfig, getSavingsPercent, type PackSize } from '@/lib/productPricing';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEOMeta } from '@/hooks/useSEOMeta';
 import { formatPrice } from '@/lib/format';
 
 export function ProductPage() {
@@ -37,7 +37,38 @@ export function ProductPage() {
     return products.find(p => p.id === id) || products[0];
   }, [id, products]);
 
-  useDocumentTitle(product?.name || 'Product');
+  useSEOMeta({
+    title: product ? `${product.name} KSM-66® — One4Health™ | Buy Ashwagandha Gummies India` : 'Ashwagandha Gummies KSM-66® — One4Health™',
+    description: 'Buy One4Health™ Ashwagandha Gummies with 300mg KSM-66® + Vitamin D2 + Black Pepper Extract. Sugar-free, 100% vegan, clinically backed. ₹369/jar, free shipping, 30-day refund.',
+    ogType: 'product',
+    ogImage: 'https://one4health.com/images/img1.png',
+    canonical: 'https://one4health.com/product/ashwagandha-gummies-ksm66',
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://one4health.com/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Shop', 'item': 'https://one4health.com/shop' },
+          { '@type': 'ListItem', 'position': 3, 'name': 'Ashwagandha Gummies KSM-66®', 'item': 'https://one4health.com/product/ashwagandha-gummies-ksm66' },
+        ],
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        'name': 'One4Health™ Ashwagandha Gummies KSM-66®',
+        'image': 'https://one4health.com/images/img1.png',
+        'description': '300mg KSM-66® full-spectrum ashwagandha root extract + 400IU Vitamin D2 + 10mg Black Pepper Extract. Sugar-free, 100% vegan, gelatin-free. 30 gummies per jar.',
+        'brand': { '@type': 'Brand', 'name': 'One4Health™' },
+        'sku': 'oh4-ashwagandha-ksm66',
+        'offers': [
+          { '@type': 'Offer', 'url': 'https://one4health.com/product/ashwagandha-gummies-ksm66', 'priceCurrency': 'INR', 'price': '369', 'availability': 'https://schema.org/InStock', 'name': '1 Jar (30 gummies)' },
+          { '@type': 'Offer', 'url': 'https://one4health.com/product/ashwagandha-gummies-ksm66', 'priceCurrency': 'INR', 'price': '689', 'availability': 'https://schema.org/InStock', 'name': '2 Jars (60 gummies, save 23%)' },
+        ],
+        'aggregateRating': { '@type': 'AggregateRating', 'ratingValue': '5.0', 'reviewCount': '140', 'bestRating': '5' },
+      },
+    ],
+  });
 
   useEffect(() => {
     if (productsLoading || !product) return;

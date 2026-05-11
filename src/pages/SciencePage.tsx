@@ -3,12 +3,17 @@ import { Beaker } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { mainProduct } from '@/data/products';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEOMeta } from '@/hooks/useSEOMeta';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function SciencePage() {
-  useDocumentTitle('The Science — One4Health');
+  useSEOMeta({
+    title: 'The Science Behind KSM-66® Ashwagandha — One4Health™',
+    description: 'Explore 22+ clinical trials backing KSM-66® Ashwagandha. Learn how 300mg daily reduces cortisol by 27.9%, improves sleep quality by 72%, and reduces perceived stress by 44% vs placebo.',
+    ogType: 'article',
+    canonical: 'https://one4health.com/science',
+  });
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
