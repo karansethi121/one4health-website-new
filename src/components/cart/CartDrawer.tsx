@@ -6,7 +6,7 @@ import { formatPrice } from '@/lib/format';
 import type { CartItem } from '@/context/CartContext';
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice, loading } = useCart();
+  const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice, loading, loadingKey } = useCart();
 
   const getResolvedImage = (item: CartItem) => {
     const title = (item.product_title || item.title || '').toLowerCase();
@@ -179,9 +179,11 @@ export function CartDrawer() {
                         onClick={() => removeFromCart(item.key)}
                         className="p-1.5 rounded-full hover:bg-ink/8 transition-colors flex-shrink-0"
                         aria-label="Remove item"
-                        disabled={loading}
+                        disabled={loadingKey === item.key}
                       >
-                        <X className="w-3.5 h-3.5 text-ink/40" />
+                        {loadingKey === item.key
+                          ? <Loader2 className="w-3.5 h-3.5 text-ink/40 animate-spin" />
+                          : <X className="w-3.5 h-3.5 text-ink/40" />}
                       </button>
                     </div>
 
@@ -194,7 +196,7 @@ export function CartDrawer() {
                         <button
                           onClick={() => updateQuantity(item.key, item.quantity - 1)}
                           className="w-5 h-5 flex items-center justify-center text-cream hover:text-lime transition-colors disabled:opacity-30"
-                          disabled={loading}
+                          disabled={loadingKey === item.key}
                           aria-label="Decrease"
                         >
                           <Minus className="w-3 h-3" />
@@ -214,7 +216,7 @@ export function CartDrawer() {
                         <button
                           onClick={() => updateQuantity(item.key, item.quantity + 1)}
                           className="w-5 h-5 flex items-center justify-center text-cream hover:text-lime transition-colors disabled:opacity-30"
-                          disabled={loading}
+                          disabled={loadingKey === item.key}
                           aria-label="Increase"
                         >
                           <Plus className="w-3 h-3" />

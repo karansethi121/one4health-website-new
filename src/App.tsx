@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { CartProvider } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { Navigation } from '@/components/layout/Navigation';
@@ -10,19 +10,31 @@ import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
 import { Toaster } from '@/components/ui/sonner';
 import ScrollToTop from '@/components/layout/ScrollToTop';
 import './App.css';
+
+// HomePage loads eagerly — it's the entry point
 import { HomePage } from '@/pages/HomePage';
-import { ShopPage } from '@/pages/ShopPage';
-import { ProductPage } from '@/pages/ProductPage';
-import { AboutPage } from '@/pages/AboutPage';
-import { SciencePage } from '@/pages/SciencePage';
-import { FAQPage } from '@/pages/FAQPage';
-import { ShippingPage } from '@/pages/ShippingPage';
-import { ContactPage } from '@/pages/ContactPage';
-import { PrivacyPage } from '@/pages/PrivacyPage';
-import { TermsPage } from '@/pages/TermsPage';
-import { ComingSoonPage } from '@/pages/ComingSoonPage';
-import { AdminPage } from '@/pages/AdminPage';
-import { AccountPage } from '@/pages/AccountPage';
+
+// All other pages are lazy-loaded — only downloaded when visited
+const ShopPage       = lazy(() => import('@/pages/ShopPage').then(m => ({ default: m.ShopPage })));
+const ProductPage    = lazy(() => import('@/pages/ProductPage').then(m => ({ default: m.ProductPage })));
+const AboutPage      = lazy(() => import('@/pages/AboutPage').then(m => ({ default: m.AboutPage })));
+const SciencePage    = lazy(() => import('@/pages/SciencePage').then(m => ({ default: m.SciencePage })));
+const FAQPage        = lazy(() => import('@/pages/FAQPage').then(m => ({ default: m.FAQPage })));
+const ShippingPage   = lazy(() => import('@/pages/ShippingPage').then(m => ({ default: m.ShippingPage })));
+const ContactPage    = lazy(() => import('@/pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const PrivacyPage    = lazy(() => import('@/pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const TermsPage      = lazy(() => import('@/pages/TermsPage').then(m => ({ default: m.TermsPage })));
+const ComingSoonPage = lazy(() => import('@/pages/ComingSoonPage').then(m => ({ default: m.ComingSoonPage })));
+const AdminPage      = lazy(() => import('@/pages/AdminPage').then(m => ({ default: m.AdminPage })));
+const AccountPage    = lazy(() => import('@/pages/AccountPage').then(m => ({ default: m.AccountPage })));
+
+function PageLoader() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center" style={{ background: '#F7F1E3' }}>
+      <div className="w-6 h-6 rounded-full border-2 border-forest border-t-transparent animate-spin" />
+    </div>
+  );
+}
 
 function AppContent() {
   const location = useLocation();
@@ -45,41 +57,33 @@ function AppContent() {
   const hideLayout = isComingSoon || isAdminPage;
 
   return (
-    // cream default background
     <div className="min-h-screen" style={{ background: '#F7F1E3' }}>
-      {/* Navigation */}
       {!hideLayout && <Navigation />}
-
-      {/* Cart Drawer */}
       {!hideLayout && <CartDrawer />}
 
-      {/* Main Content */}
       <ErrorBoundary>
-        <Routes>
-          <Route path="/"               element={<HomePage />} />
-          <Route path="/home"           element={<HomePage />} />
-          <Route path="/shop"           element={<ShopPage />} />
-          <Route path="/product/:id"    element={<ProductPage />} />
-          <Route path="/about"          element={<AboutPage />} />
-          <Route path="/science"        element={<SciencePage />} />
-          <Route path="/faq"            element={<FAQPage />} />
-          <Route path="/shipping"       element={<ShippingPage />} />
-          <Route path="/contact"        element={<ContactPage />} />
-          <Route path="/privacy"        element={<PrivacyPage />} />
-          <Route path="/terms"          element={<TermsPage />} />
-          <Route path="/coming-soon"    element={<ComingSoonPage />} />
-          <Route path="/account"        element={<AccountPage />} />
-          <Route path="/admin/*"        element={<AdminPage />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/"               element={<HomePage />} />
+            <Route path="/home"           element={<HomePage />} />
+            <Route path="/shop"           element={<ShopPage />} />
+            <Route path="/product/:id"    element={<ProductPage />} />
+            <Route path="/about"          element={<AboutPage />} />
+            <Route path="/science"        element={<SciencePage />} />
+            <Route path="/faq"            element={<FAQPage />} />
+            <Route path="/shipping"       element={<ShippingPage />} />
+            <Route path="/contact"        element={<ContactPage />} />
+            <Route path="/privacy"        element={<PrivacyPage />} />
+            <Route path="/terms"          element={<TermsPage />} />
+            <Route path="/coming-soon"    element={<ComingSoonPage />} />
+            <Route path="/account"        element={<AccountPage />} />
+            <Route path="/admin/*"        element={<AdminPage />} />
+          </Routes>
+        </Suspense>
       </ErrorBoundary>
 
-      {/* Footer */}
       {!hideLayout && <Footer />}
-
-      {/* Toast Notifications */}
       <Toaster position="bottom-right" />
-
-      {/* Sticky Mobile Add to Cart */}
       {!hideLayout && <StickyAddToCart />}
     </div>
   );

@@ -45,6 +45,7 @@ interface CartContextType {
   totalItems: number;
   totalPrice: number; // in paise (smallest unit) - divide by 100 for display
   loading: boolean;
+  loadingKey: string | null; // key of the specific item being modified
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -118,6 +119,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const items = itemsState;
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingKey, setLoadingKey] = useState<string | null>(null);
   // Derived totals - always computed from `items` to prevent state drift / NaN bugs
   const { totalItems, totalPrice } = deriveCartTotals(items);
 
@@ -276,7 +278,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // ── Remove item ──
   const removeFromCart = useCallback(async (key: string) => {
-    // Optimistic update using functional setState (no stale closure)
     setItems(prev => prev.filter(item => item.key !== key && item.id !== key));
 
     if (!isShopifyEnv()) {
@@ -284,7 +285,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    setLoading(true);
+    setLoadingKey(key);
     try {
       const response = await fetch('/cart/change.js', {
         method: 'POST',
@@ -294,28 +295,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (!response.ok) throw new Error('Failed to remove item');
       await refreshCart();
     } catch {
-
-      // Restore from ref on failure
       setItems(itemsRef.current);
       await refreshCart();
     } finally {
-      setLoading(false);
+      setLoadingKey(null);
     }
   }, [refreshCart, setItems]);
 
   // ── Update quantity ──
   const updateQuantity = useCallback(async (key: string, newQty: number) => {
-    // If quantity drops to 0 or below, remove the item instead
     if (newQty <= 0) {
       await removeFromCart(key);
       return;
     }
 
-    // Optimistic update
     setItems(prev =>
       prev.map(item => {
         if (item.key !== key && item.id !== key) return item;
-        const unitPrice = item.price || 0; // use stored unit price, not derived
+        const unitPrice = item.price || 0;
         return {
           ...item,
           quantity: newQty,
@@ -328,7 +325,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     if (!isShopifyEnv()) return;
 
-    setLoading(true);
+    setLoadingKey(key);
     try {
       const response = await fetch('/cart/change.js', {
         method: 'POST',
@@ -338,11 +335,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (!response.ok) throw new Error('Failed to update quantity');
       await refreshCart();
     } catch {
-
       setItems(itemsRef.current);
       await refreshCart();
     } finally {
-      setLoading(false);
+      setLoadingKey(null);
     }
   }, [removeFromCart, refreshCart, setItems]);
 
@@ -383,6 +379,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         totalItems,
         totalPrice,
         loading,
+        loadingKey,
       }}
     >
       {children}

@@ -39,19 +39,29 @@ const resolveImageUrl = (url: string) => {
   if (!url) return '';
   if (url.startsWith('/images/')) {
     const filename = url.replace('/images/', '');
-    return (typeof window !== 'undefined' && window.ShopifyAssetsUrl) 
-      ? window.ShopifyAssetsUrl + filename 
+    return (typeof window !== 'undefined' && window.ShopifyAssetsUrl)
+      ? window.ShopifyAssetsUrl + filename
       : url;
   }
   return url;
 };
 
+// Module-level cache — one fetch per session, instant on subsequent page visits
+let _productsCache: { data: Product[]; ts: number } | null = null;
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const hasCache = _productsCache !== null && (Date.now() - _productsCache.ts) < CACHE_TTL;
+  const [products, setProducts] = useState<Product[]>(hasCache ? _productsCache!.data : []);
+  const [loading, setLoading] = useState(!hasCache);
   const [error, setError] = useState<string | null>(null);
 
   const fetchProducts = useCallback(async () => {
+    if (_productsCache && (Date.now() - _productsCache.ts) < CACHE_TTL) {
+      setProducts(_productsCache.data);
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       const { data: productsData, error: productsError } = await supabase
@@ -82,7 +92,7 @@ export function useProducts() {
         image: resolveImageUrl(p.featured_image || ''),
         images: p.product_images && p.product_images.length > 1
           ? p.product_images.sort((a, b) => (a.position || 0) - (b.position || 0)).map((img) => resolveImageUrl(img.image_url))
-          : (p.handle === 'ashwagandha-gummies-ksm66' 
+          : (p.handle === 'ashwagandha-gummies-ksm66'
               ? [
                   '/images/img1.png',
                   '/images/img2.png',
@@ -129,6 +139,7 @@ export function useProducts() {
         sellingPlanId30: p.selling_plan_id_30,
       }));
 
+      _productsCache = { data: mappedProducts, ts: Date.now() };
       setProducts(mappedProducts);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -136,7 +147,7 @@ export function useProducts() {
       } else {
         setError(String(err));
       }
-      setProducts([mainProduct]); 
+      setProducts([mainProduct]);
     } finally {
       setLoading(false);
     }
@@ -147,6 +158,7 @@ export function useProducts() {
   }, [fetchProducts]);
 
   const refetch = () => {
+    _productsCache = null; // force fresh fetch
     fetchProducts();
   };
 
