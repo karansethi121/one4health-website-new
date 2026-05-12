@@ -58,7 +58,7 @@ function shopifyAssetCleanup() {
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',
+  base: process.env.VERCEL ? '/' : './',
   plugins: [
     inspectAttr(), 
     react(), 
