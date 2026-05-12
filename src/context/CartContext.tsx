@@ -90,8 +90,7 @@ const transformCartItems = (rawItems: CartItem[]): CartItem[] => {
     const isAshwa = isMainProductTitle(item.title || item.product_title || '');
     if (!isAshwa) return item;
 
-    const isBundle = item.properties?._bundle === 'true';
-    const pricing = getMainProductCartPricing(item.quantity, isBundle);
+    const pricing = getMainProductCartPricing(item.quantity, item.quantity >= 2);
 
     return {
       ...item,
