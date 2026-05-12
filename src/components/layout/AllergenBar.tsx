@@ -8,7 +8,8 @@ export function AllergenBar() {
     { src: '/images/allergen_soy_free_v8.png',     alt: 'Soy Free' },
   ];
 
-  const doubled = [...allergens, ...allergens];
+  // 6 copies ensures half the track width exceeds any viewport (no blank gap on scroll loop)
+  const track = Array(6).fill(allergens).flat() as typeof allergens;
 
   return (
     <div
@@ -25,15 +26,15 @@ export function AllergenBar() {
         className="flex items-center whitespace-nowrap"
         style={{ animation: 'marquee 40s linear infinite' }}
       >
-        {doubled.map((item, i) => (
+        {track.map((item, i) => (
           <div
             key={i}
-            className="flex-shrink-0 flex items-center justify-center px-6 lg:px-10"
+            className="flex-shrink-0 flex items-center justify-center px-8 lg:px-12"
           >
             <img
               src={item.src}
               alt={item.alt}
-              className="h-14 w-auto object-contain"
+              className="h-16 w-auto object-contain"
               loading="lazy"
               draggable={false}
             />
