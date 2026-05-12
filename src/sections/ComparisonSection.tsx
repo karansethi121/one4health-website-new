@@ -88,9 +88,9 @@ export function ComparisonSection() {
             <span
               style={{
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '11px',
+                fontSize: '14px',
                 textTransform: 'uppercase',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.10em',
                 color: '#0A0A0A',
                 opacity: 0.45,
               }}
