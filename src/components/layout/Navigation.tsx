@@ -100,10 +100,7 @@ export function Navigation() {
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span className="hidden sm:inline">
-                  Cart
-                  {totalItems > 0
-                    ? ` · ${totalItems}`
-                    : ' · ₹369'}
+                  Cart{totalItems === 0 && ' · ₹369'}
                 </span>
                 {totalItems > 0 && (
                   <span
