@@ -7,7 +7,7 @@ import { useSEOMeta } from '@/hooks/useSEOMeta';
 export function FAQPage() {
   useSEOMeta({
     title: 'Frequently Asked Questions — One4Health™ Ashwagandha',
-    description: 'Answers to common questions about One4Health™ Ashwagandha gummies: dosage, safety, results timeline, vegan certifications, shipping, and the 30-day refund guarantee.',
+    description: 'Answers to common questions about One4Health™ Ashwagandha gummies: dosage, safety, results timeline, vegan certifications, shipping, and the 15-day refund guarantee.',
     canonical: 'https://one4health.com/faq',
   });
   const { faqs, loading } = useFAQs();

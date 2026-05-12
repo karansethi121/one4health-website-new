@@ -288,7 +288,7 @@ export function CartDrawer() {
                       opacity: 0.5,
                     }}
                   >
-                    30-Day Guarantee
+                    15-Day Guarantee
                   </span>
                 </div>
               </div>

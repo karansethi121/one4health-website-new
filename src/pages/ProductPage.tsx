@@ -39,7 +39,7 @@ export function ProductPage() {
 
   useSEOMeta({
     title: product ? `${product.name} KSM-66® — One4Health™ | Buy Ashwagandha Gummies India` : 'Ashwagandha Gummies KSM-66® — One4Health™',
-    description: 'Buy One4Health™ Ashwagandha Gummies with 300mg KSM-66® + Vitamin D2 + Black Pepper Extract. Sugar-free, 100% vegan, clinically backed. ₹369/jar, free shipping, 30-day refund.',
+    description: 'Buy One4Health™ Ashwagandha Gummies with 300mg KSM-66® + Vitamin D2 + Black Pepper Extract. Sugar-free, 100% vegan, clinically backed. ₹369/jar, free shipping, 15-day refund.',
     ogType: 'product',
     ogImage: 'https://one4health.com/images/img1.png',
     canonical: 'https://one4health.com/product/ashwagandha-gummies-ksm66',
@@ -372,7 +372,7 @@ export function ProductPage() {
                 opacity: 0.4,
               }}>
                 <Check className="w-3 h-3 text-forest" />
-                Free Shipping · 30-Day Guarantee
+                Free Shipping · 15-Day Guarantee
               </p>
             </div>
 
@@ -380,7 +380,7 @@ export function ProductPage() {
             <div className="grid grid-cols-2 gap-y-3 gap-x-6 pt-6 border-t border-ink/8">
               {[
                 { icon: Truck, label: 'Fast India Delivery' },
-                { icon: Shield, label: '30-Day Guarantee' },
+                { icon: Shield, label: '15-Day Guarantee' },
                 { icon: Beaker, label: 'Clinically Studied' },
                 { icon: Leaf, label: '100% Vegan' },
               ].map((t, i) => (

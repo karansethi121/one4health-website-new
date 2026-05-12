@@ -30,8 +30,8 @@ const stats = [
   },
   {
     key: 'Supply',
-    value: '30 days',
-    sub: 'One bottle, one month',
+    value: '15 days',
+    sub: '2 per day, one jar',
     bg: '#FBF7EC',
     border: false,
   },

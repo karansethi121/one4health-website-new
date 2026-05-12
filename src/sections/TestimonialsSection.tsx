@@ -162,7 +162,7 @@ export function TestimonialsSection() {
             <div className="flex flex-wrap justify-center gap-2 mt-5">
               <span className="inline-flex items-center gap-1.5 text-xs text-charcoal-500 bg-sage-50 px-3 py-1.5 rounded-full">
                 <Star className="w-3.5 h-3.5 text-sage-500" />
-                30-day guarantee
+                15-day guarantee
               </span>
               <span className="inline-flex items-center gap-1.5 text-xs text-charcoal-500 bg-sage-50 px-3 py-1.5 rounded-full">
                 <Sparkles className="w-3.5 h-3.5 text-sage-500" />

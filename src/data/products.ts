@@ -128,14 +128,14 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'What is your return policy?',
-    answer: 'We offer a 30-day satisfaction guarantee. If you\'re not completely happy with your purchase, contact us for a full refund—no questions asked.',
+    answer: 'We offer a 15-day satisfaction guarantee. If you\'re not completely happy with your purchase, contact us for a full refund—no questions asked.',
   },
 ];
 
 export const shippingFAQs: FAQ[] = [
   {
     question: 'How long does shipping take?',
-    answer: 'Orders are processed within 1-2 business days. Standard shipping takes 3-5 business days. Express shipping (1-2 days) is available at checkout.',
+    answer: 'Orders are processed within 1-2 business days. Standard shipping takes 3-5 business days across India.',
   },
   {
     question: 'Do you offer free shipping?',

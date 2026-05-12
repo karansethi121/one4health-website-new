@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Truck, Package, RefreshCw, Clock, MapPin, Shield } from 'lucide-react';
+import { Truck, RefreshCw, Clock, MapPin, Shield } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -12,13 +12,6 @@ const shippingMethods = [
     duration: '3-5 business days',
     price: 'Free',
     freeThreshold: 'Free on all orders',
-  },
-  {
-    icon: Package,
-    title: 'Express Shipping',
-    duration: '1-2 business days',
-    price: '₹199',
-    freeThreshold: null,
   },
 ];
 
@@ -89,7 +82,7 @@ export function ShippingPage() {
         <h2 className="shipping-animate text-2xl font-heading font-bold text-charcoal-900 mb-8">
           Shipping Options
         </h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid gap-6 max-w-md">
           {shippingMethods.map((method) => (
             <div
               key={method.title}

@@ -10,7 +10,7 @@ import { useProducts } from '@/hooks/useSupabase';
 export function ShopPage() {
   useSEOMeta({
     title: 'Shop — One4Health™ Ashwagandha Gummies KSM-66®',
-    description: 'Buy One4Health™ KSM-66® Ashwagandha gummies. ₹369 for 1 jar, ₹689 for 2 jars (save 23%). Free shipping across India. 30-day refund guarantee. 100% vegan, sugar-free.',
+    description: 'Buy One4Health™ KSM-66® Ashwagandha gummies. ₹369 for 1 jar, ₹689 for 2 jars (save 23%). Free shipping across India. 15-day refund guarantee. 100% vegan, sugar-free.',
     ogType: 'website',
     canonical: 'https://one4health.com/shop',
   });

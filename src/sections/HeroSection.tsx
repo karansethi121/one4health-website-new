@@ -151,7 +151,7 @@ export function HeroSection() {
               {/* Trust line */}
               <div className="hero-trust flex flex-wrap items-center gap-4 lg:gap-5">
                 {[
-                  { icon: '🔒', text: '30-day refund, no questions' },
+                  { icon: '🔒', text: '15-day refund, no questions' },
                   { icon: '🚚', text: 'Free shipping on all orders' },
                 ].map((t) => (
                   <div
