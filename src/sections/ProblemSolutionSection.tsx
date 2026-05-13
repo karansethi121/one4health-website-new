@@ -131,7 +131,7 @@ export function ProblemSolutionSection() {
                 <span
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: '11px',
+                    fontSize: '16px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
                     color: card.textColor,
