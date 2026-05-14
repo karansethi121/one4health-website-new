@@ -46,9 +46,10 @@ export function StickyAddToCart() {
         isVisible ? "translate-y-0" : "translate-y-full"
       )}
     >
-      <div 
-        className="flex items-center justify-between gap-4 max-w-md mx-auto p-4"
+      <div
+        className="flex items-center justify-between gap-4 max-w-md mx-auto p-4 cursor-pointer"
         style={{ background: '#0A0A0A', border: '1.5px solid #0A0A0A', borderRadius: '24px', boxShadow: '0 8px 32px rgba(10,10,10,0.15)' }}
+        onClick={handleQuickAdd}
       >
         <div className="flex items-center gap-3">
           <img
@@ -67,8 +68,7 @@ export function StickyAddToCart() {
         </div>
         
         <button
-          onClick={handleQuickAdd}
-          className="bg-lime text-forest px-6 py-3 rounded-full flex items-center justify-center gap-2 active:scale-95 transition-transform"
+          className="bg-lime text-forest px-6 py-3 rounded-full flex items-center justify-center gap-2 active:scale-95 transition-transform pointer-events-none"
           style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}
         >
           <ShoppingBag size={16} />
