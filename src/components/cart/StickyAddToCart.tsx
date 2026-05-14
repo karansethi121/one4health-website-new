@@ -29,7 +29,9 @@ export function StickyAddToCart() {
   if (!mainProduct) return null;
 
   const variantId = mainProduct.shopifyVariantId || mainProduct.id;
-  const alreadyInCart = items.some(i => i.variant_id === variantId || i.id === variantId);
+  const alreadyInCart = items.some(
+    i => String(i.variant_id) === String(variantId) || String(i.id) === String(variantId)
+  );
 
   const handlePillClick = () => {
     if (alreadyInCart) {
