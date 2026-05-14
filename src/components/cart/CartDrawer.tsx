@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Minus, Plus, X, ShoppingBag, Leaf, Shield, Loader2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
@@ -7,6 +8,7 @@ import type { CartItem } from '@/context/CartContext';
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeFromCart, totalPrice, loading, loadingKey } = useCart();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const getResolvedImage = (item: CartItem) => {
     const title = (item.product_title || item.title || '').toLowerCase();
@@ -19,6 +21,7 @@ export function CartDrawer() {
   };
 
   const handleCheckout = () => {
+    setCheckoutLoading(true);
     window.location.href = '/checkout';
   };
 
@@ -58,7 +61,6 @@ export function CartDrawer() {
                   {items.length}
                 </span>
               </span>
-              {loading && <Loader2 className="w-4 h-4 animate-spin text-forest ml-2" />}
             </SheetTitle>
           </div>
         </SheetHeader>
@@ -297,14 +299,9 @@ export function CartDrawer() {
 
               {/* Subtotal */}
               <div
-                className="flex justify-between items-center px-5 py-4 relative overflow-hidden"
+                className="flex justify-between items-center px-5 py-4"
                 style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '16px' }}
               >
-                {loading && (
-                  <div className="absolute inset-0 bg-cream/60 flex items-center justify-center">
-                    <Loader2 className="w-4 h-4 animate-spin text-forest" />
-                  </div>
-                )}
                 <span
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
@@ -333,8 +330,8 @@ export function CartDrawer() {
               {/* Checkout CTA */}
               <button
                 onClick={handleCheckout}
-                disabled={loading || items.length === 0}
-                className="w-full flex items-center justify-center gap-3 py-4 rounded-full transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50"
+                disabled={loading || checkoutLoading || items.length === 0}
+                className="w-full flex items-center justify-center gap-3 py-4 rounded-full transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{
                   background: '#C7F25C',
                   color: '#0F3D2E',
@@ -347,10 +344,19 @@ export function CartDrawer() {
                   letterSpacing: '0.06em',
                 }}
               >
-                {loading
-                  ? <Loader2 className="w-4 h-4 animate-spin" />
-                  : <>Checkout — {formatPrice(totalPrice)} <ArrowRight className="w-4 h-4" /></>
-                }
+                {checkoutLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Taking you to checkout...
+                  </>
+                ) : loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Adding to cart...
+                  </>
+                ) : (
+                  <>Proceed to Checkout <ArrowRight className="w-4 h-4" /></>
+                )}
               </button>
 
               <p
