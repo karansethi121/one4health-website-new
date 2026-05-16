@@ -77,6 +77,13 @@ export function PrivacyPage() {
           </p>
 
           <h2 className="text-2xl font-heading font-bold text-charcoal-900 mt-8 mb-4">
+            Data Retention
+          </h2>
+          <p>
+            We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this Privacy Policy. You can request deletion of your data at any time by contacting us. Please note that we may retain certain information as required by law or for legitimate business purposes.
+          </p>
+
+          <h2 className="text-2xl font-heading font-bold text-charcoal-900 mt-8 mb-4">
             Your Rights
           </h2>
           <p>
