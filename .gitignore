@@ -12,8 +12,7 @@ dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+.vscode/
 .idea
 .DS_Store
 *.suo
@@ -33,3 +32,41 @@ patch_assets.py
 
 # Playwright MCP session
 .playwright-mcp/
+
+# React / Vite source (not Shopify theme files)
+src/
+public/
+dist/
+index.html
+vite.config.ts
+tsconfig*.json
+tailwind.config.js
+postcss.config.js
+eslint.config.js
+components.json
+package.json
+package-lock.json
+vercel.json
+vitest.setup.ts
+
+# API and backend (Vercel/Supabase — not Shopify)
+api/
+supabase/
+
+# AI agent / tooling config
+.agent/
+.claude/
+.gemini/
+gsd-repo
+claude-seo
+
+# Vite cache
+.vite/
+
+# Misc dev files
+scripts/
+tmp/
+*.py
+README*.md
+ROADMAP.md
+info.md
