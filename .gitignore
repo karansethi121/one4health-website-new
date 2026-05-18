@@ -46,7 +46,7 @@ eslint.config.js
 components.json
 package.json
 package-lock.json
-vercel.json
+# vercel.json is tracked on shopify-production to skip Vercel builds on this branch
 vitest.setup.ts
 
 # API and backend (Vercel/Supabase — not Shopify)
