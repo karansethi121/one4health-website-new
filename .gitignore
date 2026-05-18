@@ -66,6 +66,80 @@ claude-seo
 # Shopify assets subdirectories (not allowed — assets/ must be flat)
 assets/images/
 
+# Removed duplicate/old assets — kept under Shopify 50 MB limit
+# Hero duplicates (hero-v2.png is the canonical version)
+assets/hero-clean.png
+assets/hero-section.png
+assets/hero-tilted-5.png
+assets/hero-tilted.png
+# Legacy p1-p6 (img1-img6 are the names used in bundle.js)
+assets/p1.png
+assets/p2.png
+assets/p3.png
+assets/p4.png
+assets/p5.png
+assets/p6.png
+# AI-generated test images
+assets/Gemini_Generated_Image_*.png
+assets/Gemini_Generated_Image_*.webp
+# Old allergen versions (only _v8 kept)
+assets/allergen_*_new.png
+assets/allergen_*_v4.png
+assets/allergen_*_v5.png
+assets/allergen_*_v6.png
+assets/allergen_*_v7.png
+# Old/superseded cert images
+assets/cert_labtested.png
+assets/cert_labtested.webp
+assets/cert_labtested_new.png
+assets/cert_sugarfree.png
+assets/cert_sugarfree.webp
+assets/cert_sugarfree_new.png
+assets/cert_vegan.png
+assets/cert_vegan.webp
+assets/cert_vegan_new.png
+assets/cert_vegan_new.webp
+assets/cert_gmp.png
+assets/cert_gmp.webp
+assets/cert_fda.png
+assets/cert_fda.svg
+assets/cert_fda.webp
+assets/cert_fssai.png
+assets/cert_fssai_new.png
+assets/cert_fssai_new.webp
+assets/cert_fssc_22000.png
+assets/cert_fssc_22000.svg
+assets/cert_fssc_22000.webp
+assets/cert_iso.png
+assets/cert_iso.webp
+assets/cert_iso_22000.png
+assets/cert_iso_22000.webp
+assets/cert_iso22000.png
+assets/cert_iso_clean.svg
+assets/cert_veg.svg
+assets/cert_cruelty_free.svg
+assets/cert_cruelty_free.webp
+assets/cert_haccp.svg
+assets/cert_haccp.webp
+assets/cert_madeinindia.png
+# JPGs whose .webp versions are used by bundle.js
+assets/testimonial_jon.jpg
+assets/testimonial_maya.jpg
+assets/testimonial_riley.jpg
+assets/about_lifestyle.jpg
+assets/ashwagandha_plant.jpg
+assets/ashwagandha_plant.webp
+assets/benefits_gummy_hand.jpg
+assets/benefits_gummy_hand.webp
+# Misc unused
+assets/4-4.png
+assets/4-4.webp
+assets/clean-formula-creative.jpeg
+assets/clean-formula-splash.png
+assets/product-mockup-2.png
+assets/product_jar_main.jpg
+assets/ingredient_vitamind2.png
+
 # Misc dev files
 scripts/
 tmp/
