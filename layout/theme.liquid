@@ -324,13 +324,25 @@
       currently caching.
     {% endcomment %}
     <style>
-      @media (max-width: 639px) {
+      /* Two media queries: the lg-breakpoint rules match the bundle's design intent
+         (single column below 1024px), the sm-breakpoint rules collapse the pack
+         selector specifically. min-width:0 on grid children is the magic that
+         lets long content shrink instead of forcing the grid wider than viewport. */
+      @media (max-width: 1023px) {
+        /* Top-level product page layout grid (image column + info column).
+           Source uses `lg:grid-cols-[1.05fr_0.95fr]` — below lg it has no
+           grid-template-columns and falls through to implicit columns that
+           inherit child intrinsic widths, which overflow on mobile. Force 1fr. */
+        [class*="lg:grid-cols-["] {
+          grid-template-columns: 1fr !important;
+        }
+        .grid > * { min-width: 0; }
         body { overflow-x: hidden; }
-
-        /* Pack selector cards on product page — stack vertically on phones.
-           Targets the unique class combo used by ProductPage's pack grid. */
-        .grid.grid-cols-2.animate-fade-in.w-full,
-        .grid.grid-cols-2.animate-fade-in.w-full.pb-1 {
+      }
+      @media (max-width: 639px) {
+        /* Pack selector cards (1 Jar / 2 Jars) — stack vertically on phones. */
+        .grid.grid-cols-2.gap-3,
+        .grid.grid-cols-2.animate-fade-in {
           grid-template-columns: 1fr;
         }
       }
