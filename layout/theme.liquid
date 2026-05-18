@@ -315,6 +315,26 @@
     {{ content_for_header }}
 
     {{ 'bundle.css' | asset_url | stylesheet_tag }}
+
+    {% comment %}
+      Mobile responsive overrides. These rules are intentionally
+      higher-specificity than the Tailwind utility classes they override,
+      so they win without !important. They live here (not in bundle.css)
+      so they apply regardless of which JS bundle version a browser is
+      currently caching.
+    {% endcomment %}
+    <style>
+      @media (max-width: 639px) {
+        body { overflow-x: hidden; }
+
+        /* Pack selector cards on product page — stack vertically on phones.
+           Targets the unique class combo used by ProductPage's pack grid. */
+        .grid.grid-cols-2.animate-fade-in.w-full,
+        .grid.grid-cols-2.animate-fade-in.w-full.pb-1 {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
 
   <body class="gradient">
