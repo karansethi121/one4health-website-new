@@ -63,6 +63,9 @@ claude-seo
 # Vite cache
 .vite/
 
+# Shopify assets subdirectories (not allowed — assets/ must be flat)
+assets/images/
+
 # Misc dev files
 scripts/
 tmp/
