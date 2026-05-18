@@ -2,16 +2,14 @@ import path from "path"
 import fs from "fs"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
-import { inspectAttr } from 'kimi-plugin-inspect-react'
 
 // Post-build plugin: clean up files that are invalid in Shopify's assets folder
 // and ensure bundle.css/bundle.js are optimized for the Shopify environment
 function shopifyAssetCleanup() {
+  const assetsDir = path.resolve(__dirname, 'assets')
   return {
     name: 'shopify-asset-cleanup',
     closeBundle() {
-      const assetsDir = path.resolve(__dirname, 'assets')
-
       // 1. Remove index.html — Shopify doesn't allow HTML files in assets/
       const htmlFile = path.join(assetsDir, 'index.html')
       if (fs.existsSync(htmlFile)) {
@@ -60,7 +58,6 @@ function shopifyAssetCleanup() {
 export default defineConfig({
   base: process.env.VERCEL ? '/' : './',
   plugins: [
-    inspectAttr(), 
     react(), 
     !process.env.VERCEL && shopifyAssetCleanup()
   ].filter(Boolean),
@@ -72,9 +69,12 @@ export default defineConfig({
   build: {
     outDir: 'assets',
     assetsDir: '',
+    minify: false,
+    sourcemap: false,
     rollupOptions: {
+      treeshake: false,
       output: {
-        entryFileNames: 'bundle.js',
+        entryFileNames: 'bundle-v2.js',
         chunkFileNames: '[name].js',
         assetFileNames: '[name].[ext]',
       },

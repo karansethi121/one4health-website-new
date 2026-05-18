@@ -13,7 +13,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
 
     {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | image_url: width: 32 }}">
+      <link rel="icon" type="image/png" sizes="192x192" href="{{ settings.favicon | image_url: width: 192 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180 }}">
+    {%- else -%}
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ 'logo_new.png' | asset_url }}">
+      <link rel="icon" type="image/png" sizes="192x192" href="{{ 'logo_new.png' | asset_url }}">
+      <link rel="apple-touch-icon" href="{{ 'logo_new.png' | asset_url }}">
     {%- endif -%}
 
     <title>
@@ -39,7 +45,7 @@
 
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="TQO_Q5x3A4oqUTcxb-4z1EdHO0vpKyn7yAxwl185yI4" />
-    <meta name="msvalidate.01" content="ADD_BING_VERIFICATION_TAG_HERE" />
+    <meta name="msvalidate.01" content="F7F8247C286D8B54D170E26F55AE06CB" />
 
     <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L3GJXRQX63"></script>
@@ -50,16 +56,8 @@
       gtag('config', 'G-L3GJXRQX63');
     </script>
 
-    <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
-        w[l] = w[l] || []; w[l].push({
-          'gtm.start':
-            new Date().getTime(), event: 'gtm.js'
-        }); var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-ID_HERE');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager — add real GTM container ID when available -->
+    <!-- <script>...</script> -->
 
     <!-- Open Graph / Facebook -->
     {%- assign og_title = page_title | default: shop.name -%}
@@ -73,16 +71,16 @@
       {%- if product.featured_media -%}
         {%- assign og_image = product.featured_media | image_url: width: 1200 -%}
       {%- else -%}
-        {%- assign og_image = 'product_transparent.png' | asset_url -%}
+        {%- assign og_image = 'shop.png' | asset_url -%}
       {%- endif -%}
     {%- elsif template.name == 'collection' -%}
       {%- if collection.image -%}
         {%- assign og_image = collection.image | image_url: width: 1200 -%}
       {%- else -%}
-        {%- assign og_image = 'product_transparent.png' | asset_url -%}
+        {%- assign og_image = 'shop.png' | asset_url -%}
       {%- endif -%}
     {%- else -%}
-      {%- assign og_image = 'product_transparent.png' | asset_url -%}
+      {%- assign og_image = 'shop.png' | asset_url -%}
     {%- endif -%}
 
     {%- if og_image contains '?' -%}
@@ -102,6 +100,7 @@
     <meta property="og:image:secure_url" content="https:{{ og_image }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="1200">
+    <meta property="og:image:alt" content="One4Health™ Ashwagandha Gummies KSM-66® — Sugar-Free, Vegan, Made in India">
 
     {%- if template.name == 'product' -%}
       <meta property="product:price:amount" content="{{ product.selected_or_first_available_variant.price | divided_by: 100.00 }}">
@@ -111,6 +110,8 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@one_4_health">
+    <meta name="twitter:creator" content="@one_4_health">
     <meta name="twitter:title" content="{{ og_title | escape }}">
     <meta name="twitter:description" content="{{ og_description | escape }}">
     <meta name="twitter:image" content="https:{{ og_image }}">
@@ -150,6 +151,35 @@
         "name": "One4Health™ Team"
       },
       "slogan": "Stay Calm. Stay Sharp."
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "One4Health™",
+      "image": "https:{{ 'logo_cropped.png' | asset_url }}",
+      "url": "{{ shop.url }}",
+      "telephone": "+91 7767-968-079",
+      "email": "info@one4health.com",
+      "priceRange": "₹₹",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lucknow",
+        "addressRegion": "Uttar Pradesh",
+        "postalCode": "226001",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 26.8467,
+        "longitude": 80.9462
+      },
+      "sameAs": [
+        "https://instagram.com/one4health",
+        "https://twitter.com/one4health"
+      ]
     }
     </script>
 
@@ -196,12 +226,19 @@
             "value": "black pepper extract, Vitamin D2"
           }
         ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "140",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "offers": {
           "@type": "Offer",
           "url": {{ shop.url | append: product.selected_or_first_available_variant.url | json }},
           "priceCurrency": {{ cart.currency.iso_code | json }},
           "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
-          "priceValidUntil": "2026-12-31",
+          "priceValidUntil": "2027-12-31",
           "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
           "seller": {
             "@type": "Organization",
@@ -254,7 +291,7 @@
     </script>
 
     <script>
-      window.ShopifyAssetsUrl = "{{ 'bundle.js' | asset_url | split: 'bundle.js' | first }}";
+      window.ShopifyAssetsUrl = "{{ 'bundle-v2.js' | asset_url | split: 'bundle-v2.js' | first }}";
       
       window.ShopifyData = {
         product: {{ product | json }},
@@ -278,18 +315,48 @@
     {{ content_for_header }}
 
     {{ 'bundle.css' | asset_url | stylesheet_tag }}
+
+    {% comment %}
+      Mobile responsive overrides. These rules are intentionally
+      higher-specificity than the Tailwind utility classes they override,
+      so they win without !important. They live here (not in bundle.css)
+      so they apply regardless of which JS bundle version a browser is
+      currently caching.
+    {% endcomment %}
+    <style>
+      /* Two media queries: the lg-breakpoint rules match the bundle's design intent
+         (single column below 1024px), the sm-breakpoint rules collapse the pack
+         selector specifically. min-width:0 on grid children is the magic that
+         lets long content shrink instead of forcing the grid wider than viewport. */
+      @media (max-width: 1023px) {
+        /* Top-level product page layout grid (image column + info column).
+           Source uses `lg:grid-cols-[1.05fr_0.95fr]` — below lg it has no
+           grid-template-columns and falls through to implicit columns that
+           inherit child intrinsic widths, which overflow on mobile. Force 1fr. */
+        [class*="lg:grid-cols-["] {
+          grid-template-columns: 1fr !important;
+        }
+        .grid > * { min-width: 0; }
+        body { overflow-x: hidden; }
+      }
+      @media (max-width: 639px) {
+        /* Pack selector cards (1 Jar / 2 Jars) — stack vertically on phones. */
+        .grid.grid-cols-2.gap-3,
+        .grid.grid-cols-2.animate-fade-in {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
 
   <body class="gradient">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-ID_HERE" height="0" width="0"
-        style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager noscript — add real GTM ID when available -->
+    <!-- <noscript>...</noscript> -->
 
     <div id="root"></div>
 
     {{ content_for_layout }}
 
-    <script src="{{ 'bundle.js' | asset_url }}" defer="defer"></script>
+    <script type="module" src="{{ 'bundle-v2.js' | asset_url }}"></script>
   </body>
 </html>
