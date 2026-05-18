@@ -291,7 +291,7 @@
     </script>
 
     <script>
-      window.ShopifyAssetsUrl = "{{ 'bundle.js' | asset_url | split: 'bundle.js' | first }}";
+      window.ShopifyAssetsUrl = "{{ 'bundle-v2.js' | asset_url | split: 'bundle-v2.js' | first }}";
       
       window.ShopifyData = {
         product: {{ product | json }},
@@ -325,6 +325,6 @@
 
     {{ content_for_layout }}
 
-    <script type="module" src="{{ 'bundle.js' | asset_url }}"></script>
+    <script type="module" src="{{ 'bundle-v2.js' | asset_url }}"></script>
   </body>
 </html>
