@@ -139,7 +139,7 @@ export function HeroSection() {
                   loading={cartLoading}
                   className="bg-sage-700 hover:bg-sage-800 text-white font-semibold px-10 lg:px-14 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 group text-base min-h-[56px]"
                 >
-                  Buy Now | Save 23%
+                  Buy Now | Save ₹80
                   <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Link

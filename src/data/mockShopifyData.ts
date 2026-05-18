@@ -35,7 +35,7 @@ const MOCK_PRODUCT = {
     {
       id: 'ashwagandha-gummies-bundle-2',
       title: '2 Jars (Bundle)',
-      price: 68900,
+      price: 69900,
       compare_at_price: 89800,
       available: true,
       sku: 'O4H-ASH-002',

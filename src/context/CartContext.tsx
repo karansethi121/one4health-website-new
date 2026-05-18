@@ -76,15 +76,15 @@ const transformCartItems = (rawItems: CartItem[]): CartItem[] => {
       const bundlesCount = Math.max(1, Math.floor(item.quantity / 2));
       const restCount = item.quantity % 2;
       
-      const bundleTotal = 68900 * bundlesCount;
+      const bundleTotal = 69900 * bundlesCount;
       const individualTotal = 36900 * restCount;
       const originalTotal = (89800 * bundlesCount) + (44900 * restCount);
 
       return {
         ...item,
-        price: 34450, 
+        price: 34950,
         original_price: 44900,
-        final_price: 34450,
+        final_price: 34950,
         line_price: bundleTotal + individualTotal,
         final_line_price: bundleTotal + individualTotal,
         original_line_price: originalTotal
