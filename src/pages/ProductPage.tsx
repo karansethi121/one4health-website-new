@@ -81,7 +81,7 @@ export function ProductPage() {
     // Starting with 449 as original base price for 1 pack of 30 gummies
     // One-time purchase
     if (packSize === 2) {
-      return 68900; // Bundle price for 2 packs (60 gummies)
+      return 69900; // Bundle price for 2 packs (60 gummies)
     }
     return 36900; // Standard price from DB override
   };
@@ -108,8 +108,8 @@ export function ProductPage() {
     // Add physical units to cart (e.g. 1 qty of 2 Jars = 2 physical units)
     const cartQuantity = quantity * packSize;
     
-    // Calculate per-unit price in paise (68900/2 = 34450, 36900/1 = 36900)
-    const pricePaise = isBundle ? 34450 : 36900;
+    // Calculate per-unit price in paise (69900/2 = 34950, 36900/1 = 36900)
+    const pricePaise = isBundle ? 34950 : 36900;
 
     await addToCart(variantId, cartQuantity, attributes, undefined, pricePaise, product.name);
   };
@@ -132,7 +132,7 @@ export function ProductPage() {
 
   const currentPrice = getCurrentPrice();
   const originalPrice = packSize === 2 ? 89800 : 44900;
-  const savings = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
+  const savings = Math.round((originalPrice - currentPrice) / 100);
 
   return (
     <main className="w-full pt-20 lg:pt-24">
@@ -242,7 +242,7 @@ export function ProductPage() {
                       </div>
                     </div>
                     <span className={`text-[11px] lg:text-xs mb-1 lg:mb-1.5 ${packSize === 2 ? 'text-sage-700 font-medium' : 'text-charcoal-500'}`}>60-day supply</span>
-                    <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(68900)}</span>
+                    <span className="font-bold text-sage-700 text-sm lg:text-base">{formatPrice(69900)}</span>
                     
                     <div className={`mt-3 w-full text-[9px] sm:text-[10px] uppercase font-bold py-1.5 rounded text-center tracking-widest transition-colors ${
                       packSize === 2 ? 'bg-charcoal-900 text-white' : 'bg-charcoal-100 text-charcoal-600'
@@ -264,7 +264,7 @@ export function ProductPage() {
                     {formatPrice(originalPrice)}
                   </span>
                   <span className="px-2 py-1 bg-coral-100 text-coral-700 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wider">
-                    Save {savings}%
+                    Save ₹{savings}
                   </span>
                 </>
               )}
@@ -501,7 +501,7 @@ export function ProductPage() {
         productName={product.name} 
         variantId={product.shopifyVariantId || product.id} 
         quantity={quantity * packSize}
-        price={packSize === 2 ? 34450 : 36900}
+        price={packSize === 2 ? 34950 : 36900}
         title={product.name}
       />
     </main>

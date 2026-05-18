@@ -84,8 +84,8 @@ export function ShopPage() {
     );
   }
 
-  const savings = ashwagandhaProduct.originalPrice 
-    ? Math.round(((ashwagandhaProduct.originalPrice - ashwagandhaProduct.price) / ashwagandhaProduct.originalPrice) * 100)
+  const savings = ashwagandhaProduct.originalPrice
+    ? Math.round((ashwagandhaProduct.originalPrice - ashwagandhaProduct.price) / 100)
     : 0;
 
   return (
@@ -177,7 +177,7 @@ export function ShopPage() {
 
                   {savings > 0 && (
                     <span className="absolute top-6 right-6 px-3 py-1.5 bg-amber-400 text-amber-950 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg">
-                      Save {savings}%
+                      Save ₹{savings}
                     </span>
                   )}
                 </Link>
