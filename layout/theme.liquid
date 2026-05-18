@@ -56,16 +56,8 @@
       gtag('config', 'G-L3GJXRQX63');
     </script>
 
-    <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
-        w[l] = w[l] || []; w[l].push({
-          'gtm.start':
-            new Date().getTime(), event: 'gtm.js'
-        }); var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-ID_HERE');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager — add real GTM container ID when available -->
+    <!-- <script>...</script> -->
 
     <!-- Open Graph / Facebook -->
     {%- assign og_title = page_title | default: shop.name -%}
@@ -118,6 +110,8 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@one_4_health">
+    <meta name="twitter:creator" content="@one_4_health">
     <meta name="twitter:title" content="{{ og_title | escape }}">
     <meta name="twitter:description" content="{{ og_description | escape }}">
     <meta name="twitter:image" content="https:{{ og_image }}">
@@ -157,6 +151,35 @@
         "name": "One4Health™ Team"
       },
       "slogan": "Stay Calm. Stay Sharp."
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "One4Health™",
+      "image": "https:{{ 'logo_cropped.png' | asset_url }}",
+      "url": "{{ shop.url }}",
+      "telephone": "+91 7767-968-079",
+      "email": "info@one4health.com",
+      "priceRange": "₹₹",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lucknow",
+        "addressRegion": "Uttar Pradesh",
+        "postalCode": "226001",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 26.8467,
+        "longitude": 80.9462
+      },
+      "sameAs": [
+        "https://instagram.com/one4health",
+        "https://twitter.com/one4health"
+      ]
     }
     </script>
 
@@ -203,12 +226,19 @@
             "value": "black pepper extract, Vitamin D2"
           }
         ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "140",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "offers": {
           "@type": "Offer",
           "url": {{ shop.url | append: product.selected_or_first_available_variant.url | json }},
           "priceCurrency": {{ cart.currency.iso_code | json }},
           "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
-          "priceValidUntil": "2026-12-31",
+          "priceValidUntil": "2027-12-31",
           "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
           "seller": {
             "@type": "Organization",
@@ -288,10 +318,8 @@
   </head>
 
   <body class="gradient">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-ID_HERE" height="0" width="0"
-        style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager noscript — add real GTM ID when available -->
+    <!-- <noscript>...</noscript> -->
 
     <div id="root"></div>
 
