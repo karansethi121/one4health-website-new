@@ -20,7 +20,7 @@ import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
 import { AllergenBar } from '@/components/layout/AllergenBar';
 import { useProducts } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
-import { getPackConfig, getSavingsPercent, type PackSize } from '@/lib/productPricing';
+import { getPackConfig, getSavingsAmount, type PackSize } from '@/lib/productPricing';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { formatPrice } from '@/lib/format';
 
@@ -69,7 +69,7 @@ export function ProductPage() {
     </div>
   );
 
-  const savings = getSavingsPercent(selectedPack.totalPrice, selectedPack.originalTotalPrice);
+  const savings = getSavingsAmount(selectedPack.totalPrice, selectedPack.originalTotalPrice);
 
   return (
     <main className="w-full pt-[72px] lg:pt-[84px]" style={{ background: '#F7F1E3' }}>
@@ -302,7 +302,7 @@ export function ProductPage() {
               {savings > 0 && (
                 <span className="px-3 py-1.5 rounded-pill bg-strawberry text-white font-bold uppercase tracking-widest"
                   style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px' }}>
-                  Save {savings}%
+                  Save ₹{savings}
                 </span>
               )}
               <span className="flex items-center gap-1.5" style={{
@@ -339,7 +339,7 @@ export function ProductPage() {
                 opacity: 0.4,
               }}>
                 <Check className="w-3 h-3 text-forest" />
-                Free Shipping · 30-Day Guarantee
+                Free Shipping · 15-Day Refund
               </p>
             </div>
 
@@ -347,7 +347,7 @@ export function ProductPage() {
             <div className="grid grid-cols-2 gap-y-3 gap-x-6 pt-6 border-t border-ink/8">
               {[
                 { icon: Truck, label: 'Fast India Delivery' },
-                { icon: Shield, label: '30-Day Guarantee' },
+                { icon: Shield, label: '15-Day Refund' },
                 { icon: Beaker, label: 'Clinically Studied' },
                 { icon: Leaf, label: '100% Vegan' },
               ].map((t, i) => (

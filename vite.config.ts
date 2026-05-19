@@ -34,6 +34,7 @@ function shopifyAssetCleanup() {
         let content = fs.readFileSync(bundleJs, 'utf-8')
         const replacements = {
           'window.ShopifyAssetsUrl + ': '(window.ShopifyAssetsUrl||"/images/") + ',
+          'window.ShopifyAssetsUrl+': '(window.ShopifyAssetsUrl||"/images/")+',
           '300mg KSM-66® per day': 'Daily serving',
           '24+ studies on KSM-66® efficacy.': '24+ clinical studies on efficacy.',
           '300 mg': 'Daily serving',
@@ -46,6 +47,11 @@ function shopifyAssetCleanup() {
             modified = true
           }
         }
+
+        // Fix hardcoded /images/ paths so they work on Shopify CDN
+        const before = content
+        content = content.replace(/src:"\/images\/([^"]+)"/g, 'src:(window.ShopifyAssetsUrl||"/images/")+"$1"')
+        if (content !== before) modified = true
 
         if (modified) {
           fs.writeFileSync(bundleJs, content)

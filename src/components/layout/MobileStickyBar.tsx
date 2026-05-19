@@ -62,11 +62,11 @@ export function MobileStickyBar({
         <button
           onClick={handleAddToCart}
           disabled={cartLoading}
-          className="flex-1 flex items-center justify-center gap-3 py-4 rounded-full transition-all duration-300 active:scale-95 shadow-hard-sm"
-          style={{ background: '#C7F25C', color: '#0F3D2E', border: '1.5px solid #0A0A0A', fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}
+          className="flex-1 flex items-center justify-center gap-3 rounded-full transition-all duration-300 active:scale-95"
+          style={{ background: '#C7F25C', color: '#0F3D2E', border: '1.5px solid #0A0A0A', fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', minHeight: '56px', cursor: 'pointer', touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
         >
-          <ShoppingCart className="w-5 h-5" />
-          {cartLoading ? '...' : 'Add to Cart'}
+          <ShoppingCart className="w-5 h-5 pointer-events-none" />
+          <span className="pointer-events-none">{cartLoading ? '…' : 'Add to Cart'}</span>
         </button>
       </div>
 

@@ -16,7 +16,7 @@ const stats = [
   {
     key: 'Price',
     value: '₹369',
-    sub: 'From ₹449 — save 23%',
+    sub: 'From ₹449 — save ₹80',
     bg: '#FBF7EC',
     border: true,
     valueColor: '#FF5A6B',
@@ -30,8 +30,8 @@ const stats = [
   },
   {
     key: 'Supply',
-    value: '30 days',
-    sub: 'One bottle, one month',
+    value: '15 days',
+    sub: 'One bottle, 15 days',
     bg: '#FBF7EC',
     border: false,
   },

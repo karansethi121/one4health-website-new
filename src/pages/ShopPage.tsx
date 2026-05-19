@@ -123,8 +123,8 @@ export function ShopPage() {
         ) : (
           <div className="grid lg:grid-cols-3 gap-8">
             {filteredProducts.map((p) => {
-              const productSavings = p.originalPrice 
-                ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
+              const productSavings = p.originalPrice
+                ? Math.round((p.originalPrice - p.price) / 100)
                 : 0;
               
               return (
@@ -158,7 +158,7 @@ export function ShopPage() {
                         className="absolute top-0 right-0 px-3 py-1.5 rounded-pill"
                         style={{ background: '#FF5A6B', color: '#fff', fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', fontWeight: 700, textTransform: 'uppercase' }}
                       >
-                        Save {productSavings}%
+                        Save ₹{productSavings}
                       </span>
                     )}
                   </Link>

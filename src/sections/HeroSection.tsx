@@ -134,7 +134,7 @@ export function HeroSection() {
                 >
                   {cartLoading ? 'Adding…' : (
                     <>
-                      Buy Now · Save 23%
+                      Buy Now · Save ₹80
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
@@ -151,7 +151,7 @@ export function HeroSection() {
               {/* Trust line */}
               <div className="hero-trust flex flex-wrap items-center gap-4 lg:gap-5">
                 {[
-                  { icon: '🔒', text: '30-day refund, no questions' },
+                  { icon: '🔒', text: '15-day refund, no questions' },
                   { icon: '🚚', text: 'Free shipping on all orders' },
                 ].map((t) => (
                   <div
@@ -176,8 +176,8 @@ export function HeroSection() {
             </div>
 
             {/* ── Right: Product Image ──────────────────────────────── */}
-            <div className="hero-image relative flex justify-center items-center order-1 lg:order-2 pt-6 lg:pt-0">
-              <div className="relative w-full flex justify-center items-center py-6 lg:py-0">
+            <div className="hero-image relative flex justify-center items-center order-1 lg:order-2 pt-4 lg:pt-0">
+              <div className="relative w-full flex justify-center items-center pt-4 pb-20 lg:py-0">
 
                 {/* Lime circle — always centered behind the product */}
                 <div

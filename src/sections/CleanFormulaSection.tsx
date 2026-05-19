@@ -297,7 +297,7 @@ export function CleanFormulaSection() {
               lineHeight: 1.5,
             }}
           >
-            Was ₹449. Ghost us if it doesn't work — 30-day refund, no questions asked. bas.
+            Was ₹449. Ghost us if it doesn't work — 15-day refund, no questions asked. bas.
           </p>
           <button
             onClick={handleAddToCart}

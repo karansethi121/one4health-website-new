@@ -295,7 +295,7 @@ export function CartDrawer() {
                       opacity: 0.5,
                     }}
                   >
-                    30-Day Guarantee
+                    15-Day Refund
                   </span>
                 </div>
               </div>
