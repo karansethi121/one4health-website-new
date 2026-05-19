@@ -314,7 +314,7 @@
 
     {{ content_for_header }}
 
-    {{ 'bundle.css' | asset_url | stylesheet_tag }}
+    <link rel="stylesheet" href="{{ 'bundle.css' | asset_url | append: '&update=1' }}">
 
     {% comment %}
       Mobile responsive overrides. These rules are intentionally
@@ -357,7 +357,7 @@
 
     {{ content_for_layout }}
 
-    <script type="module" src="{{ 'bundle-v2.js' | asset_url }}"></script>
+    <script type="module" src="{{ 'bundle-v2.js' | asset_url | append: '&update=1' }}"></script>
   </body>
 </html>
 <!-- Cache bust 1779159236 -->
