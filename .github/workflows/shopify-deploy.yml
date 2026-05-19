@@ -1,0 +1,35 @@
+# Auto-deploy to Shopify on every push to shopify-production.
+# This branch is pre-built — it contains compiled assets (bundle.js, bundle.css)
+# and Shopify theme files (layout/, sections/, config/, locales/). No build step needed.
+#
+# SETUP (one-time):
+# 1. Generate a Shopify access token:
+#    - Shopify Admin → Settings → Apps and sales channels → Develop apps
+#    - Create an app named "GitHub Deploy"
+#    - Configuration → Admin API scopes: read_themes, write_themes
+#    - Install app → copy the Admin API access token (shown once only)
+# 2. Add GitHub repo secrets:
+#    - Go to: GitHub repo → Settings → Secrets and variables → Actions
+#    - Add secret: SHOPIFY_CLI_THEME_TOKEN = <the token from step 1>
+#    - Add secret: SHOPIFY_STORE_URL = one4health.myshopify.com
+
+name: Deploy to Shopify
+
+on:
+  push:
+    branches: [shopify-production]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest
+
+      - name: Push theme to Shopify
+        run: shopify theme push --allow-live --store=$SHOPIFY_STORE
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE_URL }}
