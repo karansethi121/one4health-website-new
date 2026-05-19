@@ -128,7 +128,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'What is your return policy?',
-    answer: 'We offer a 30-day satisfaction guarantee. If you\'re not completely happy with your purchase, contact us for a full refund—no questions asked.',
+    answer: 'We offer a 15-day satisfaction guarantee. If you\'re not completely happy with your purchase, contact us for a full refund—no questions asked.',
   },
 ];
 
