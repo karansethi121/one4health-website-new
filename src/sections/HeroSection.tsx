@@ -134,7 +134,7 @@ export function HeroSection() {
                 >
                   {cartLoading ? 'Adding…' : (
                     <>
-                      Buy Now · Save ₹80
+                      Buy Now · Save ₹199
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}

@@ -12,7 +12,7 @@ export function TrustBar() {
   ];
 
   // Duplicate for seamless infinite scroll
-  const doubled = [...certs, ...certs];
+  const doubled = [...certs, ...certs, ...certs, ...certs];
 
   return (
     <div

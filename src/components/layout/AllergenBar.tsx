@@ -8,7 +8,7 @@ export function AllergenBar() {
     { src: '/images/allergen_soy_free_v8.png',     alt: 'Soy Free' },
   ];
 
-  const doubled = [...allergens, ...allergens];
+  const doubled = [...allergens, ...allergens, ...allergens, ...allergens];
 
   return (
     <div

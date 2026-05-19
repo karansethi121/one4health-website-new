@@ -3,7 +3,7 @@ export function PromoMarquee() {
     { base: 'FREE SHIPPING ON ALL ORDERS', highlight: 'ACROSS INDIA' },
     { base: 'LIMITED TIME OFFER', highlight: 'ENDS SUNDAY' },
     { base: 'NATURE BLESSED,', highlight: 'SCIENCE BACKED' },
-    { base: 'SAVE 23% OFF WITH CODE:', highlight: 'HEALTH23' },
+    { base: 'SAVE ₹199 — USE CODE:', highlight: 'HEALTH23' },
   ];
 
   const doubled = [...items, ...items];
