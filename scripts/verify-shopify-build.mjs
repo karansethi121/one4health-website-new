@@ -37,6 +37,13 @@ if (fs.existsSync(themePath)) {
   }
 }
 
+if (fs.existsSync(themePath)) {
+  const theme = fs.readFileSync(themePath, 'utf8');
+  if (!theme.includes('type="module"')) {
+    failures.push('layout/theme.liquid bundle.js script tag must have type="module" (Vite outputs ESM — defer only is invalid).');
+  }
+}
+
 if (failures.length > 0) {
   console.error('Shopify build verification failed:');
   for (const failure of failures) {

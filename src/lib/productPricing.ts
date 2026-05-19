@@ -25,9 +25,9 @@ const PACK_CONFIG: Record<PackSize, PackConfig> = {
   },
   2: {
     jars: 2,
-    totalPrice: 68900,
+    totalPrice: 69900,
     originalTotalPrice: 89800,
-    unitPrice: 34450,
+    unitPrice: 34950,
     optionLabel: '2 Jars',
     supplyLabel: '30-day supply',
     durationLabel: '30-Day Supply (2 Jars)',
@@ -73,4 +73,9 @@ export function getMainProductCartPricing(quantity: number, isBundle: boolean) {
 export function getSavingsPercent(currentPrice: number, originalPrice: number) {
   if (!originalPrice) return 0;
   return Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
+}
+
+export function getSavingsAmount(currentPrice: number, originalPrice: number) {
+  if (!originalPrice) return 0;
+  return Math.round((originalPrice - currentPrice) / 100); // paise → rupees
 }

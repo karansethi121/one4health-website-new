@@ -290,6 +290,6 @@
 
     {{ content_for_layout }}
 
-    <script src="{{ 'bundle.js' | asset_url }}" defer="defer"></script>
+    <script type="module" src="{{ 'bundle.js' | asset_url }}"></script>
   </body>
 </html>
