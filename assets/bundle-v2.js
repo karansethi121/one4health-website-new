@@ -125,7 +125,7 @@ function requireJsxRuntime() {
   if (true) {
     jsxRuntime$2.exports = requireReactJsxRuntime_production();
   } else {
-    bundle_new_module.exports = null;
+    bundle_v2_module.exports = null;
   }
   return jsxRuntime$2.exports;
 }
@@ -567,7 +567,7 @@ function requireReact() {
   if (true) {
     react$1.exports = requireReact_production();
   } else {
-    bundle_new_module.exports = null;
+    bundle_v2_module.exports = null;
   }
   return react$1.exports;
 }
@@ -846,7 +846,7 @@ function requireScheduler() {
   if (true) {
     scheduler$1.exports = requireScheduler_production();
   } else {
-    bundle_new_module.exports = null;
+    bundle_v2_module.exports = null;
   }
   return scheduler$1.exports;
 }
@@ -1023,7 +1023,7 @@ function requireReactDom() {
     checkDCE();
     reactDom$1.exports = requireReactDom_production();
   } else {
-    bundle_new_module.exports = null;
+    bundle_v2_module.exports = null;
   }
   return reactDom$1.exports;
 }
@@ -12573,7 +12573,7 @@ function requireClient() {
     checkDCE();
     client$2.exports = requireReactDomClient_production();
   } else {
-    bundle_new_module.exports = null;
+    bundle_v2_module.exports = null;
   }
   return client$2.exports;
 }
