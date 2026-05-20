@@ -22,18 +22,22 @@
       <link rel="apple-touch-icon" href="{{ 'logo_new.png' | asset_url }}">
     {%- endif -%}
 
-    <title>
-      {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
-    </title>
-
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% else %}
-      <meta name="description" content="Premium, science-backed One4Health™ Ashwagandha gummies. Specialists in clinically studied KSM-66® root extract, black pepper extract, and Vitamin D2 for maximum bioavailability, cortisol regulation, stress relief, and sleep optimization. 100% vegan.">
-    {% endif %}
+    {%- if template.name == 'index' -%}
+      <title>One4Health™ | Ashwagandha KSM-66® Gummies — Stress Relief &amp; Better Sleep | India</title>
+      <meta name="description" content="India's cleanest Ashwagandha gummies. KSM-66® root extract + Vitamin D2 + black pepper for stress relief, deep sleep &amp; sharp focus. Vegan, sugar-free, FSSAI certified. ₹369 per jar — free shipping.">
+    {%- else -%}
+      <title>
+        {{ page_title }}
+        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      </title>
+      {% if page_description %}
+        <meta name="description" content="{{ page_description | escape }}">
+      {% else %}
+        <meta name="description" content="Premium, science-backed One4Health™ Ashwagandha gummies. KSM-66® root extract, black pepper extract, and Vitamin D2 for stress relief, sleep, and focus. 100% vegan. Made in India.">
+      {% endif %}
+    {%- endif -%}
 
     <meta name="keywords" content="One4Health, ashwagandha gummies India, KSM-66 extract, black pepper extract, cortisol regulation, stress relief India, sleep optimization, vegan health supplements, adaptogens, hormone balance, focus gummies">
     <meta name="application-name" content="One4Health Wellness" />
@@ -60,11 +64,16 @@
     <!-- <script>...</script> -->
 
     <!-- Open Graph / Facebook -->
-    {%- assign og_title = page_title | default: shop.name -%}
+    {%- if template.name == 'index' -%}
+      {%- assign og_title = 'One4Health™ | Ashwagandha KSM-66® Gummies — Stress Relief & Better Sleep | India' -%}
+      {%- assign og_description = "India's cleanest Ashwagandha gummies. KSM-66® root extract + Vitamin D2 + black pepper for stress relief, deep sleep & sharp focus. Vegan, sugar-free, FSSAI certified. ₹369 per jar." -%}
+    {%- else -%}
+      {%- assign og_title = page_title | default: shop.name -%}
+      {%- assign default_social_desc = 'Clean, science-backed Ashwagandha gummies for stress relief and better sleep. KSM-66® with Vitamin D2 & black pepper extract. Vegan, sugar-free, made in India.' -%}
+      {%- assign og_description = page_description | default: shop.description | default: default_social_desc -%}
+    {%- endif -%}
     {%- assign og_url = canonical_url | default: shop.url -%}
     {%- assign og_type = 'website' -%}
-    {%- assign default_social_desc = 'Clean, science-backed Ashwagandha gummies for stress relief and better sleep. KSM-66® with Vitamin D2 & black pepper extract. Vegan, sugar-free, made in India.' -%}
-    {%- assign og_description = page_description | default: shop.description | default: default_social_desc -%}
     
     {%- if template.name == 'product' -%}
       {%- assign og_type = 'product' -%}
@@ -196,6 +205,37 @@
       }
     }
     </script>
+
+    <!-- Sitemap discovery -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ shop.url }}/sitemap.xml">
+
+    {%- if template.name == 'index' -%}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": "One4Health™ Ashwagandha KSM-66® Gummies",
+        "url": "{{ shop.url }}/products/ashwagandha-gummies-ksm66",
+        "image": "https:{{ 'img1.png' | asset_url }}",
+        "description": "India's cleanest Ashwagandha gummies. KSM-66® root extract + Vitamin D2 + black pepper for stress relief, deep sleep and sharp focus. Vegan, sugar-free, FSSAI certified.",
+        "brand": { "@type": "Brand", "name": "One4Health™" },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": "369",
+          "priceValidUntil": "2027-12-31",
+          "availability": "https://schema.org/InStock",
+          "url": "{{ shop.url }}/products/ashwagandha-gummies-ksm66",
+          "seller": { "@type": "Organization", "name": "One4Health™" }
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "500"
+        }
+      }
+      </script>
+    {%- endif -%}
 
     {%- if template.name == 'product' -%}
       <script type="application/ld+json">
