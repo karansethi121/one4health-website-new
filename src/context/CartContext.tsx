@@ -90,7 +90,7 @@ const transformCartItems = (rawItems: CartItem[]): CartItem[] => {
     const isAshwa = isMainProductTitle(item.title || item.product_title || '');
     if (!isAshwa) return item;
 
-    const isBundle = item.properties?._bundle === 'true';
+    const isBundle = item.quantity >= 2 || item.properties?._bundle === 'true';
     const pricing = getMainProductCartPricing(item.quantity, isBundle);
 
     return {
@@ -277,7 +277,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // ── Remove item ──
   const removeFromCart = useCallback(async (key: string) => {
-    // Optimistic update using functional setState (no stale closure)
+    const previousItems = itemsRef.current;
     setItems(prev => prev.filter(item => item.key !== key && item.id !== key));
 
     if (!isShopifyEnv()) {
@@ -294,10 +294,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
       if (!response.ok) throw new Error('Failed to remove item');
       await refreshCart();
+      toast.success('Item removed');
     } catch {
-
-      // Restore from ref on failure
-      setItems(itemsRef.current);
+      setItems(previousItems);
       await refreshCart();
     } finally {
       setLoading(false);

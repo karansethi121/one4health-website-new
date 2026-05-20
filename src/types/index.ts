@@ -75,8 +75,27 @@ export interface ShopifyProduct {
   variants?: ShopifyVariant[];
 }
 
+export interface ShopifyCartItem {
+  key: string;
+  id: string | number;
+  variant_id: string | number;
+  quantity: number;
+  title: string;
+  product_title?: string;
+  variant_title?: string;
+  product_type?: string;
+  price: number;
+  line_price: number;
+  final_line_price: number;
+  original_line_price: number;
+  final_price: number;
+  original_price: number;
+  image?: string;
+  properties?: Record<string, string>;
+}
+
 export interface ShopifyCart {
-  items?: unknown[];
+  items?: ShopifyCartItem[];
   item_count?: number;
   total_price?: number;
 }

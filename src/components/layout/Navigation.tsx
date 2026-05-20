@@ -22,6 +22,14 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   // Handle hash anchor links (e.g. /#reviews)
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith('/#')) {
@@ -51,7 +59,16 @@ export function Navigation() {
         <nav className="section-container">
           <div className="flex items-center justify-between h-[72px] lg:h-[84px]">
 
-            <Link to="/" className="flex items-center group flex-shrink-0">
+            <Link
+              to="/"
+              className="flex items-center group flex-shrink-0"
+              onClick={(e) => {
+                if (location.pathname === '/') {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+            >
               <img
                 src="/images/logo_nav.webp"
                 alt="One4Health"
@@ -61,7 +78,7 @@ export function Navigation() {
             </Link>
 
             {/* ── Desktop Nav ───────────────────────────────────────── */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-0.5 border border-ink/20 rounded-pill px-1 py-1 transition-colors duration-200 hover:border-ink/50 hover:bg-ink/[0.03]">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
@@ -99,12 +116,7 @@ export function Navigation() {
                 aria-label="Open cart"
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  Cart
-                  {totalItems > 0
-                    ? ` · ${totalItems}`
-                    : ' · ₹369'}
-                </span>
+                <span className="hidden sm:inline">Cart</span>
                 {totalItems > 0 && (
                   <span
                     className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-cream"
@@ -120,6 +132,7 @@ export function Navigation() {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-2.5 rounded-full hover:bg-ink/8 transition-colors"
                 aria-label="Toggle menu"
+                aria-expanded={isMobileMenuOpen}
               >
                 {isMobileMenuOpen
                   ? <X className="w-5 h-5 text-ink" />

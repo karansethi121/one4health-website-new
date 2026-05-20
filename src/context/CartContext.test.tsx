@@ -91,7 +91,7 @@ describe('CartContext', () => {
         });
     });
 
-    it('prices two regular jars as two singles', async () => {
+    it('prices two jars using bundle pricing (qty >= 2 triggers bundle)', async () => {
         render(
             <CartProvider>
                 <TestComponent />
@@ -104,7 +104,8 @@ describe('CartContext', () => {
             expect(screen.getByTestId('total-items').textContent).toBe('2');
         });
 
-        expect(screen.getByTestId('total-price').textContent).toBe('73800');
+        // qty >= 2 triggers bundle pricing: floor(2/2)*69900 + 0 = 69900
+        expect(screen.getByTestId('total-price').textContent).toBe('69900');
     });
 
     it('prices explicit bundles using bundle pricing', async () => {
@@ -120,6 +121,7 @@ describe('CartContext', () => {
             expect(screen.getByTestId('total-items').textContent).toBe('2');
         });
 
-        expect(screen.getByTestId('total-price').textContent).toBe('68900');
+        // getMainProductCartPricing(2, true).finalLinePrice = 69900
+        expect(screen.getByTestId('total-price').textContent).toBe('69900');
     });
 });

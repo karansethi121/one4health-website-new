@@ -56,7 +56,9 @@ export function ProductPage() {
     if (!product) return;
     const variantId = product.shopifyVariantId || product.id;
     const cartQuantity = quantity * selectedPack.jars;
-    await addToCart(variantId, cartQuantity, { 'purchase_type': 'One-time' }, undefined, selectedPack.unitPrice, product.name);
+    const attributes: Record<string, string> = { 'purchase_type': 'One-time' };
+    if (selectedPack.jars >= 2) attributes['_bundle'] = 'true';
+    await addToCart(variantId, cartQuantity, attributes, undefined, selectedPack.unitPrice, product.name);
   };
 
   if (productsLoading) return <LoadingState fullPage message="Fetching product details..." />;

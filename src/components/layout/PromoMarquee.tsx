@@ -1,9 +1,9 @@
 export function PromoMarquee() {
   const items = [
     { base: 'FREE SHIPPING ON ALL ORDERS', highlight: 'ACROSS INDIA' },
-    { base: 'LIMITED TIME OFFER', highlight: 'ENDS SUNDAY' },
+    { base: 'LIMITED TIME OFFER', highlight: 'WHILE STOCKS LAST' },
     { base: 'NATURE BLESSED,', highlight: 'SCIENCE BACKED' },
-    { base: 'SAVE ₹199 — USE CODE:', highlight: 'HEALTH23' },
+    { base: 'SAVE ₹199 — USE CODE:', highlight: 'HEALTH199' },
   ];
 
   const doubled = [...items, ...items];
