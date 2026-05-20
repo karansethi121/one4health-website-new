@@ -33,3 +33,9 @@ patch_assets.py
 
 # Playwright MCP session
 .playwright-mcp/
+
+# AI tool directories (Claude, Gemini, agent systems)
+.claude/
+.gemini/
+.agent/
+.vite/
