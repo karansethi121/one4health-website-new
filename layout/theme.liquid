@@ -274,10 +274,12 @@
   <body class="gradient">
     <!-- Google Tag Manager noscript: add GTM container ID here when ready -->
 
-    <div id="root"></div>
-
-    {{ content_for_layout }}
-
-    <script type="module" src="{{ 'bundle.js' | asset_url }}"></script>
+    {% if template.name == 'blog' or template.name == 'article' %}
+      {{ content_for_layout }}
+    {% else %}
+      <div id="root"></div>
+      {{ content_for_layout }}
+      <script type="module" src="{{ 'bundle.js' | asset_url }}"></script>
+    {% endif %}
   </body>
 </html>

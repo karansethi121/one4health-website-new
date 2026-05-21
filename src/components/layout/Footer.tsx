@@ -16,6 +16,7 @@ const footerLinks = {
   learn: [
     { label: 'The Science', href: '/science' },
     { label: 'Our Story', href: '/about' },
+    { label: 'Blog', href: '/blogs/science-wellness' },
   ],
   help: [
     { label: 'FAQ', href: '/faq' },
