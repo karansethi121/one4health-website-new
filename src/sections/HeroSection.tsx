@@ -4,11 +4,9 @@ import { ArrowRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
 import { useProducts } from '@/hooks/useSupabase';
-import { LoadingState } from '@/components/ui/LoadingState';
-
 export function HeroSection() {
   const { addToCart, loading: cartLoading } = useCart();
-  const { products, loading } = useProducts();
+  const { products } = useProducts();
   const sectionRef = useRef<HTMLElement>(null);
 
   const handleAddToCart = () => {
@@ -16,12 +14,12 @@ export function HeroSection() {
     if (product) {
       addToCart(product.shopifyVariantId || product.id, 1, undefined, undefined, product.price, product.name);
     } else {
+      // Products not yet loaded — navigate to product page to let Shopify handle it
       window.location.href = '/product/ashwagandha-gummies-ksm66';
     }
   };
 
   useEffect(() => {
-    if (loading) return;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
       tl.fromTo('.hero-eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.1)
@@ -35,9 +33,7 @@ export function HeroSection() {
         .to('.hero-image-inner', { y: -14, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1 }, 1.5);
     }, sectionRef);
     return () => ctx.revert();
-  }, [loading]);
-
-  if (loading) return <LoadingState message="Preparing your wellness journey..." />;
+  }, []);
 
   return (
     <section
@@ -192,14 +188,19 @@ export function HeroSection() {
                   style={{ filter: 'drop-shadow(0 24px 48px rgba(15,61,46,0.22))' }}
                   aria-label="View Ashwagandha Gummies product page"
                 >
-                  <img
-                    className="hero-image-inner w-full h-auto object-contain"
-                    src="/images/hero-v2.png"
-                    alt="One4Health™ Ashwagandha Gummies KSM-66 jar"
-                    loading="eager"
-                    width={420}
-                    height={520}
-                  />
+                  <picture>
+                    <source srcSet="/images/hero-v2.webp" type="image/webp" />
+                    <img
+                      className="hero-image-inner w-full h-auto object-contain"
+                      src="/images/hero-v2.png"
+                      alt="One4Health™ Ashwagandha Gummies KSM-66 jar"
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="sync"
+                      width={520}
+                      height={520}
+                    />
+                  </picture>
                 </Link>
 
                 {/* Price badge floating */}
