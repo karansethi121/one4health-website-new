@@ -13,13 +13,47 @@
 {% endschema %}
 
 <style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; }
+
+  .o4h-top-bar-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1.5px solid rgba(10,10,10,0.08);
+  }
+  .o4h-top-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .o4h-top-bar__logo img { height: 36px; width: auto; display: block; }
+  .o4h-top-bar__cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #0A0A0A;
+    color: #fff;
+    border-radius: 100px;
+    padding: 8px 18px;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .o4h-top-bar__cta:hover { opacity: 0.75; }
+
   .o4h-article {
     background: #fff;
-    padding: 64px 0 96px;
+    padding: 56px 0 96px;
     font-family: 'DM Sans', sans-serif;
   }
   .o4h-article__inner {
-    max-width: 720px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 0 24px;
   }
@@ -28,29 +62,26 @@
     align-items: center;
     gap: 6px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #0A0A0A;
     text-decoration: none;
-    margin-bottom: 40px;
-    opacity: 0.55;
+    margin-bottom: 36px;
+    opacity: 0.45;
     transition: opacity 0.15s;
   }
   .o4h-article__back:hover { opacity: 1; }
-  .o4h-article__back-arrow { display: inline-block; transition: transform 0.15s; }
-  .o4h-article__back:hover .o4h-article__back-arrow { transform: translateX(-3px); }
-
   .o4h-article__meta {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 18px;
   }
   .o4h-article__tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     background: #C7F25C;
@@ -60,35 +91,33 @@
   }
   .o4h-article__date {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #0A0A0A;
-    opacity: 0.45;
+    opacity: 0.4;
   }
-
   .o4h-article__title {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 800;
-    font-size: clamp(26px, 4vw, 42px);
+    font-size: clamp(24px, 4vw, 40px);
     letter-spacing: -0.03em;
     color: #0A0A0A;
     line-height: 1.15;
     margin: 0 0 20px;
   }
-
   .o4h-article__byline {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 16px 0;
+    padding: 14px 0;
     border-top: 1.5px solid rgba(10,10,10,0.08);
     border-bottom: 1.5px solid rgba(10,10,10,0.08);
-    margin-bottom: 40px;
+    margin-bottom: 36px;
   }
   .o4h-article__author-avatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #C7F25C;
     display: flex;
@@ -96,69 +125,57 @@
     justify-content: center;
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13px;
     color: #0A0A0A;
     flex-shrink: 0;
-    overflow: hidden;
-  }
-  .o4h-article__author-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
   .o4h-article__author-name {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: #0A0A0A;
   }
   .o4h-article__read-time {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #0A0A0A;
-    opacity: 0.4;
+    opacity: 0.38;
     margin-left: auto;
   }
-
   .o4h-article__cover {
     width: 100%;
     aspect-ratio: 16/9;
     object-fit: cover;
-    border-radius: 16px;
+    border-radius: 14px;
     display: block;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
   }
-
-  /* Article body typography */
   .o4h-article__body {
     font-size: 17px;
-    line-height: 1.75;
+    line-height: 1.78;
     color: #0A0A0A;
   }
   .o4h-article__body h2 {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 23px;
     letter-spacing: -0.02em;
-    margin: 48px 0 16px;
+    margin: 44px 0 14px;
     color: #0A0A0A;
   }
   .o4h-article__body h3 {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 19px;
     letter-spacing: -0.02em;
-    margin: 36px 0 12px;
+    margin: 34px 0 10px;
     color: #0A0A0A;
   }
-  .o4h-article__body p { margin: 0 0 24px; }
+  .o4h-article__body p { margin: 0 0 22px; }
   .o4h-article__body ul,
-  .o4h-article__body ol {
-    margin: 0 0 24px;
-    padding-left: 24px;
-  }
-  .o4h-article__body li { margin-bottom: 8px; }
+  .o4h-article__body ol { margin: 0 0 22px; padding-left: 22px; }
+  .o4h-article__body li { margin-bottom: 7px; }
   .o4h-article__body a {
     color: #0A0A0A;
     text-decoration: underline;
@@ -166,12 +183,11 @@
     text-decoration-color: #C7F25C;
     text-decoration-thickness: 2px;
   }
-  .o4h-article__body a:hover { background: #C7F25C22; }
   .o4h-article__body blockquote {
     border-left: 4px solid #C7F25C;
-    margin: 32px 0;
-    padding: 16px 24px;
-    background: rgba(199,242,92,0.08);
+    margin: 28px 0;
+    padding: 14px 22px;
+    background: rgba(199,242,92,0.07);
     border-radius: 0 8px 8px 0;
     font-style: italic;
     font-size: 18px;
@@ -179,9 +195,14 @@
   }
   .o4h-article__body img {
     width: 100%;
-    border-radius: 12px;
-    margin: 32px 0;
+    border-radius: 10px;
+    margin: 28px 0;
     display: block;
+  }
+  .o4h-article__body hr {
+    border: none;
+    border-top: 1.5px solid rgba(10,10,10,0.08);
+    margin: 44px 0;
   }
   .o4h-article__body strong { font-weight: 700; }
   .o4h-article__body code {
@@ -191,59 +212,74 @@
     border-radius: 4px;
     padding: 2px 6px;
   }
-  .o4h-article__body hr {
-    border: none;
-    border-top: 1.5px solid rgba(10,10,10,0.08);
-    margin: 48px 0;
+  .o4h-article__cta-box {
+    margin: 48px 0 0;
+    padding: 28px;
+    background: #0F3D2E;
+    border-radius: 16px;
+    text-align: center;
   }
-
-  .o4h-article__footer {
-    margin-top: 64px;
-    padding-top: 32px;
-    border-top: 1.5px solid rgba(10,10,10,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
+  .o4h-article__cta-box p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: rgba(247,241,227,0.75);
+    margin: 0 0 16px;
+    line-height: 1.5;
   }
-  .o4h-article__tags {
+  .o4h-article__cta-box a {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #C7F25C;
+    color: #0A0A0A;
+    border-radius: 100px;
+    padding: 10px 24px;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .o4h-article__cta-box a:hover { opacity: 0.85; }
+  .o4h-article__footer-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1.5px solid rgba(10,10,10,0.08);
   }
   .o4h-article__footer-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    border: 1.5px solid rgba(10,10,10,0.15);
+    border: 1.5px solid rgba(10,10,10,0.14);
     border-radius: 20px;
     padding: 4px 12px;
     color: #0A0A0A;
     text-decoration: none;
     transition: border-color 0.15s, background 0.15s;
   }
-  .o4h-article__footer-tag:hover {
-    border-color: #C7F25C;
-    background: #C7F25C22;
-  }
-  .o4h-article__back-bottom {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  .o4h-article__footer-tag:hover { border-color: #C7F25C; background: rgba(199,242,92,0.15); }
+
+  .o4h-mini-footer {
+    background: #0F3D2E;
+    color: rgba(247,241,227,0.5);
+    text-align: center;
+    padding: 28px 24px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #0A0A0A;
-    text-decoration: none;
-    transition: opacity 0.15s;
+    letter-spacing: 0.1em;
   }
-  .o4h-article__back-bottom:hover { opacity: 0.6; }
+  .o4h-mini-footer a {
+    color: #C7F25C;
+    text-decoration: none;
+    margin: 0 12px;
+  }
+  .o4h-mini-footer a:hover { text-decoration: underline; }
 </style>
 
-{%- comment -%} JSON-LD structured data — rendered in body, valid for SEO {%- endcomment -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -251,44 +287,39 @@
   "headline": {{ article.title | json }},
   "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
   "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
-  "author": {
-    "@type": "Person",
-    "name": {{ article.author | json }}
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "One4Health",
-    "url": {{ shop.url | json }}
-  },
+  "author": { "@type": "Person", "name": {{ article.author | json }} },
+  "publisher": { "@type": "Organization", "name": "One4Health", "url": {{ shop.url | json }} },
   "description": {{ article.excerpt_or_content | strip_html | truncate: 200 | json }},
-  {% if article.image %}"image": {{ article.image | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
+  {% if article.image %}"image": "https:{{ article.image | image_url: width: 1200 }}",{% endif %}
   "url": {{ canonical_url | json }}
 }
 </script>
 
+<div class="o4h-top-bar-wrap">
+  <div class="o4h-top-bar">
+    <a href="{{ shop.url }}" class="o4h-top-bar__logo" aria-label="One4Health — Home">
+      <img src="{{ 'logo_transparent.webp' | asset_url }}" alt="One4Health" style="filter: brightness(0);">
+    </a>
+    <a href="/products/ashwagandha-gummies-ksm66" class="o4h-top-bar__cta">Shop now</a>
+  </div>
+</div>
+
 <section class="o4h-article">
   <div class="o4h-article__inner">
 
-    <a href="{{ blog.url }}" class="o4h-article__back">
-      <span class="o4h-article__back-arrow">←</span>
-      {{ blog.title }}
-    </a>
+    <a href="{{ blog.url }}" class="o4h-article__back">← {{ blog.title }}</a>
 
     <div class="o4h-article__meta">
-      {% if article.tags.size > 0 %}
-        {% for tag in article.tags %}
-          <span class="o4h-article__tag">{{ tag }}</span>
-        {% endfor %}
-      {% endif %}
+      {% for tag in article.tags %}
+        <span class="o4h-article__tag">{{ tag }}</span>
+      {% endfor %}
       <span class="o4h-article__date">{{ article.published_at | date: "%B %d, %Y" }}</span>
     </div>
 
     <h1 class="o4h-article__title">{{ article.title }}</h1>
 
     <div class="o4h-article__byline">
-      <div class="o4h-article__author-avatar" aria-hidden="true">
-        {{ article.author | slice: 0 | upcase }}
-      </div>
+      <div class="o4h-article__author-avatar" aria-hidden="true">{{ article.author | slice: 0 | upcase }}</div>
       <span class="o4h-article__author-name">{{ article.author }}</span>
       <span class="o4h-article__read-time">
         {{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read
@@ -298,10 +329,10 @@
     {% if article.image %}
       <img
         class="o4h-article__cover"
-        src="{{ article.image | image_url: width: 1440 }}"
+        src="{{ article.image | image_url: width: 1400 }}"
         alt="{{ article.image.alt | default: article.title | escape }}"
-        width="1440"
-        height="810"
+        width="1400"
+        height="788"
         loading="eager"
         fetchpriority="high"
       >
@@ -311,18 +342,25 @@
       {{ article.content }}
     </div>
 
-    <footer class="o4h-article__footer">
-      {% if article.tags.size > 0 %}
-        <div class="o4h-article__tags">
-          {% for tag in article.tags %}
-            <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="o4h-article__footer-tag">{{ tag }}</a>
-          {% endfor %}
-        </div>
-      {% endif %}
-      <a href="{{ blog.url }}" class="o4h-article__back-bottom">
-        ← Back to {{ blog.title }}
-      </a>
-    </footer>
+    <div class="o4h-article__cta-box">
+      <p>Try KSM-66® Ashwagandha — the same extract studied in 24+ clinical trials. Vegan, sugar-free, strawberry flavour.</p>
+      <a href="/products/ashwagandha-gummies-ksm66">Shop One4Health — ₹369</a>
+    </div>
+
+    {% if article.tags.size > 0 %}
+      <div class="o4h-article__footer-tags">
+        {% for tag in article.tags %}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="o4h-article__footer-tag">{{ tag }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
 
   </div>
 </section>
+
+<footer class="o4h-mini-footer">
+  <a href="{{ shop.url }}">Home</a>
+  <a href="/products/ashwagandha-gummies-ksm66">Shop</a>
+  <a href="/pages/faq">FAQ</a>
+  &nbsp;·&nbsp; © 2026 One4Health
+</footer>

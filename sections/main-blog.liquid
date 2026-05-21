@@ -23,9 +23,52 @@
 {% endschema %}
 
 <style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; }
+
+  .o4h-top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1.5px solid rgba(10,10,10,0.08);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .o4h-top-bar-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1.5px solid rgba(10,10,10,0.08);
+  }
+  .o4h-top-bar__logo img {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+  .o4h-top-bar__cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #0A0A0A;
+    color: #fff;
+    border-radius: 100px;
+    padding: 8px 18px;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .o4h-top-bar__cta:hover { opacity: 0.75; }
+
   .o4h-blog {
     background: #fff;
-    padding: 72px 0 96px;
+    padding: 56px 0 96px;
     font-family: 'DM Sans', sans-serif;
   }
   .o4h-blog__inner {
@@ -35,7 +78,7 @@
   }
   .o4h-blog__header {
     text-align: center;
-    margin-bottom: 56px;
+    margin-bottom: 48px;
   }
   .o4h-blog__eyebrow {
     display: inline-block;
@@ -52,24 +95,24 @@
   .o4h-blog__title {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 800;
-    font-size: clamp(28px, 4vw, 44px);
+    font-size: clamp(26px, 4vw, 40px);
     letter-spacing: -0.03em;
     color: #0A0A0A;
-    margin: 0 0 12px;
+    margin: 0 0 10px;
     line-height: 1.1;
   }
   .o4h-blog__subtitle {
-    font-size: 16px;
+    font-size: 15px;
     color: #0A0A0A;
-    opacity: 0.6;
-    max-width: 440px;
+    opacity: 0.55;
+    max-width: 400px;
     margin: 0 auto;
     line-height: 1.55;
   }
   .o4h-blog__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
+    gap: 28px;
   }
   @media (max-width: 900px) {
     .o4h-blog__grid { grid-template-columns: repeat(2, 1fr); }
@@ -90,7 +133,7 @@
   }
   .o4h-blog-card:hover {
     border-color: #C7F25C;
-    box-shadow: 0 8px 32px rgba(10,10,10,0.10);
+    box-shadow: 0 8px 28px rgba(10,10,10,0.09);
     transform: translateY(-3px);
   }
   .o4h-blog-card__image-wrap {
@@ -98,7 +141,6 @@
     aspect-ratio: 16/9;
     overflow: hidden;
     background: #F7F1E3;
-    position: relative;
   }
   .o4h-blog-card__image {
     width: 100%;
@@ -107,19 +149,17 @@
     display: block;
     transition: transform 0.35s;
   }
-  .o4h-blog-card:hover .o4h-blog-card__image {
-    transform: scale(1.04);
-  }
+  .o4h-blog-card:hover .o4h-blog-card__image { transform: scale(1.04); }
   .o4h-blog-card__placeholder {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #C7F25C22, #F7F1E3);
+    background: linear-gradient(135deg, rgba(199,242,92,0.2), #F7F1E3);
   }
   .o4h-blog-card__body {
-    padding: 24px;
+    padding: 22px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -128,21 +168,21 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .o4h-blog-card__date {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #0A0A0A;
-    opacity: 0.45;
+    opacity: 0.4;
   }
   .o4h-blog-card__tag {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     background: #C7F25C;
     color: #0A0A0A;
     border-radius: 10px;
@@ -151,18 +191,18 @@
   .o4h-blog-card__title {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 17px;
     letter-spacing: -0.02em;
     color: #0A0A0A;
     line-height: 1.25;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
   }
   .o4h-blog-card__excerpt {
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.6;
     color: #0A0A0A;
-    opacity: 0.62;
-    margin: 0 0 20px;
+    opacity: 0.58;
+    margin: 0 0 18px;
     flex: 1;
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -171,60 +211,74 @@
   }
   .o4h-blog-card__cta {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #0A0A0A;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     margin-top: auto;
   }
-  .o4h-blog-card__cta-arrow {
-    display: inline-block;
-    transition: transform 0.2s;
-  }
-  .o4h-blog-card:hover .o4h-blog-card__cta-arrow {
-    transform: translateX(4px);
-  }
+  .o4h-blog-card__cta-arrow { transition: transform 0.2s; }
+  .o4h-blog-card:hover .o4h-blog-card__cta-arrow { transform: translateX(4px); }
   .o4h-blog__empty {
     text-align: center;
     padding: 80px 0;
     color: #0A0A0A;
-    opacity: 0.45;
-    font-size: 16px;
+    opacity: 0.4;
+    font-size: 15px;
   }
   .o4h-blog__pagination {
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-top: 56px;
+    margin-top: 48px;
   }
   .o4h-blog__pagination a,
   .o4h-blog__pagination span {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    border: 1.5px solid rgba(10,10,10,0.15);
+    border: 1.5px solid rgba(10,10,10,0.14);
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
     color: #0A0A0A;
     text-decoration: none;
     transition: background 0.15s, border-color 0.15s;
   }
-  .o4h-blog__pagination a:hover {
-    background: #C7F25C;
-    border-color: #C7F25C;
+  .o4h-blog__pagination a:hover { background: #C7F25C; border-color: #C7F25C; }
+  .o4h-blog__pagination span.current { background: #0A0A0A; border-color: #0A0A0A; color: #fff; }
+
+  .o4h-mini-footer {
+    background: #0F3D2E;
+    color: rgba(247,241,227,0.55);
+    text-align: center;
+    padding: 28px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
-  .o4h-blog__pagination span.current {
-    background: #0A0A0A;
-    border-color: #0A0A0A;
-    color: #fff;
+  .o4h-mini-footer a {
+    color: #C7F25C;
+    text-decoration: none;
+    margin: 0 12px;
   }
+  .o4h-mini-footer a:hover { text-decoration: underline; }
 </style>
+
+<div class="o4h-top-bar-wrap">
+  <div class="o4h-top-bar">
+    <a href="{{ shop.url }}" class="o4h-top-bar__logo" aria-label="One4Health — Home">
+      <img src="{{ 'logo_transparent.webp' | asset_url }}" alt="One4Health" style="filter: brightness(0);">
+    </a>
+    <a href="/products/ashwagandha-gummies-ksm66" class="o4h-top-bar__cta">Shop now</a>
+  </div>
+</div>
 
 <section class="o4h-blog">
   <div class="o4h-blog__inner">
@@ -240,7 +294,6 @@
         <div class="o4h-blog__grid">
           {% for article in blog.articles %}
             <a href="{{ article.url }}" class="o4h-blog-card" aria-label="{{ article.title | escape }}">
-
               <div class="o4h-blog-card__image-wrap">
                 {% if article.image %}
                   <img
@@ -253,14 +306,13 @@
                   >
                 {% else %}
                   <div class="o4h-blog-card__placeholder">
-                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                      <circle cx="24" cy="24" r="24" fill="#C7F25C" opacity="0.35"/>
-                      <path d="M24 14C18.477 14 14 18.477 14 24s4.477 10 10 10 10-4.477 10-10S29.523 14 24 14zm0 4a3 3 0 110 6 3 3 0 010-6zm0 14c-3.314 0-6.25-1.686-8-4.25.04-2.648 5.334-4.1 8-4.1 2.654 0 7.96 1.452 8 4.1A9.955 9.955 0 0124 32z" fill="#0A0A0A" opacity="0.4"/>
+                    <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                      <circle cx="24" cy="24" r="24" fill="#C7F25C" opacity="0.4"/>
+                      <path d="M24 14c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10zm0 4a3 3 0 110 6 3 3 0 010-6zm0 14c-3.314 0-6.25-1.686-8-4.25.04-2.648 5.334-4.1 8-4.1 2.654 0 7.96 1.452 8 4.1A9.955 9.955 0 0124 32z" fill="#0A0A0A" opacity="0.45"/>
                     </svg>
                   </div>
                 {% endif %}
               </div>
-
               <div class="o4h-blog-card__body">
                 <div class="o4h-blog-card__meta">
                   <span class="o4h-blog-card__date">{{ article.published_at | date: "%b %d, %Y" }}</span>
@@ -270,23 +322,19 @@
                 </div>
                 <h2 class="o4h-blog-card__title">{{ article.title | escape }}</h2>
                 {% if article.excerpt_or_content != blank %}
-                  <p class="o4h-blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 130 }}</p>
+                  <p class="o4h-blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 120 }}</p>
                 {% endif %}
                 <span class="o4h-blog-card__cta">
-                  Read article
-                  <span class="o4h-blog-card__cta-arrow">→</span>
+                  Read article <span class="o4h-blog-card__cta-arrow">→</span>
                 </span>
               </div>
-
             </a>
           {% endfor %}
         </div>
 
         {% if paginate.pages > 1 %}
           <nav class="o4h-blog__pagination" aria-label="Blog pagination">
-            {% if paginate.previous %}
-              <a href="{{ paginate.previous.url }}" aria-label="Previous page">←</a>
-            {% endif %}
+            {% if paginate.previous %}<a href="{{ paginate.previous.url }}" aria-label="Previous">←</a>{% endif %}
             {% for part in paginate.parts %}
               {% if part.is_link %}
                 <a href="{{ part.url }}">{{ part.title }}</a>
@@ -294,18 +342,21 @@
                 <span class="{% if part.title == paginate.current_page %}current{% endif %}">{{ part.title }}</span>
               {% endif %}
             {% endfor %}
-            {% if paginate.next %}
-              <a href="{{ paginate.next.url }}" aria-label="Next page">→</a>
-            {% endif %}
+            {% if paginate.next %}<a href="{{ paginate.next.url }}" aria-label="Next">→</a>{% endif %}
           </nav>
         {% endif %}
 
       {% else %}
-        <div class="o4h-blog__empty">
-          <p>No articles published yet. Check back soon.</p>
-        </div>
+        <div class="o4h-blog__empty"><p>No articles published yet. Check back soon.</p></div>
       {% endif %}
     {% endpaginate %}
 
   </div>
 </section>
+
+<footer class="o4h-mini-footer">
+  <a href="{{ shop.url }}">Home</a>
+  <a href="/products/ashwagandha-gummies-ksm66">Shop</a>
+  <a href="/pages/faq">FAQ</a>
+  &nbsp;·&nbsp; © 2026 One4Health
+</footer>
