@@ -44,7 +44,7 @@ export function isMainProductTitle(title: string) {
 
 export function getMainProductCartPricing(quantity: number, isBundle: boolean) {
   if (isBundle) {
-    const bundlesCount = Math.max(1, Math.floor(quantity / 2));
+    const bundlesCount = Math.floor(quantity / 2);
     const restCount = quantity % 2;
     const bundle = getPackConfig(2);
     const single = getPackConfig(1);
