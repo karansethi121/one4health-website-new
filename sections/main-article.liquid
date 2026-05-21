@@ -1,0 +1,328 @@
+{% schema %}
+{
+  "name": "Article",
+  "tag": "section",
+  "class": "section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Article"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .o4h-article {
+    background: #fff;
+    padding: 64px 0 96px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .o4h-article__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .o4h-article__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #0A0A0A;
+    text-decoration: none;
+    margin-bottom: 40px;
+    opacity: 0.55;
+    transition: opacity 0.15s;
+  }
+  .o4h-article__back:hover { opacity: 1; }
+  .o4h-article__back-arrow { display: inline-block; transition: transform 0.15s; }
+  .o4h-article__back:hover .o4h-article__back-arrow { transform: translateX(-3px); }
+
+  .o4h-article__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .o4h-article__tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #C7F25C;
+    color: #0A0A0A;
+    border-radius: 20px;
+    padding: 4px 12px;
+  }
+  .o4h-article__date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #0A0A0A;
+    opacity: 0.45;
+  }
+
+  .o4h-article__title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: clamp(26px, 4vw, 42px);
+    letter-spacing: -0.03em;
+    color: #0A0A0A;
+    line-height: 1.15;
+    margin: 0 0 20px;
+  }
+
+  .o4h-article__byline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 0;
+    border-top: 1.5px solid rgba(10,10,10,0.08);
+    border-bottom: 1.5px solid rgba(10,10,10,0.08);
+    margin-bottom: 40px;
+  }
+  .o4h-article__author-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #C7F25C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #0A0A0A;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .o4h-article__author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .o4h-article__author-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0A0A0A;
+  }
+  .o4h-article__read-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #0A0A0A;
+    opacity: 0.4;
+    margin-left: auto;
+  }
+
+  .o4h-article__cover {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
+    margin-bottom: 48px;
+  }
+
+  /* Article body typography */
+  .o4h-article__body {
+    font-size: 17px;
+    line-height: 1.75;
+    color: #0A0A0A;
+  }
+  .o4h-article__body h2 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    margin: 48px 0 16px;
+    color: #0A0A0A;
+  }
+  .o4h-article__body h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    margin: 36px 0 12px;
+    color: #0A0A0A;
+  }
+  .o4h-article__body p { margin: 0 0 24px; }
+  .o4h-article__body ul,
+  .o4h-article__body ol {
+    margin: 0 0 24px;
+    padding-left: 24px;
+  }
+  .o4h-article__body li { margin-bottom: 8px; }
+  .o4h-article__body a {
+    color: #0A0A0A;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #C7F25C;
+    text-decoration-thickness: 2px;
+  }
+  .o4h-article__body a:hover { background: #C7F25C22; }
+  .o4h-article__body blockquote {
+    border-left: 4px solid #C7F25C;
+    margin: 32px 0;
+    padding: 16px 24px;
+    background: rgba(199,242,92,0.08);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  .o4h-article__body img {
+    width: 100%;
+    border-radius: 12px;
+    margin: 32px 0;
+    display: block;
+  }
+  .o4h-article__body strong { font-weight: 700; }
+  .o4h-article__body code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    background: rgba(10,10,10,0.06);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  .o4h-article__body hr {
+    border: none;
+    border-top: 1.5px solid rgba(10,10,10,0.08);
+    margin: 48px 0;
+  }
+
+  .o4h-article__footer {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1.5px solid rgba(10,10,10,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .o4h-article__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .o4h-article__footer-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 1.5px solid rgba(10,10,10,0.15);
+    border-radius: 20px;
+    padding: 4px 12px;
+    color: #0A0A0A;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .o4h-article__footer-tag:hover {
+    border-color: #C7F25C;
+    background: #C7F25C22;
+  }
+  .o4h-article__back-bottom {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #0A0A0A;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .o4h-article__back-bottom:hover { opacity: 0.6; }
+</style>
+
+{%- comment -%} JSON-LD structured data — rendered in body, valid for SEO {%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ article.title | json }},
+  "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+  "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "One4Health",
+    "url": {{ shop.url | json }}
+  },
+  "description": {{ article.excerpt_or_content | strip_html | truncate: 200 | json }},
+  {% if article.image %}"image": {{ article.image | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
+  "url": {{ canonical_url | json }}
+}
+</script>
+
+<section class="o4h-article">
+  <div class="o4h-article__inner">
+
+    <a href="{{ blog.url }}" class="o4h-article__back">
+      <span class="o4h-article__back-arrow">←</span>
+      {{ blog.title }}
+    </a>
+
+    <div class="o4h-article__meta">
+      {% if article.tags.size > 0 %}
+        {% for tag in article.tags %}
+          <span class="o4h-article__tag">{{ tag }}</span>
+        {% endfor %}
+      {% endif %}
+      <span class="o4h-article__date">{{ article.published_at | date: "%B %d, %Y" }}</span>
+    </div>
+
+    <h1 class="o4h-article__title">{{ article.title }}</h1>
+
+    <div class="o4h-article__byline">
+      <div class="o4h-article__author-avatar" aria-hidden="true">
+        {{ article.author | slice: 0 | upcase }}
+      </div>
+      <span class="o4h-article__author-name">{{ article.author }}</span>
+      <span class="o4h-article__read-time">
+        {{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read
+      </span>
+    </div>
+
+    {% if article.image %}
+      <img
+        class="o4h-article__cover"
+        src="{{ article.image | image_url: width: 1440 }}"
+        alt="{{ article.image.alt | default: article.title | escape }}"
+        width="1440"
+        height="810"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {% endif %}
+
+    <div class="o4h-article__body">
+      {{ article.content }}
+    </div>
+
+    <footer class="o4h-article__footer">
+      {% if article.tags.size > 0 %}
+        <div class="o4h-article__tags">
+          {% for tag in article.tags %}
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="o4h-article__footer-tag">{{ tag }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <a href="{{ blog.url }}" class="o4h-article__back-bottom">
+        ← Back to {{ blog.title }}
+      </a>
+    </footer>
+
+  </div>
+</section>
