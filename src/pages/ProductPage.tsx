@@ -103,7 +103,7 @@ export function ProductPage() {
   const savings = getSavingsAmount(selectedPack.totalPrice, selectedPack.originalTotalPrice);
 
   return (
-    <main className="w-full pt-[72px] lg:pt-[84px]" style={{ background: '#F7F1E3' }}>
+    <main className="w-full pt-[72px] lg:pt-[84px] pb-28 lg:pb-0" style={{ background: '#F7F1E3' }}>
 
       {/* ── Breadcrumb ─────────────────────────────────────────────────── */}
       <div className="section-container pt-5 pb-0">
@@ -118,11 +118,11 @@ export function ProductPage() {
       </div>
 
       {/* ── Main Product Section ───────────────────────────────────────── */}
-      <section className="section-container py-5 lg:py-14">
+      <section className="section-container py-4 lg:py-14">
         <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-6 lg:gap-16 items-start">
 
           {/* ── Left: Image gallery ──────────────────────────────────── */}
-          <div className="product-animate">
+          <div className="product-animate max-w-[420px] sm:max-w-none mx-auto w-full">
 
             {/* Main image — transparent container, photo itself is rounded */}
             <div
@@ -253,7 +253,7 @@ export function ProductPage() {
                     <button
                       key={size}
                       onClick={() => setPackSize(size)}
-                      className={`relative flex flex-col p-5 text-left transition-all duration-200 ${
+                      className={`relative flex flex-col p-3.5 sm:p-5 text-left transition-all duration-200 ${
                         isSelected
                           ? 'border-2 border-ink shadow-hard -translate-y-0.5'
                           : 'border-2 border-ink/10 hover:border-ink/25'
@@ -405,7 +405,7 @@ export function ProductPage() {
       <AllergenBar />
 
       {/* ── Product Details Tabs ──────────────────────────────────────── */}
-      <section className="section-container py-6 lg:py-20">
+      <section className="section-container py-6 lg:py-20 overflow-x-clip">
         <Tabs defaultValue="benefits" className="w-full">
           <TabsList className="w-full justify-start bg-transparent border-b border-ink/10 rounded-none h-auto p-0 mb-8 flex-nowrap overflow-x-auto scrollbar-hide">
             {['Benefits', 'Ingredients', 'How to Use', 'FAQ'].map((tab) => (
@@ -670,8 +670,8 @@ export function ProductPage() {
             onClick={() => setIsReviewModalOpen(false)}
           />
           <div
-            className="relative w-full max-w-md p-7"
-            style={{ background: '#F7F1E3', border: '2px solid #0A0A0A', borderRadius: '32px', boxShadow: '8px 8px 0 #0A0A0A' }}
+            className="relative w-full max-w-md p-5 sm:p-7 overflow-y-auto max-h-[90dvh]"
+            style={{ background: '#F7F1E3', border: '2px solid #0A0A0A', borderRadius: '32px', boxShadow: '4px 4px 0 #0A0A0A' }}
           >
             <button
               onClick={() => setIsReviewModalOpen(false)}
