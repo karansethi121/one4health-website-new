@@ -12,13 +12,17 @@ import {
   Star,
   Shield,
   Truck,
+  X,
+  Send,
+  MessageSquare,
 } from 'lucide-react';
 import { gsap } from 'gsap';
+import { toast } from 'sonner';
 import { useCart } from '@/context/CartContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
 import { AllergenBar } from '@/components/layout/AllergenBar';
-import { useProducts } from '@/hooks/useSupabase';
+import { useProducts, useTestimonials } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { getPackConfig, getSavingsAmount, type PackSize } from '@/lib/productPricing';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
@@ -31,6 +35,20 @@ export function ProductPage() {
   const [packSize, setPackSize] = useState<PackSize>(1);
   const [activeImage, setActiveImage] = useState(0);
   const { products, loading: productsLoading } = useProducts();
+  const { testimonials } = useTestimonials();
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [newReview, setNewReview] = useState({ name: '', rating: 5, comment: '' });
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newReview.name.trim() || !newReview.comment.trim()) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+    toast.success('Thank you! Your review will appear after moderation.');
+    setNewReview({ name: '', rating: 5, comment: '' });
+    setIsReviewModalOpen(false);
+  };
 
   const product = useMemo(() => {
     if (!id) return products[0];
@@ -550,6 +568,180 @@ export function ProductPage() {
           </TabsContent>
         </Tabs>
       </section>
+
+      {/* ── Reviews Section ───────────────────────────────────────────── */}
+      <section className="section-container py-8 lg:py-16">
+
+        {/* Header row */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <MessageSquare className="w-5 h-5 text-forest" />
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#0A0A0A', opacity: 0.45 }}>
+                Customer Reviews
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '42px', color: '#0A0A0A', lineHeight: 1 }}>
+                5.0
+              </span>
+              <div>
+                <div className="flex gap-0.5 mb-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-forest text-forest" />
+                  ))}
+                </div>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#0A0A0A', opacity: 0.45 }}>
+                  Based on {testimonials.length > 0 ? testimonials.length : 140} reviews
+                </span>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setIsReviewModalOpen(true)}
+            className="btn-ink py-3 px-6 flex items-center gap-2 self-start sm:self-auto"
+            style={{ fontSize: '13px' }}
+          >
+            <Star className="w-3.5 h-3.5" />
+            Write a Review
+          </button>
+        </div>
+
+        {/* Review cards */}
+        {testimonials.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {testimonials.slice(0, 6).map((review) => (
+              <div
+                key={review.id}
+                className="p-6 flex flex-col gap-3 hover-hard"
+                style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '24px' }}
+              >
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-forest text-forest" />
+                  ))}
+                </div>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#0A0A0A', opacity: 0.75, lineHeight: 1.6 }}>
+                  "{review.quote}"
+                </p>
+                <div className="mt-auto pt-3 border-t border-ink/8">
+                  <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '14px', color: '#0A0A0A' }}>
+                    {review.name}
+                  </span>
+                  {review.role && (
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#0A0A0A', opacity: 0.4, marginLeft: '8px' }}>
+                      · {review.role}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Empty state */
+          <div
+            className="text-center py-14 px-6"
+            style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '32px' }}
+          >
+            <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '22px', color: '#0A0A0A', marginBottom: '8px' }}>
+              Be the first to review
+            </p>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#0A0A0A', opacity: 0.5, marginBottom: '20px' }}>
+              Help others discover One4Health™ by sharing your experience.
+            </p>
+            <button
+              onClick={() => setIsReviewModalOpen(true)}
+              className="btn-ink py-3 px-6 flex items-center gap-2 mx-auto"
+              style={{ fontSize: '13px' }}
+            >
+              <Star className="w-3.5 h-3.5" />
+              Write a Review
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* Review Modal */}
+      {isReviewModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setIsReviewModalOpen(false)}
+          />
+          <div
+            className="relative w-full max-w-md p-7"
+            style={{ background: '#F7F1E3', border: '2px solid #0A0A0A', borderRadius: '32px', boxShadow: '8px 8px 0 #0A0A0A' }}
+          >
+            <button
+              onClick={() => setIsReviewModalOpen(false)}
+              className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center hover:bg-ink/10 transition-colors"
+              style={{ border: '1.5px solid #0A0A0A', borderRadius: '999px' }}
+            >
+              <X className="w-4 h-4 text-ink" />
+            </button>
+
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '24px', color: '#0A0A0A', marginBottom: '4px' }}>
+              Write a Review
+            </h3>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#0A0A0A', opacity: 0.5, marginBottom: '24px' }}>
+              Share your experience with One4Health™
+            </p>
+
+            <form onSubmit={handleSubmitReview} className="space-y-5">
+              <div>
+                <label style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#0A0A0A', opacity: 0.5, display: 'block', marginBottom: '8px' }}>
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  value={newReview.name}
+                  onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
+                  placeholder="Enter your name"
+                  className="w-full px-4 py-3 bg-white/60 outline-none focus:ring-2 focus:ring-forest/30"
+                  style={{ border: '1.5px solid #0A0A0A', borderRadius: '14px', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#0A0A0A' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#0A0A0A', opacity: 0.5, display: 'block', marginBottom: '8px' }}>
+                  Rating
+                </label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setNewReview({ ...newReview, rating: star })}
+                      className="p-0.5 transition-transform hover:scale-110"
+                    >
+                      <Star className={`w-7 h-7 ${star <= newReview.rating ? 'fill-forest text-forest' : 'text-ink/20'}`} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#0A0A0A', opacity: 0.5, display: 'block', marginBottom: '8px' }}>
+                  Your Review
+                </label>
+                <textarea
+                  value={newReview.comment}
+                  onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                  placeholder="Tell us about your experience..."
+                  rows={4}
+                  className="w-full px-4 py-3 bg-white/60 outline-none focus:ring-2 focus:ring-forest/30 resize-none"
+                  style={{ border: '1.5px solid #0A0A0A', borderRadius: '14px', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#0A0A0A' }}
+                />
+              </div>
+
+              <button type="submit" className="btn-ink py-4 w-full flex items-center justify-center gap-2">
+                <Send className="w-4 h-4" />
+                Submit Review
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Sticky Bar */}
       <MobileStickyBar

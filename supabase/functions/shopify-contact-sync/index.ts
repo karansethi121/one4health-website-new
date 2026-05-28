@@ -124,6 +124,51 @@ serve(async (req) => {
       throw new Error(`Shopify Sync Failed (${shopifyRes.status}): ${errorData}`);
     }
 
+    // Notify store owner — fire-and-forget so a Resend failure never breaks the contact save
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    if (RESEND_API_KEY) {
+      const esc = (s: string) =>
+        String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+
+      // Only allow email in href if it looks like an actual email address
+      const safeEmailHref = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? `mailto:${email}` : "#";
+
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "One4Health Website <noreply@one4health.com>",
+          to: ["info@one4health.com"],
+          reply_to: email,
+          subject: `New Contact Form: ${esc(subject)}`,
+          html: `
+            <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
+              <h2 style="color:#2d6a4f;margin-bottom:4px">New Contact Form Submission</h2>
+              <p style="color:#888;margin-top:0;font-size:14px">${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} IST</p>
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
+              <table style="width:100%;border-collapse:collapse">
+                <tr><td style="padding:8px 0;color:#6b7280;width:100px">Name</td><td style="padding:8px 0;font-weight:600">${esc(name)}</td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280">Email</td><td style="padding:8px 0"><a href="${safeEmailHref}" style="color:#2d6a4f">${esc(email)}</a></td></tr>
+                <tr><td style="padding:8px 0;color:#6b7280">Subject</td><td style="padding:8px 0">${esc(subject)}</td></tr>
+              </table>
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
+              <p style="color:#374151;white-space:pre-wrap;line-height:1.6">${esc(message)}</p>
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
+              <p style="font-size:12px;color:#9ca3af">Hit reply to respond directly to ${esc(name)}. Message saved to Shopify customer notes.</p>
+            </div>
+          `,
+        }),
+      }).catch((err) => console.error("[Resend] Email notification failed:", err));
+    }
+
     return new Response(JSON.stringify({ success: true, message: "Synced successfully" }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
