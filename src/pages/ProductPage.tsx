@@ -118,36 +118,31 @@ export function ProductPage() {
       </div>
 
       {/* ── Main Product Section ───────────────────────────────────────── */}
-      <section className="section-container py-4 lg:py-14">
+      <section className="section-container py-4 lg:py-14 overflow-x-clip">
         <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-6 lg:gap-16 items-start">
 
           {/* ── Left: Image gallery ──────────────────────────────────── */}
-          <div className="product-animate w-full">
+          {/* min-w-0: prevents CSS Grid min-width:auto from expanding beyond column */}
+          <div className="product-animate w-full min-w-0">
 
-            {/* Main image — aspect-square with absolute-positioned image for reliable centering */}
-            <div
-              className="relative w-full overflow-hidden"
-              style={{
-                aspectRatio: '1 / 1',
-                background: '#F7F1E3',
-                borderRadius: '24px',
-                boxShadow: '0 8px 32px rgba(10,10,10,0.08)',
-              }}
-            >
-              {/* Lime circle backdrop — absolutely centered */}
-              <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-                style={{ width: '58%', height: '58%', background: '#C7F25C', opacity: 0.28 }}
-                aria-hidden="true"
-              />
-              {/* Image — absolute inset-0 is the most reliable responsive image pattern */}
-              <img
-                src={product.images?.[activeImage] || product.image}
-                alt={product.name}
-                className="absolute inset-0 w-full h-full object-contain z-10"
-                style={{ padding: '20px' }}
-                loading="eager"
-              />
+            {/* padding-bottom:100% square — works in all browsers including old iOS Safari.
+                aspect-ratio on a container with only absolute children fails in some WebKit. */}
+            <div className="relative w-full" style={{ paddingBottom: '100%', background: '#F7F1E3', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(10,10,10,0.08)' }}>
+              <div className="absolute inset-0 flex items-center justify-center">
+                {/* Lime circle */}
+                <div
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+                  style={{ width: '58%', height: '58%', background: '#C7F25C', opacity: 0.28 }}
+                  aria-hidden="true"
+                />
+                <img
+                  src={product.images?.[activeImage] || product.image}
+                  alt={product.name}
+                  className="relative z-10 w-full h-full object-contain"
+                  style={{ padding: '20px' }}
+                  loading="eager"
+                />
+              </div>
             </div>
 
             {/* Thumbnails — no borders, opacity-only selection state */}
@@ -172,7 +167,7 @@ export function ProductPage() {
                         : '0 2px 6px rgba(10,10,10,0.05)',
                     }}
                   >
-                    <img src={img} className="absolute inset-0 w-full h-full object-contain p-2" alt={`View ${idx + 1}`} />
+                    <img src={img} className="w-full h-full object-contain p-1.5" alt={`View ${idx + 1}`} />
                     {activeImage === idx && (
                       <span
                         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-t-full"
@@ -186,7 +181,7 @@ export function ProductPage() {
           </div>
 
           {/* ── Right: Purchase details ───────────────────────────────── */}
-          <div className="product-animate flex flex-col">
+          <div className="product-animate flex flex-col min-w-0 w-full">
 
             {/* Product name */}
             <h1 style={{
