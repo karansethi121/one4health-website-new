@@ -76,24 +76,24 @@ export const mainProduct: Product = {
 export const testimonials: Testimonial[] = [
   {
     id: '1',
-    name: 'Maya',
-    role: 'Designer',
-    quote: 'I feel more balanced throughout my workday. This has become an essential part of my evening routine.',
-    image: '/images/testimonial_maya.webp',
+    name: 'Priya',
+    role: '',
+    quote: 'Sleep has genuinely improved. Was sceptical but now I take it every night without fail.',
+    image: '',
   },
   {
     id: '2',
-    name: 'Jon',
-    role: 'Developer',
-    quote: 'Tastes like candy, helps me unwind. Finally, a supplement I actually look forward to taking.',
-    image: '/images/testimonial_jon.webp',
+    name: 'Rahul',
+    role: '',
+    quote: 'Tastes nothing like a supplement. My kids thought it was candy lol. Works great for stress.',
+    image: '',
   },
   {
     id: '3',
-    name: 'Riley',
-    role: 'Founder',
-    quote: 'My evening ritual in 30 seconds. As a founder, stress is constant. This helps me stay grounded.',
-    image: '/images/testimonial_riley.webp',
+    name: 'Ananya',
+    role: '',
+    quote: 'Been using it for 2 months. Feel way calmer, especially during exam season.',
+    image: '',
   },
 ];
 
