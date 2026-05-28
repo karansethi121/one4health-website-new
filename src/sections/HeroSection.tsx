@@ -173,53 +173,55 @@ export function HeroSection() {
 
             {/* ── Right: Product Image ──────────────────────────────── */}
             <div className="hero-image relative flex justify-center items-center order-1 lg:order-2 pt-4 lg:pt-0">
-              <div className="relative w-full flex justify-center items-center pt-4 pb-20 lg:py-0">
+              {/* Symmetric padding so top-1/2 aligns with the image center */}
+              <div className="relative w-full flex justify-center items-center py-6 lg:py-0">
 
-                {/* Lime circle — always centered behind the product */}
+                {/* Lime circle — centered on the image, not the padded container */}
                 <div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] lg:w-[520px] lg:h-[520px]"
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-[520px] lg:h-[520px]"
                   style={{ background: '#C7F25C', opacity: 0.9 }}
                   aria-hidden="true"
                 />
 
-                <Link
-                  to="/product/ashwagandha-gummies-ksm66"
-                  className="relative z-10 block w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[460px] xl:max-w-[520px]"
-                  style={{ filter: 'drop-shadow(0 24px 48px rgba(15,61,46,0.22))' }}
-                  aria-label="View Ashwagandha Gummies product page"
-                >
-                  <picture>
-                    <source srcSet="/images/hero-v2.webp" type="image/webp" />
+                {/* Image + price badge as a single relative unit */}
+                <div className="relative z-10 w-full max-w-[260px] sm:max-w-[340px] lg:max-w-[460px] xl:max-w-[500px]">
+                  <Link
+                    to="/product/ashwagandha-gummies-ksm66"
+                    className="block"
+                    style={{ filter: 'drop-shadow(0 24px 48px rgba(15,61,46,0.22))' }}
+                    aria-label="View Ashwagandha Gummies product page"
+                  >
                     <img
                       className="hero-image-inner w-full h-auto object-contain"
-                      src="/images/hero-v2.png"
+                      src="/images/hero-v2.webp"
                       alt="One4Health™ Ashwagandha Gummies KSM-66 jar"
                       loading="eager"
                       fetchPriority="high"
                       decoding="sync"
                       width={520}
                       height={520}
+                      onError={(e) => { (e.target as HTMLImageElement).src = '/images/hero-v2.png'; }}
                     />
-                  </picture>
-                </Link>
+                  </Link>
 
-                {/* Price badge floating */}
-                <div
-                  className="absolute bottom-0 lg:bottom-8 right-0 lg:right-0 z-20 animate-gentle-bounce"
-                  style={{
-                    background: '#FF5A6B',
-                    border: '1.5px solid #0A0A0A',
-                    borderRadius: '14px',
-                    padding: '10px 16px',
-                    boxShadow: '4px 4px 0 #0A0A0A',
-                  }}
-                >
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', opacity: 0.8 }}>
-                    Launch price
-                  </div>
-                  <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '22px', color: '#fff', letterSpacing: '-0.03em' }}>
-                    ₹369
-                    <span style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'line-through', opacity: 0.6, marginLeft: '6px' }}>₹449</span>
+                  {/* Price badge anchored to the image, not the full section */}
+                  <div
+                    className="absolute -bottom-4 -right-4 sm:-bottom-2 sm:-right-2 z-20 animate-gentle-bounce"
+                    style={{
+                      background: '#FF5A6B',
+                      border: '1.5px solid #0A0A0A',
+                      borderRadius: '14px',
+                      padding: '10px 16px',
+                      boxShadow: '4px 4px 0 #0A0A0A',
+                    }}
+                  >
+                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff', opacity: 0.8 }}>
+                      Launch price
+                    </div>
+                    <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: '22px', color: '#fff', letterSpacing: '-0.03em' }}>
+                      ₹369
+                      <span style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'line-through', opacity: 0.6, marginLeft: '6px' }}>₹449</span>
+                    </div>
                   </div>
                 </div>
               </div>
