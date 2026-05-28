@@ -246,9 +246,9 @@ export function ProductPage() {
                     <button
                       key={size}
                       onClick={() => setPackSize(size)}
-                      className={`relative flex flex-col p-4 sm:p-5 text-left transition-all duration-200 ${
+                      className={`relative flex flex-row items-center justify-between p-4 sm:p-5 text-left transition-all duration-200 ${
                         isSelected
-                          ? 'border-2 border-ink sm:shadow-hard sm:-translate-y-0.5'
+                          ? 'border-2 border-ink'
                           : 'border-2 border-ink/10 hover:border-ink/25'
                       }`}
                       style={{ borderRadius: '22px', background: '#FBF7EC' }}
@@ -267,29 +267,32 @@ export function ProductPage() {
                           Best Deal
                         </span>
                       )}
-                      <span style={{
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
-                        fontWeight: 800,
-                        fontSize: '17px',
-                        color: '#0A0A0A',
-                        marginBottom: '2px',
-                      }}>
-                        {size} Jar{size > 1 ? 's' : ''}
-                      </span>
-                      <span style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '12px',
-                        color: '#0A0A0A',
-                        opacity: 0.5,
-                        marginBottom: '10px',
-                      }}>
-                        {config.supplyLabel}
-                      </span>
-                      <div className="flex items-baseline gap-2 mt-auto">
+                      {/* Left: name + supply */}
+                      <div className="flex flex-col">
                         <span style={{
                           fontFamily: "'Bricolage Grotesque', sans-serif",
                           fontWeight: 800,
-                          fontSize: '16px',
+                          fontSize: '17px',
+                          color: '#0A0A0A',
+                          marginBottom: '2px',
+                        }}>
+                          {size} Jar{size > 1 ? 's' : ''}
+                        </span>
+                        <span style={{
+                          fontFamily: "'DM Sans', sans-serif",
+                          fontSize: '12px',
+                          color: '#0A0A0A',
+                          opacity: 0.5,
+                        }}>
+                          {config.supplyLabel}
+                        </span>
+                      </div>
+                      {/* Right: price */}
+                      <div className="flex items-baseline gap-1.5">
+                        <span style={{
+                          fontFamily: "'Bricolage Grotesque', sans-serif",
+                          fontWeight: 800,
+                          fontSize: '18px',
                           color: '#0F3D2E',
                         }}>
                           {formatPrice(config.totalPrice)}
@@ -299,7 +302,7 @@ export function ProductPage() {
                             fontFamily: "'DM Sans', sans-serif",
                             fontSize: '12px',
                             color: '#0A0A0A',
-                            opacity: 0.25,
+                            opacity: 0.3,
                             textDecoration: 'line-through',
                           }}>
                             {formatPrice(config.originalTotalPrice)}
