@@ -23,11 +23,14 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
+    {%- assign default_meta_desc = 'Premium, science-backed One4Health™ Ashwagandha gummies. Specialists in clinically studied KSM-66® root extract, black pepper extract, and Vitamin D2 for maximum bioavailability, cortisol regulation, stress relief, and sleep optimization. 100% vegan.' -%}
+    {%- if template.name == 'index' -%}
+      <meta name="description" content="{{ default_meta_desc | escape }}">
+    {%- elsif page_description -%}
       <meta name="description" content="{{ page_description | escape }}">
-    {% else %}
-      <meta name="description" content="Premium, science-backed One4Health™ Ashwagandha gummies. Specialists in clinically studied KSM-66® root extract, black pepper extract, and Vitamin D2 for maximum bioavailability, cortisol regulation, stress relief, and sleep optimization. 100% vegan.">
-    {% endif %}
+    {%- else -%}
+      <meta name="description" content="{{ default_meta_desc | escape }}">
+    {%- endif -%}
 
     <meta name="keywords" content="One4Health, ashwagandha gummies India, KSM-66 extract, black pepper extract, cortisol regulation, stress relief India, sleep optimization, vegan health supplements, adaptogens, hormone balance, focus gummies">
     <meta name="application-name" content="One4Health Wellness" />
