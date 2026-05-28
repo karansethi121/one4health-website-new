@@ -103,7 +103,7 @@ export function ProductPage() {
   const savings = getSavingsAmount(selectedPack.totalPrice, selectedPack.originalTotalPrice);
 
   return (
-    <main className="w-full pt-[72px] lg:pt-[84px] pb-28 lg:pb-0" style={{ background: '#F7F1E3' }}>
+    <main className="w-full pt-[72px] lg:pt-[84px] pb-28 lg:pb-0 overflow-x-hidden" style={{ background: '#F7F1E3' }}>
 
       {/* ── Breadcrumb ─────────────────────────────────────────────────── */}
       <div className="section-container pt-5 pb-0">
@@ -122,28 +122,30 @@ export function ProductPage() {
         <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-6 lg:gap-16 items-start">
 
           {/* ── Left: Image gallery ──────────────────────────────────── */}
-          <div className="product-animate w-full max-w-[480px] mx-auto lg:max-w-none">
+          <div className="product-animate w-full">
 
-            {/* Main image */}
+            {/* Main image — aspect-square with absolute-positioned image for reliable centering */}
             <div
-              className="relative w-full aspect-square flex items-center justify-center overflow-hidden"
+              className="relative w-full overflow-hidden"
               style={{
+                aspectRatio: '1 / 1',
                 background: '#F7F1E3',
-                borderRadius: '28px',
-                boxShadow: '0 16px 48px rgba(10,10,10,0.10), 0 4px 14px rgba(10,10,10,0.06)',
+                borderRadius: '24px',
+                boxShadow: '0 8px 32px rgba(10,10,10,0.08)',
               }}
             >
-              {/* Lime circle backdrop */}
+              {/* Lime circle backdrop — absolutely centered */}
               <div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-                style={{ width: '58%', height: '58%', background: '#C7F25C', opacity: 0.25 }}
+                style={{ width: '58%', height: '58%', background: '#C7F25C', opacity: 0.28 }}
                 aria-hidden="true"
               />
-              {/* Image fills container; p-6 prevents clipping at edges */}
+              {/* Image — absolute inset-0 is the most reliable responsive image pattern */}
               <img
                 src={product.images?.[activeImage] || product.image}
                 alt={product.name}
-                className="relative z-10 w-full h-full object-contain p-6"
+                className="absolute inset-0 w-full h-full object-contain z-10"
+                style={{ padding: '20px' }}
                 loading="eager"
               />
             </div>
@@ -170,7 +172,7 @@ export function ProductPage() {
                         : '0 2px 6px rgba(10,10,10,0.05)',
                     }}
                   >
-                    <img src={img} className="w-full h-full object-contain" alt={`View ${idx + 1}`} />
+                    <img src={img} className="absolute inset-0 w-full h-full object-contain p-2" alt={`View ${idx + 1}`} />
                     {activeImage === idx && (
                       <span
                         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-t-full"
@@ -249,9 +251,9 @@ export function ProductPage() {
                     <button
                       key={size}
                       onClick={() => setPackSize(size)}
-                      className={`relative flex flex-col p-3.5 sm:p-5 text-left transition-all duration-200 ${
+                      className={`relative flex flex-col p-4 sm:p-5 text-left transition-all duration-200 ${
                         isSelected
-                          ? 'border-2 border-ink shadow-hard -translate-y-0.5'
+                          ? 'border-2 border-ink sm:shadow-hard sm:-translate-y-0.5'
                           : 'border-2 border-ink/10 hover:border-ink/25'
                       }`}
                       style={{ borderRadius: '22px', background: '#FBF7EC' }}
