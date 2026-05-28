@@ -126,31 +126,26 @@ export function ProductPage() {
 
             {/* Main image */}
             <div
-              className="relative w-full aspect-square flex items-center justify-center"
-              style={{ background: '#F7F1E3' }}
+              className="relative w-full aspect-square flex items-center justify-center overflow-hidden"
+              style={{
+                background: '#F7F1E3',
+                borderRadius: '28px',
+                boxShadow: '0 16px 48px rgba(10,10,10,0.10), 0 4px 14px rgba(10,10,10,0.06)',
+              }}
             >
-              {/* Lime circle — centered on the square container */}
+              {/* Lime circle backdrop */}
               <div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-                style={{ width: '60%', height: '60%', background: '#C7F25C', opacity: 0.25 }}
+                style={{ width: '58%', height: '58%', background: '#C7F25C', opacity: 0.25 }}
                 aria-hidden="true"
               />
-              {/* Image wrapper */}
-              <div
-                className="relative z-10 w-[80%] h-[80%] flex items-center justify-center"
-                style={{
-                  borderRadius: '28px',
-                  overflow: 'hidden',
-                  boxShadow: '0 16px 48px rgba(10,10,10,0.10), 0 4px 14px rgba(10,10,10,0.06)',
-                }}
-              >
-                <img
-                  src={product.images?.[activeImage] || product.image}
-                  alt={product.name}
-                  className="w-full h-full object-contain"
-                  loading="eager"
-                />
-              </div>
+              {/* Image fills container; p-6 prevents clipping at edges */}
+              <img
+                src={product.images?.[activeImage] || product.image}
+                alt={product.name}
+                className="relative z-10 w-full h-full object-contain p-6"
+                loading="eager"
+              />
             </div>
 
             {/* Thumbnails — no borders, opacity-only selection state */}
@@ -246,7 +241,7 @@ export function ProductPage() {
               }}>
                 Choose your pack
               </span>
-              <div className="grid grid-cols-2 gap-3 items-stretch">
+              <div className="flex flex-col gap-3">
                 {([1, 2] as PackSize[]).map((size) => {
                   const config = getPackConfig(size);
                   const isSelected = packSize === size;

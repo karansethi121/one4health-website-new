@@ -176,15 +176,15 @@ export function HeroSection() {
               {/* Symmetric padding so top-1/2 aligns with the image center */}
               <div className="relative w-full flex justify-center items-center py-6 lg:py-0">
 
-                {/* Lime circle — centered on the image, not the padded container */}
+                {/* Lime circle — same size as image so jar fills it */}
                 <div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-[520px] lg:h-[520px]"
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] lg:w-[520px] lg:h-[520px]"
                   style={{ background: '#C7F25C', opacity: 0.9 }}
                   aria-hidden="true"
                 />
 
                 {/* Image + price badge as a single relative unit */}
-                <div className="relative z-10 w-full max-w-[260px] sm:max-w-[340px] lg:max-w-[460px] xl:max-w-[500px]">
+                <div className="relative z-10 w-full max-w-[280px] sm:max-w-[380px] lg:max-w-[460px] xl:max-w-[500px]">
                   <Link
                     to="/product/ashwagandha-gummies-ksm66"
                     className="block"
