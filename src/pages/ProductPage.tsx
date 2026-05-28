@@ -366,7 +366,7 @@ export function ProductPage() {
                 opacity: 0.4,
               }}>
                 <Check className="w-3 h-3 text-forest" />
-                Free Shipping · 15-Day Refund
+                Free Shipping · 15 Day Refund
               </p>
             </div>
 
@@ -374,7 +374,7 @@ export function ProductPage() {
             <div className="grid grid-cols-2 gap-y-3 gap-x-6 pt-6 border-t border-ink/8">
               {[
                 { icon: Truck, label: 'Fast India Delivery' },
-                { icon: Shield, label: '15-Day Refund' },
+                { icon: Shield, label: '15 Day Refund' },
                 { icon: Beaker, label: 'Clinically Studied' },
                 { icon: Leaf, label: '100% Vegan' },
               ].map((t, i) => (

@@ -144,7 +144,7 @@ export function BundleSection() {
                   <div className="w-8 h-8 bg-sage-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Package className="w-4 h-4 text-sage-600" />
                   </div>
-                  <span className="text-charcoal-700 text-sm lg:text-base">1 pack (30 gummies, 15-day supply)</span>
+                  <span className="text-charcoal-700 text-sm lg:text-base">1 pack (30 gummies, 15 day supply)</span>
                 </div>
                 <div className="flex items-center gap-2 lg:gap-3">
                   <div className="w-8 h-8 bg-sage-100 rounded-lg flex items-center justify-center flex-shrink-0">

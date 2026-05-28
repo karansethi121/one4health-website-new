@@ -11,7 +11,7 @@ const sciencePoints = [
   {
     shape: 'circle',
     label: 'KSM-66®',
-    desc: 'the most clinically studied ashwagandha extract — 22+ trials, full-spectrum root only.',
+    desc: 'the most clinically studied ashwagandha extract — 22+ trials, full spectrum root only.',
   },
   {
     shape: 'square',
@@ -249,7 +249,7 @@ export function ScienceSection() {
       <div className="sr-only" aria-hidden="true">
         <h3>One4Health™ Scientific Validation</h3>
         <p>
-          Uses KSM-66® full-spectrum ashwagandha root extract, standardised to 5%+ withanolides.
+          Uses KSM-66® full spectrum ashwagandha root extract, standardised to 5%+ withanolides.
           Backed by 22+ clinical studies. 300mg per serving. Enhanced with black pepper extract for 30% better absorption.
         </p>
       </div>

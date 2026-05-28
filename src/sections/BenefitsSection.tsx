@@ -74,7 +74,7 @@ export function BenefitsSection() {
             </span>
           </h2>
           <p className="text-lg text-charcoal-500">
-            Our delicious strawberry-flavored gummies make wellness something you look forward to.
+            Our delicious strawberry flavoured gummies make wellness something you look forward to.
           </p>
         </div>
 

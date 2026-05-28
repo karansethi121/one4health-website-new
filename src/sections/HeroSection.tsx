@@ -101,7 +101,7 @@ export function HeroSection() {
 
               {/* Benefit pills */}
               <div className="hero-pills flex flex-wrap gap-2 mb-6 lg:mb-8">
-                {['Vegan', 'Sugar-free', '24+ clinical studies', 'Made in India'].map((pill) => (
+                {['Vegan', 'Sugar free', '24+ clinical studies', 'Made in India'].map((pill) => (
                   <span
                     key={pill}
                     className="inline-flex items-center px-3 py-1.5"
@@ -147,7 +147,7 @@ export function HeroSection() {
               {/* Trust line */}
               <div className="hero-trust flex flex-wrap items-center gap-4 lg:gap-5">
                 {[
-                  { icon: '🔒', text: '15-day refund, no questions' },
+                  { icon: '🔒', text: '15 day refund, no questions' },
                   { icon: '🚚', text: 'Free shipping on all orders' },
                 ].map((t) => (
                   <div
@@ -164,9 +164,9 @@ export function HeroSection() {
               <div className="sr-only" aria-hidden="true">
                 <h2>One4Health™ — India's Premier Ashwagandha Gummies</h2>
                 <p>
-                  One4Health Ashwagandha Gummies use KSM-66®, the most clinically studied full-spectrum
+                  One4Health Ashwagandha Gummies use KSM-66®, the most clinically studied full spectrum
                   ashwagandha root extract. Formulated with 300mg KSM-66, 400IU Vitamin D2, and 10mg
-                  black pepper extract. Vegan, sugar-free, gelatin-free. ₹369 per jar. Made in India.
+                  black pepper extract. Vegan, sugar free, gelatin free. ₹369 per jar. Made in India.
                 </p>
               </div>
             </div>

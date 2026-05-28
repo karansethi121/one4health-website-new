@@ -24,12 +24,12 @@ export const mainProduct: Product = {
   quantity: 100,
   packageSize: '30 Gummies',
   servingSize: '2 Gummies',
-  supplyDuration: '15-Day Supply',
+  supplyDuration: '15 Day Supply',
   benefits: [
     'Supports a healthy stress response',
     'Promotes relaxation and calm',
     'Helps maintain daily balance',
-    'Supports mood and well-being',
+    'Supports mood and wellbeing',
     'Enhanced absorption with black pepper extract',
     '100% Allergen Free (No Soy, Gluten, Nuts, Gelatin, Milk)',
   ],
@@ -38,7 +38,7 @@ export const mainProduct: Product = {
       name: 'Ashwagandha (KSM-66®)',
       amount: '150 mg',
       dailyAmount: '300 mg',
-      description: 'Full-spectrum root extract supports stress response and promotes calm',
+      description: 'Full spectrum root extract supports stress response and promotes calm',
     },
     {
       name: 'Vitamin D2',
@@ -104,7 +104,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'Why KSM-66® specifically?',
-    answer: 'KSM-66® is the most clinically studied ashwagandha root extract available. It\'s a full-spectrum extract (meaning it uses only the root, not leaves) and is backed by 24+ clinical studies demonstrating its efficacy in supporting stress response and promoting calm.',
+    answer: 'KSM-66® is the most clinically studied ashwagandha root extract available. It\'s a full spectrum extract (meaning it uses only the root, not leaves) and is backed by 24+ clinical studies demonstrating its efficacy in supporting stress response and promoting calm.',
   },
   {
     question: 'Why is Vitamin D2 included?',
@@ -119,8 +119,8 @@ export const faqs: FAQ[] = [
     answer: 'Everyone\'s body is different. Many people report feeling more balanced within the first week, with optimal support typically experienced after 2-4 weeks of consistent daily use. Consistency is key—take your two gummies at the same time each day.',
   },
   {
-    question: 'Are these gummies sugar-free?',
-    answer: 'Yes! Our gummies are completely sugar-free. We use natural sweeteners to create a delicious strawberry flavor without the sugar crash. They\'re also vegan, gluten-free, and contain no artificial dyes or flavors.',
+    question: 'Are these gummies sugar free?',
+    answer: 'Yes! Our gummies are completely sugar free. We use natural sweeteners to create a delicious strawberry flavor without the sugar crash. They\'re also vegan, gluten free, and contain no artificial dyes or flavors.',
   },
   {
     question: 'Can I take these with other supplements?',
@@ -128,7 +128,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'What is your return policy?',
-    answer: 'We offer a 15-day satisfaction guarantee. If you\'re not completely happy with your purchase, contact us for a full refund—no questions asked.',
+    answer: 'We offer a 15 day satisfaction guarantee. If you\'re not completely happy with your purchase, contact us for a full refund—no questions asked.',
   },
 ];
 

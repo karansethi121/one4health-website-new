@@ -11,7 +11,7 @@ const ingredients = [
     num: '01',
     name: 'KSM-66® Ashwagandha',
     amount: '300mg',
-    desc: 'Full-spectrum root extract. Clinically studied. Supports stress response and calm.',
+    desc: 'Full spectrum root extract. Clinically studied. Supports stress response and calm.',
     highlight: '22+ clinical trials',
   },
   {
@@ -19,7 +19,7 @@ const ingredients = [
     name: 'Vitamin D2',
     amount: '400 IU',
     desc: 'Supports mood balance and healthy immune function — essential for India\'s indoor workforce.',
-    highlight: 'Vegan-sourced',
+    highlight: 'Vegan sourced',
   },
   {
     num: '03',

@@ -10,7 +10,7 @@ const steps = [
   {
     number: '1',
     title: 'Take 2 gummies',
-    desc: 'Make it part of your nightly wind-down ritual.',
+    desc: 'Make it part of your nightly wind down ritual.',
     icon: Moon,
     color: 'bg-lavender-100 text-lavender-700',
   },
