@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '@/context/CartContext';
-import { useProducts } from '@/hooks/useSupabase';
+import { useProducts, useTestimonials } from '@/hooks/useSupabase';
+import { BASE_REVIEW_COUNT } from '@/lib/reviews';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -109,6 +110,8 @@ export function CleanFormulaSection() {
     return () => ctx.revert();
   }, []);
 
+  const { testimonials } = useTestimonials();
+  const totalReviewCount = BASE_REVIEW_COUNT + testimonials.length;
   const [heroReview, ...otherReviews] = reviews;
 
   return (
@@ -134,7 +137,7 @@ export function CleanFormulaSection() {
           >
             ★ 5.0 from{' '}
             <em style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', color: '#0F3D2E' }}>
-              140 reviews.
+              {totalReviewCount} reviews.
             </em>
           </h2>
         </div>

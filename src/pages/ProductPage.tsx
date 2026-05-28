@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import { gsap } from 'gsap';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
+import { BASE_REVIEW_COUNT } from '@/lib/reviews';
 import { useCart } from '@/context/CartContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MobileStickyBar } from '@/components/layout/MobileStickyBar';
@@ -35,19 +37,28 @@ export function ProductPage() {
   const [packSize, setPackSize] = useState<PackSize>(1);
   const [activeImage, setActiveImage] = useState(0);
   const { products, loading: productsLoading } = useProducts();
-  const { testimonials } = useTestimonials();
+  const { testimonials, refetch: refetchReviews } = useTestimonials();
+  const totalReviewCount = BASE_REVIEW_COUNT + testimonials.length;
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [newReview, setNewReview] = useState({ name: '', rating: 5, comment: '' });
 
-  const handleSubmitReview = (e: React.FormEvent) => {
+  const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newReview.name.trim() || !newReview.comment.trim()) {
       toast.error('Please fill in all fields');
       return;
     }
-    toast.success('Thank you! Your review will appear after moderation.');
+    const { error } = await supabase
+      .from('testimonials')
+      .insert({ name: newReview.name.trim(), quote: newReview.comment.trim() });
+    if (error) {
+      toast.error('Could not save your review. Please try again.');
+      return;
+    }
+    toast.success('Thank you! Your review has been published.');
     setNewReview({ name: '', rating: 5, comment: '' });
     setIsReviewModalOpen(false);
+    refetchReviews();
   };
 
   const product = useMemo(() => {
@@ -179,7 +190,20 @@ export function ProductPage() {
           {/* ── Right: Purchase details ───────────────────────────────── */}
           <div className="product-animate flex flex-col">
 
-            {/* Star rating */}
+            {/* Product name */}
+            <h1 style={{
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+              fontWeight: 800,
+              letterSpacing: '-0.035em',
+              fontSize: 'clamp(26px, 5vw, 54px)',
+              color: '#0A0A0A',
+              lineHeight: 1.0,
+              marginBottom: '10px',
+            }}>
+              {product.name}
+            </h1>
+
+            {/* Star rating — below title */}
             <div className="flex items-center gap-3 mb-4">
               <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, i) => (
@@ -194,22 +218,9 @@ export function ProductPage() {
                 color: '#0A0A0A',
                 opacity: 0.5,
               }}>
-                140 Reviews
+                {totalReviewCount} Reviews
               </span>
             </div>
-
-            {/* Product name */}
-            <h1 style={{
-              fontFamily: "'Bricolage Grotesque', sans-serif",
-              fontWeight: 800,
-              letterSpacing: '-0.035em',
-              fontSize: 'clamp(26px, 5vw, 54px)',
-              color: '#0A0A0A',
-              lineHeight: 1.0,
-              marginBottom: '10px',
-            }}>
-              {product.name}
-            </h1>
 
             {/* Subtitle */}
             <p className="mb-7" style={{
@@ -588,11 +599,11 @@ export function ProductPage() {
               <div>
                 <div className="flex gap-0.5 mb-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-forest text-forest" />
+                    <Star key={i} className="w-4 h-4 fill-sunshine-400 text-sunshine-400" />
                   ))}
                 </div>
                 <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#0A0A0A', opacity: 0.45 }}>
-                  Based on {testimonials.length > 0 ? testimonials.length : 140} reviews
+                  Based on {totalReviewCount} reviews
                 </span>
               </div>
             </div>
@@ -607,31 +618,21 @@ export function ProductPage() {
           </button>
         </div>
 
-        {/* Review cards */}
+        {/* Review cards — same style as landing page */}
         {testimonials.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {testimonials.slice(0, 6).map((review) => (
-              <div
-                key={review.id}
-                className="p-6 flex flex-col gap-3 hover-hard"
-                style={{ background: '#FBF7EC', border: '1.5px solid #0A0A0A', borderRadius: '24px' }}
-              >
-                <div className="flex gap-0.5">
+              <div key={review.id} className="bg-white rounded-2xl p-5 lg:p-6 shadow-soft">
+                <div className="flex gap-1 mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-forest text-forest" />
+                    <Star key={i} className="w-4 h-4 fill-sunshine-400 text-sunshine-400" />
                   ))}
                 </div>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#0A0A0A', opacity: 0.75, lineHeight: 1.6 }}>
-                  "{review.quote}"
-                </p>
-                <div className="mt-auto pt-3 border-t border-ink/8">
-                  <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '14px', color: '#0A0A0A' }}>
-                    {review.name}
-                  </span>
+                <p className="text-charcoal-700 text-sm mb-4">"{review.quote}"</p>
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold text-charcoal-900 text-sm">{review.name}</p>
                   {review.role && (
-                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#0A0A0A', opacity: 0.4, marginLeft: '8px' }}>
-                      · {review.role}
-                    </span>
+                    <span className="text-xs text-charcoal-400">· {review.role}</span>
                   )}
                 </div>
               </div>

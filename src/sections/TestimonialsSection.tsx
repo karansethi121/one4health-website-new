@@ -4,6 +4,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { toast } from 'sonner';
 import { useTestimonials } from '@/hooks/useSupabase';
+import { supabase } from '@/lib/supabase';
+import { BASE_REVIEW_COUNT } from '@/lib/reviews';
 import { LoadingState } from '@/components/ui/LoadingState';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,8 +14,9 @@ gsap.registerPlugin(ScrollTrigger);
 export function TestimonialsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const { testimonials, loading } = useTestimonials();
+  const { testimonials, loading, refetch } = useTestimonials();
   const [newReview, setNewReview] = useState({ name: '', rating: 5, comment: '' });
+  const totalReviewCount = BASE_REVIEW_COUNT + testimonials.length;
 
   useEffect(() => {
     if (loading) return;
@@ -59,16 +62,23 @@ export function TestimonialsSection() {
     return <LoadingState message="Loading testimonials..." />;
   }
 
-  const handleSubmitReview = (e: React.FormEvent) => {
+  const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newReview.name.trim() || !newReview.comment.trim()) {
       toast.error('Please fill in all fields');
       return;
     }
-    
-    toast.success('Thank you for your review! It will be visible after moderation.');
+    const { error } = await supabase
+      .from('testimonials')
+      .insert({ name: newReview.name.trim(), quote: newReview.comment.trim() });
+    if (error) {
+      toast.error('Could not save your review. Please try again.');
+      return;
+    }
+    toast.success('Thank you! Your review has been published.');
     setNewReview({ name: '', rating: 5, comment: '' });
     setIsReviewModalOpen(false);
+    refetch();
   };
 
   return (
@@ -94,12 +104,10 @@ export function TestimonialsSection() {
             <MessageSquare className="w-5 h-5 lg:w-6 lg:h-6 text-sage-700" />
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-charcoal-900 leading-tight mb-4">
-            {testimonials.length > 0 ? 'What our customers say' : 'Be among the first'}
+            What our customers say
           </h2>
           <p className="text-base lg:text-lg text-charcoal-500 max-w-xl mx-auto">
-            {testimonials.length > 0 
-              ? `Join ${testimonials.length} happy customers who've made One4Health™ part of their daily ritual.`
-              : "We're just getting started. Join our founding customers and help shape the One4Health™ story."}
+            Join {totalReviewCount} happy customers who've made One4Health™ part of their daily ritual.
           </p>
         </div>
 
