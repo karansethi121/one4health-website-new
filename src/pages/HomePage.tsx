@@ -11,10 +11,15 @@ import { TrustBar } from '@/components/layout/TrustBar';
 import { AllergenBar } from '@/components/layout/AllergenBar';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 
 export function HomePage() {
-  useDocumentTitle('ONE4HEALTH | Stay Calm. Stay Sharp. | Daily Wellness Simplified', false);
+  useSEO({
+    title: 'ONE4HEALTH | Stay Calm. Stay Sharp. | Daily Wellness Simplified',
+    description: 'Discover the power of KSM-66® Ashwagandha gummies by ONE4HEALTH. Clinically studied for stress relief and better sleep. 100% Vegan, Sugar-Free, and Made in India.',
+    keywords: 'One4Health, ashwagandha gummies India, KSM-66 extract, cortisol regulation, stress relief, vegan supplements, sleep gummies',
+    appendSiteName: false,
+  });
   return (
     <main className="w-full pt-[72px] lg:pt-[84px]">
       <PromoMarquee />

@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && python3 patch_shopify_js.py && node scripts/verify-shopify-build.mjs",
-    "build:vercel": "vite build",
+    "build": "node scripts/generate-sitemap.mjs && tsc -b && vite build && python3 patch_shopify_js.py && node scripts/verify-shopify-build.mjs",
+    "build:vercel": "node scripts/generate-sitemap.mjs && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",

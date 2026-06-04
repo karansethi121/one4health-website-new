@@ -1,9 +1,13 @@
 import { Shield } from 'lucide-react';
 
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 
 export function PrivacyPage() {
-  useDocumentTitle('Privacy Policy');
+  useSEO({
+    title: 'Privacy Policy',
+    description: 'Read the One4Health™ Privacy Policy to understand how we collect, use, and protect your personal information when buying our Ashwagandha Gummies.',
+    keywords: 'One4Health privacy policy, data protection',
+  });
   return (
     <main className="w-full pt-[72px] lg:pt-[84px] pb-16">
       <div className="section-container max-w-3xl">

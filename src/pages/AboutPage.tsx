@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +14,11 @@ const values = [
 
 export function AboutPage() {
   const heroRef = useRef<HTMLDivElement>(null);
-  useDocumentTitle('Our Story — One4Health');
+  useSEO({
+    title: 'Our Story & Mission',
+    description: 'Learn about the One4Health™ story. Discover how we are redefining wellness in India with clean, science-backed, sugar-free KSM-66® Ashwagandha gummies.',
+    keywords: 'One4Health story, ashwagandha experts India, KSM-66 creators, healthy gummies mission',
+  });
 
   useEffect(() => {
     const ctx = gsap.context(() => {

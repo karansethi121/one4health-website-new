@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Mail, Phone, MapPin, MessageCircle, Clock, Send } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 
@@ -35,7 +35,11 @@ const contactInfo = [
 ];
 
 export function ContactPage() {
-  useDocumentTitle('Contact Us');
+  useSEO({
+    title: 'Contact Us | Support & Inquiries',
+    description: 'Get in touch with the One4Health™ team. Email us at info@one4health.com or call us. We are here to answer your questions about Ashwagandha Gummies.',
+    keywords: 'contact one4health, customer support ashwagandha gummies, email one4health',
+  });
   const { toast } = useToast();
   const heroRef = useRef<HTMLDivElement>(null);
   const [submitting, setSubmitting] = useState(false);

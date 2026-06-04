@@ -27,7 +27,7 @@ import { AllergenBar } from '@/components/layout/AllergenBar';
 import { useProducts, useTestimonials } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { getPackConfig, getSavingsAmount, type PackSize } from '@/lib/productPricing';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 import { formatPrice } from '@/lib/format';
 
 export function ProductPage() {
@@ -66,7 +66,11 @@ export function ProductPage() {
     return products.find(p => p.id === id) || products[0];
   }, [id, products]);
 
-  useDocumentTitle(product?.name || 'Product');
+  useSEO({
+    title: product?.name ? `Buy ${product.name} Online` : 'Product',
+    description: product?.description || 'Premium, clinically-studied KSM-66 Ashwagandha gummies for stress relief, anxiety regulation, and better sleep.',
+    keywords: `${product?.name || ''}, buy ashwagandha gummies, KSM-66 ashwagandha gummies, stress relief, sugar free gummies, vegan supplements`,
+  });
 
   useEffect(() => {
     if (productsLoading || !product) return;
@@ -137,7 +141,7 @@ export function ProductPage() {
                 />
                 <img
                   src={product.images?.[activeImage] || product.image}
-                  alt={product.name}
+                  alt={`${product.name} - KSM-66 Ashwagandha Gummies`}
                   className="relative z-10 w-full h-full object-contain"
                   style={{ padding: '20px' }}
                   loading="eager"
@@ -167,7 +171,7 @@ export function ProductPage() {
                         : '0 2px 6px rgba(10,10,10,0.05)',
                     }}
                   >
-                    <img src={img} className="w-full h-full object-contain p-1.5" alt={`View ${idx + 1}`} />
+                    <img src={img} className="w-full h-full object-contain p-1.5" alt={`${product.name} View ${idx + 1}`} />
                     {activeImage === idx && (
                       <span
                         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-t-full"

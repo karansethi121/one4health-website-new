@@ -65,7 +65,7 @@ export function HeroSection() {
                     color: '#0A0A0A',
                   }}
                 >
-                  Calm in a chew.
+                  Ashwagandha Gummies
                 </span>
                 <span
                   className="hero-line-2 block"
@@ -77,7 +77,7 @@ export function HeroSection() {
                     color: '#0A0A0A',
                   }}
                 >
-                  Loud on the{' '}
+                  For daily{' '}
                   <em
                     style={{
                       fontFamily: "'Instrument Serif', serif",
@@ -85,7 +85,7 @@ export function HeroSection() {
                       color: '#FF5A6B',
                     }}
                   >
-                    feed.
+                    calm.
                   </em>
                 </span>
               </h1>

@@ -36,7 +36,7 @@ export function Navigation() {
       e.preventDefault();
       const id = href.slice(2);
       if (location.pathname !== '/') {
-        window.location.href = href;
+        window.location.assign(href);
       } else {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
       }
@@ -71,7 +71,7 @@ export function Navigation() {
             >
               <img
                 src="/images/logo_nav.webp"
-                alt="One4Health"
+                alt="One4Health KSM-66 Ashwagandha Gummies Logo"
                 className="h-14 lg:h-16 w-auto object-contain transition-opacity group-hover:opacity-80"
                 draggable={false}
               />

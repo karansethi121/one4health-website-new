@@ -1,9 +1,13 @@
 import { FileText } from 'lucide-react';
 
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 
 export function TermsPage() {
-  useDocumentTitle('Terms of Service');
+  useSEO({
+    title: 'Terms of Service',
+    description: 'Read the One4Health™ Terms of Service. Understand the rules, guidelines, and terms governing your purchases and use of our wellness products.',
+    keywords: 'One4Health terms of service',
+  });
   return (
     <main className="w-full pt-[72px] lg:pt-[84px] pb-16">
       <div className="section-container max-w-3xl">

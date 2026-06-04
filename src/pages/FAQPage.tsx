@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { useFAQs } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 
 export function FAQPage() {
-  useDocumentTitle('FAQ — One4Health');
+  useSEO({
+    title: 'Ashwagandha Gummies FAQs & Answers',
+    description: 'Frequently asked questions about ONE4HEALTH KSM-66® Ashwagandha Gummies. Find details on dosage, safety, vegan certifications, side effects, and shipping.',
+    keywords: 'Ashwagandha gummies faq, how to take ashwagandha, side effects of ashwagandha, vegan gummies help',
+  });
   const { faqs, loading } = useFAQs();
   const [openIndex, setOpenIndex] = useState<number>(-1);
 

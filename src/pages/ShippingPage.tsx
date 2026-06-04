@@ -40,10 +40,14 @@ const policies = [
   },
 ];
 
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 
 export function ShippingPage() {
-  useDocumentTitle('Shipping & Delivery');
+  useSEO({
+    title: 'Shipping, Delivery & Refunds',
+    description: 'Find shipping times, free shipping policies, delivery coverage across India, and refund options for One4Health™ KSM-66® Ashwagandha Gummies.',
+    keywords: 'One4Health shipping, ashwagandha gummies delivery India, refund policy',
+  });
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -3,12 +3,16 @@ import { Link } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useCart } from '@/context/CartContext';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { useProducts } from '@/hooks/useSupabase';
 
 export function ShopPage() {
-  useDocumentTitle('Shop — One4Health');
+  useSEO({
+    title: 'Shop Ashwagandha Gummies Online',
+    description: 'Browse and buy premium KSM-66® Ashwagandha Gummies by ONE4HEALTH. Sugar-free, 100% vegan, and formulated for stress relief and daily balance. Free shipping across India.',
+    keywords: 'Shop ashwagandha gummies, buy ashwagandha gummies online, vegan stress gummies, KSM-66 gummies',
+  });
   const { addToCart, loading: cartLoading } = useCart();
   const { products, loading: productsLoading } = useProducts();
   const [searchQuery, setSearchQuery] = useState('');
@@ -138,7 +142,7 @@ export function ShopPage() {
                     <div className="relative h-44 sm:h-48 flex items-center justify-center">
                     <img
                       src={p.image}
-                      alt={p.name}
+                      alt={`${p.name} - KSM-66 Ashwagandha Gummies`}
                       className="h-full w-auto max-w-full object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-2"
                       style={{ filter: 'drop-shadow(0 16px 32px rgba(15,61,46,0.12))' }}
                       loading="lazy"

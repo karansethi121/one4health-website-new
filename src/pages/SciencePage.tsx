@@ -3,12 +3,16 @@ import { Beaker } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { mainProduct } from '@/data/products';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useSEO } from '@/hooks/useSEO';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function SciencePage() {
-  useDocumentTitle('The Science — One4Health');
+  useSEO({
+    title: 'The Science of KSM-66® Ashwagandha',
+    description: 'Explore clinical studies, stats, and scientific research backing our KSM-66® Ashwagandha gummies. Learn how adaptogens reduce cortisol and support calm focus.',
+    keywords: 'Ashwagandha science, KSM-66 research, cortisol reduction studies, ashwagandha clinical trials, stress relief study',
+  });
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -96,7 +100,7 @@ export function SciencePage() {
               >
                 <img
                   src="/images/ashwagandha_plant.webp"
-                  alt="High-quality Ashwagandha root preparation"
+                  alt="KSM-66 Ashwagandha root extract botanical plant source"
                   className="w-full h-[500px] object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
                   loading="lazy"
                 />
