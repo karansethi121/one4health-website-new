@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { useFAQs } from '@/hooks/useSupabase';
 import { LoadingState } from '@/components/ui/LoadingState';
@@ -13,10 +13,32 @@ export function FAQPage() {
   const { faqs, loading } = useFAQs();
   const [openIndex, setOpenIndex] = useState<number>(-1);
 
+  const faqSchema = useMemo(() => {
+    if (!faqs || faqs.length === 0) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+  }, [faqs]);
+
   if (loading) return <LoadingState message="Loading FAQs..." />;
 
   return (
     <main className="w-full pt-[72px] lg:pt-[84px]" style={{ background: '#F7F1E3' }}>
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <div className="section-container section-padding">
 
         {/* Header */}

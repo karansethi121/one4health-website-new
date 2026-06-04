@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '@/lib/supabase';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -46,7 +45,6 @@ export interface Order {
 // ─── Hook ────────────────────────────────────────────────────────────────────
 
 export function useOrders() {
-  const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,81 +58,27 @@ export function useOrders() {
     setSelectedOrder(null);
 
     try {
-      const normalizedEmail = email.trim().toLowerCase();
-      const rawOrderNum = orderNumber.trim();
-      const unhashedOrderNum = rawOrderNum.replace(/^#/, '');
-      const searchTerms = [rawOrderNum, unhashedOrderNum, `#${unhashedOrderNum}`];
-      // Filter unique terms to avoid redundant query parameters
-      const uniqueSearchTerms = [...new Set(searchTerms)];
+      const response = await fetch('/api/orders/lookup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ email, orderNumber }),
+      });
 
-      const { data, error: queryError } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          order_items (*)
-        `)
-        .eq('email', normalizedEmail)
-        .in('order_number', uniqueSearchTerms)
-        .maybeSingle();
+      const data = await response.json();
 
-      if (queryError) {
-        console.error('Order query error:', queryError);
-        setError('Something went wrong while searching. Please try again later.');
-        return null;
-      }
-
-      if (!data) {
-        setError(`No order found for ${email} with number #${orderNumber}. Please check the details in your confirmation email.`);
+      if (!response.ok) {
+        setError(data?.error || `No order found for ${email} with number #${orderNumber}. Please check the details in your confirmation email.`);
         return null;
       }
 
       setSelectedOrder(data as Order);
       return data as Order;
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Something went wrong';
-      setError(message);
+    } catch {
+      setError('Something went wrong while searching. Please try again later.');
       return null;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  /**
-   * Get all orders for an email address
-   */
-  const getOrdersByEmail = useCallback(async (email: string) => {
-    setLoading(true);
-    setError(null);
-    setOrders([]);
-
-    try {
-      const normalizedEmail = email.trim().toLowerCase();
-
-      const { data, error: queryError } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          order_items (*)
-        `)
-        .eq('email', normalizedEmail)
-        .order('created_at', { ascending: false });
-
-      if (queryError) {
-        setError('Failed to fetch orders. Please try again.');
-        return [];
-      }
-
-      if (!data || data.length === 0) {
-        setError('No orders found for this email address.');
-        return [];
-      }
-
-      setOrders(data as Order[]);
-      return data as Order[];
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Something went wrong';
-      setError(message);
-      return [];
     } finally {
       setLoading(false);
     }
@@ -144,18 +88,15 @@ export function useOrders() {
    * Clear the current state
    */
   const reset = useCallback(() => {
-    setOrders([]);
     setSelectedOrder(null);
     setError(null);
   }, []);
 
   return {
-    orders,
     selectedOrder,
     loading,
     error,
     lookupOrder,
-    getOrdersByEmail,
     setSelectedOrder,
     reset,
   };

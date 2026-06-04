@@ -55,7 +55,7 @@ async function ensureBlog() {
 
 const ARTICLES = [
   {
-    title: 'What Is Ashwagandha? A Complete Guide to the Herb That's Everywhere Right Now',
+    title: "What Is Ashwagandha? A Complete Guide to the Herb That's Everywhere Right Now",
     author: 'Dr. Priya Nair',
     tags: 'Ashwagandha,Adaptogens,Basics',
     body_html: `
@@ -184,7 +184,7 @@ const ARTICLES = [
   },
 
   {
-    title: 'The Real Reason You Can't Sleep — And Why It's Not a Melatonin Deficiency',
+    title: "The Real Reason You Can't Sleep — And Why It's Not a Melatonin Deficiency",
     author: 'Ananya Krishnan',
     tags: 'Sleep,Stress,Cortisol,Wellness',
     body_html: `
@@ -224,11 +224,11 @@ const ARTICLES = [
 <h2>The Honest Caveat</h2>
 <p>If your sleep problems are severe — obstructive sleep apnea, true clinical insomnia, significant psychiatric factors — ashwagandha is not a replacement for medical treatment. But for the vast majority of people whose sleep has degraded under the weight of everyday pressure, getting cortisol under control is a more logical first step than reaching for more melatonin.</p>
     `.trim(),
-    summary: 'Why most sleep problems aren't a melatonin deficiency — they're a cortisol problem — and what the clinical evidence says about ashwagandha's role in sleep quality.',
+    summary: "Why most sleep problems aren't a melatonin deficiency — they're a cortisol problem — and what the clinical evidence says about ashwagandha's role in sleep quality.",
   },
 
   {
-    title: 'Burnout Isn't Just Tiredness: The Physiological Reality Behind "I Can't Anymore"',
+    title: "Burnout Isn't Just Tiredness: The Physiological Reality Behind \"I Can't Anymore\"",
     author: 'Meera Iyer',
     tags: 'Burnout,Stress,Cortisol,Adaptogens',
     body_html: `
@@ -269,7 +269,7 @@ const ARTICLES = [
 <h2>The Patience Part</h2>
 <p>The body's stress regulatory system is adaptive but slow. Most people see meaningful shifts in 6–12 weeks of consistent sleep, movement, and reduced stress load — with or without supplemental support. The frustrating truth is that recovery from burnout requires the one thing that's hardest to access when you're burned out: patience with yourself.</p>
     `.trim(),
-    summary: 'Burnout isn't just tiredness — it's a measurable physiological breakdown of the body's stress recovery system. Here's what's actually happening, and what helps.',
+    summary: "Burnout isn't just tiredness — it's a measurable physiological breakdown of the body's stress recovery system. Here's what's actually happening, and what helps.",
   },
 
   {

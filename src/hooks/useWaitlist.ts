@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
-
 export function useWaitlist() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -11,31 +9,19 @@ export function useWaitlist() {
       setSubmitting(true);
       setError(null);
 
-      // 1. Save to Supabase waitlist table
-      const { error } = await supabase
-        .from('waitlist')
-        .insert([{ email, source }]);
+      // 1. Send waitlist request to backend API route
+      const response = await fetch('/api/waitlist/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, source }),
+      });
 
-      if (error) throw error;
-
-      // 2. Sync to Shopify Customers via Edge Function (non-blocking)
-      try {
-        const { data: session } = await supabase.auth.getSession();
-        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-
-        await fetch(`${supabaseUrl}/functions/v1/shopify-sync`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.session?.access_token || anonKey}`,
-            'apikey': anonKey,
-          },
-          body: JSON.stringify({ email, source, type: 'waitlist' }),
-        });
-
-      } catch {
-        // silently fail — Supabase insert succeeded, don't block user
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to join waitlist');
       }
 
       setSuccess(true);

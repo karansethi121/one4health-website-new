@@ -94,6 +94,56 @@ export function ProductPage() {
     await addToCart(variantId, cartQuantity, attributes, undefined, selectedPack.unitPrice, product.name);
   };
 
+  const productSchema = useMemo(() => {
+    if (!product) return null;
+    const basePrice = getPackConfig(1).totalPrice / 100;
+    const pack2Price = getPackConfig(2).totalPrice / 100;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "image": product.images || [product.image],
+      "description": product.description || "Premium KSM-66 Ashwagandha Gummies",
+      "sku": product.shopifyVariantId || product.id,
+      "mpn": product.shopifyVariantId || product.id,
+      "brand": {
+        "@type": "Brand",
+        "name": "One4Health"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "INR",
+        "lowPrice": basePrice,
+        "highPrice": pack2Price,
+        "offerCount": 2,
+        "price": basePrice,
+        "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "url": `https://www.one4health.in/product/${product.id}`
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": totalReviewCount,
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": testimonials.slice(0, 5).map(t => ({
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": t.name
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": t.quote
+      }))
+    };
+  }, [product, totalReviewCount, testimonials]);
+
   if (productsLoading) return <LoadingState fullPage message="Fetching product details..." />;
   if (!product) return (
     <div className="min-h-screen flex items-center justify-center pt-24" style={{ background: '#F7F1E3' }}>
@@ -108,6 +158,12 @@ export function ProductPage() {
 
   return (
     <main className="w-full pt-[72px] lg:pt-[84px] pb-28 lg:pb-0 overflow-x-hidden" style={{ background: '#F7F1E3' }}>
+      {productSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        />
+      )}
 
       {/* ── Breadcrumb ─────────────────────────────────────────────────── */}
       <div className="section-container pt-5 pb-0">

@@ -1,0 +1,13 @@
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /account
+Disallow: /account/*
+Disallow: /coming-soon
+Disallow: /api/
+Disallow: /api/*
+
+Sitemap: https://one4health.com/sitemap.xml

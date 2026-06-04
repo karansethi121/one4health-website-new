@@ -78,6 +78,7 @@ export default defineConfig({
   build: {
     outDir: 'assets',
     assetsDir: '',
+    chunkSizeWarningLimit: 1500,
     rollupOptions: {
       output: {
         entryFileNames: 'bundle.js',
