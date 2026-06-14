@@ -1,5 +1,60 @@
+import crypto from 'crypto';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../_lib/supabaseService';
+
+// ─── Security helpers ─────────────────────────────────────────────────────────
+
+// ShipRocket doesn't send HMAC headers — we use a shared secret token
+// embedded in the webhook URL as ?token=SECRET (set in ShipRocket dashboard).
+// timingSafeEqual prevents brute-force timing attacks on the comparison.
+function verifyToken(provided: string, expected: string): boolean {
+  try {
+    const a = Buffer.from(provided);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length) return false;
+    return crypto.timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
+
+// Allowlist of hostnames that ShipRocket and its courier partners
+// use for tracking URLs. We validate before forwarding to Shopify
+// (which emails the URL directly to customers with notify_customer:true).
+const TRACKING_URL_ALLOWLIST = [
+  'shiprocket.co',
+  'shiprocket.in',
+  'track.delhivery.com',
+  'www.bluedart.com',
+  'bluedart.com',
+  'ekart.in',
+  'www.dtdc.com',
+  'dtdc.com',
+  'xpressbees.com',
+  'www.xpressbees.com',
+  'ecomexpress.in',
+  'www.ecomexpress.in',
+  'shadowfax.in',
+  'www.shadowfax.in',
+  'dotzot.in',
+];
+
+function sanitizeTrackingUrl(rawUrl: string | undefined, awb: string): string {
+  if (rawUrl) {
+    try {
+      const parsed = new URL(rawUrl);
+      const isHttps = parsed.protocol === 'https:';
+      const isAllowed = TRACKING_URL_ALLOWLIST.some(
+        (host) => parsed.hostname === host || parsed.hostname.endsWith(`.${host}`)
+      );
+      if (isHttps && isAllowed) return rawUrl;
+      console.warn(`tracking_url "${rawUrl}" rejected (not in allowlist) — using default`);
+    } catch {
+      console.warn(`tracking_url "${rawUrl}" is not a valid URL — using default`);
+    }
+  }
+  return `https://shiprocket.co/tracking/${encodeURIComponent(awb)}`;
+}
 
 // ─── Shopify Admin API helper ─────────────────────────────────────────────────
 
@@ -31,9 +86,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
+  // ── Auth: verify shared secret token ───────────────────────────────────────
+  // In ShipRocket dashboard, set the webhook URL as:
+  //   https://your-app.vercel.app/api/webhooks/shiprocket?token=<SHIPROCKET_WEBHOOK_TOKEN>
+  // ShipRocket will include ?token= on every call; we validate it here.
+  const expectedToken = process.env.SHIPROCKET_WEBHOOK_TOKEN;
+  if (expectedToken) {
+    const providedToken = String(req.query?.token || req.headers?.['x-webhook-token'] || '');
+    if (!providedToken || !verifyToken(providedToken, expectedToken)) {
+      console.warn('ShipRocket webhook: invalid or missing token');
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    }
+  } else {
+    console.warn('SHIPROCKET_WEBHOOK_TOKEN not set — skipping auth (not safe for production)');
+  }
+
   const {
     awb,
-    order_id,       // our Shopify order number, e.g. "1001"
+    order_id,
     courier,
     tracking_url,
     current_status,
@@ -44,7 +115,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  // Only create Shopify fulfillment when ShipRocket ships the package
+  // Only create a Shopify fulfillment when ShipRocket has actually shipped
   const shippedStatuses = ['SHIPPED', 'Shipped', 'OUT FOR DELIVERY', 'DELIVERED'];
   if (!shippedStatuses.includes(current_status)) {
     console.log(`ShipRocket status "${current_status}" for order ${order_id} — no action needed`);
@@ -52,8 +123,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
+  // Validate tracking URL against allowlist before it reaches customers
+  const trackingLink = sanitizeTrackingUrl(tracking_url, String(awb));
+
   try {
-    // ── 1. Find the Shopify order by order number ───────────────────────────
+    // ── 1. Find Shopify order by order number ───────────────────────────────
     const orderName = String(order_id).startsWith('#') ? order_id : `#${order_id}`;
     const ordersData = await shopifyFetch(
       `/orders.json?name=${encodeURIComponent(orderName)}&status=any`
@@ -71,19 +145,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
 
     const openFulfillmentOrders = (foData.fulfillment_orders || []).filter(
-      // deno-lint-ignore no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (fo: any) => fo.status === 'open'
     );
 
     if (openFulfillmentOrders.length === 0) {
-      console.log(`Order ${orderName} already fulfilled or no open fulfillment orders`);
+      console.log(`Order ${orderName} already fulfilled or has no open fulfillment orders`);
       res.status(200).json({ message: 'No open fulfillment orders to fulfill' });
       return;
     }
 
-    // ── 3. Create Shopify fulfillment with ShipRocket tracking ─────────────
-    const trackingLink = tracking_url || `https://shiprocket.co/tracking/${awb}`;
-
+    // ── 3. Create Shopify fulfillment with validated ShipRocket tracking ────
     await shopifyFetch('/fulfillments.json', 'POST', {
       fulfillment: {
         message: 'Your order has been shipped via ShipRocket',
@@ -94,7 +166,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           company: courier || 'ShipRocket',
         },
         line_items_by_fulfillment_order: openFulfillmentOrders.map(
-          // deno-lint-ignore no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (fo: any) => ({ fulfillment_order_id: fo.id })
         ),
       },
@@ -114,9 +186,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })
       .eq('order_number', String(order_id).replace(/^#/, ''));
 
-    if (updateError) {
-      console.error('Supabase update error:', updateError);
-    }
+    if (updateError) console.error('Supabase update error:', updateError);
 
     res.status(200).json({ success: true, awb, order: orderName });
   } catch (err: unknown) {
