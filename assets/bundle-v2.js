@@ -74223,7 +74223,7 @@ function ScienceSection() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "science-panel bg-sage-700 flex items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "section-container py-16 lg:py-24", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-lg", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-white/90 text-sm mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ScienceModal, {}) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-white leading-tight mb-6", children: "Not all Ashwagandha is created equal." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg text-white/80 leading-relaxed mb-8", children: "We chose KSM-66® for a reason. It's the most clinically studied full-spectrum root extract—shown to support stress response, promote relaxation, and help maintain daily balance." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg text-white/80 leading-relaxed mb-8", children: "We chose KSM-66® for a reason. It's the most clinically studied full-spectrum root extract, shown to support stress response, promote relaxation, and help maintain daily balance." }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-6 mb-10", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-4", children: differentiators.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl flex-shrink-0", children: item.icon }),
@@ -76700,7 +76700,7 @@ function ProductPage() {
               /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-charcoal-600 text-sm", children: [
                 "Take ",
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-semibold text-sage-700", children: "2 gummies daily" }),
-                " — one in the morning and one in the evening/night, with or after food."
+                ": one in the morning and one in the evening/night, with or after food."
               ] })
             ] })
           ] }),
@@ -76804,9 +76804,9 @@ function AboutPage() {
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sage-700", children: "for the driven." })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6 text-lg text-charcoal-600 leading-relaxed", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: 'One4Health™ began with a simple observation: in the pursuit of modern success, our internal balance is often the first thing we sacrifice. We found ourselves constantly navigating a world of overpromise and under-delivery—where "wellness" was either too complicated to maintain or too diluted to actually work.' }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: 'One4Health™ began with a simple observation: in the pursuit of modern success, our internal balance is often the first thing we sacrifice. We found ourselves constantly navigating a world of overpromise and under-delivery, where "wellness" was either too complicated to maintain or too diluted to actually work.' }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "As entrepreneurs, creators, and health enthusiasts, we needed a solution that was as high-performing as we were. We didn't want a dozen different pills or a complex morning ritual. We wanted the best of science and nature, distilled into a single, simple habit." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "That search led us to the world's most awarded Ashwagandha—KSM-66®. By combining this clinically-mastered root extract with active Vitamin D2 and black pepper extract, we created more than just a gummy; we created a ritual for resilience." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "That search led us to the world's most awarded Ashwagandha, KSM-66®. By combining this clinically-mastered root extract with active Vitamin D2 and black pepper extract, we created more than just a gummy; we created a ritual for resilience." }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sr-only", "aria-hidden": "true", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { children: "India's Leading Ashwagandha Experts (E-E-A-T)" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "As an Indian-rooted wellness authority, One4Health™ specializes in high-quality, science-backed nutraceuticals. We prioritize transparency, utilizing only third-party tested, GMP-certified ingredients like KSM-66® Ashwagandha (sourced from the world's best roots in India) and black pepper extract. Our mission is to provide clean, effective, and simple wellness solutions for the Indian workforce, establishing robust credibility in the stress management market." })
@@ -76917,7 +76917,7 @@ const mainProduct = {
   ],
   howToUse: [
     "Take 2 gummies daily, preferably in the evening",
-    "Consistency is key—take at the same time each day",
+    "Consistency is key: take at the same time each day",
     "Allow 2-4 weeks for optimal support"
   ],
   whoItsFor: [
@@ -76976,7 +76976,7 @@ const faqs = [
   },
   {
     question: "How long until I notice changes?",
-    answer: "Everyone's body is different. Many people report feeling more balanced within the first week, with optimal support typically experienced after 2-4 weeks of consistent daily use. Consistency is key—take your two gummies at the same time each day."
+    answer: "Everyone's body is different. Many people report feeling more balanced within the first week, with optimal support typically experienced after 2-4 weeks of consistent daily use. Consistency is key: take your two gummies at the same time each day."
   },
   {
     question: "Are these gummies sugar-free?",
@@ -76988,7 +76988,7 @@ const faqs = [
   },
   {
     question: "What is your return policy?",
-    answer: "We offer a 30-day satisfaction guarantee. If you're not completely happy with your purchase, contact us for a full refund—no questions asked."
+    answer: "We offer a 30-day satisfaction guarantee. If you're not completely happy with your purchase, contact us for a full refund, no questions asked."
   }
 ];
 const shippingFAQs = [
@@ -77041,7 +77041,7 @@ function SciencePage() {
         " ",
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sage-700", children: "Powered by nature." })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg text-charcoal-600 leading-relaxed", children: "Every ingredient in our formula is carefully selected based on clinical evidence and traditional wisdom. We believe in transparency—no hidden ingredients, no compromises." })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg text-charcoal-600 leading-relaxed", children: "Every ingredient in our formula is carefully selected based on clinical evidence and traditional wisdom. We believe in transparency: no hidden ingredients, no compromises." })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "section-container section-padding pb-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-2 gap-16 lg:gap-24 items-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "science-animate", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
@@ -94567,7 +94567,7 @@ function OrderDetail({ order, onBack }) {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-sage-50 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-5 h-5 text-sage-600" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-bold text-charcoal-900", children: "Estimated Delivery" })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-charcoal-600 text-lg font-semibold", children: order.estimated_delivery || "5–7 business days" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-charcoal-600 text-lg font-semibold", children: order.estimated_delivery || "5-7 business days" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-[32px] p-8 shadow-soft border border-sage-100", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-4", children: [
@@ -94680,7 +94680,7 @@ function OrderDetail({ order, onBack }) {
   ] });
 }
 function AccountPage() {
-  useDocumentTitle("My Orders — One4Health™");
+  useDocumentTitle("My Orders | One4Health™");
   const { selectedOrder, loading, error: error2, lookupOrder, setSelectedOrder, reset } = useOrders();
   const [email2, setEmail] = reactExports.useState("");
   const [orderNumber, setOrderNumber] = reactExports.useState("");
