@@ -36,7 +36,7 @@ const reviews = [
   {
     handle: '@sneha_startup',
     day: 'Day 8',
-    quote: "Not a magic pill — but my cortisol definitely got the memo.",
+    quote: "Not a magic pill, but my cortisol definitely got the memo.",
     bg: '#FBF7EC',
     size: 'normal',
     tag: 'stress',
@@ -300,14 +300,14 @@ export function CleanFormulaSection() {
               lineHeight: 1.5,
             }}
           >
-            Was ₹449. Ghost us if it doesn't work — 15 day refund, no questions asked. bas.
+            Was ₹449. Ghost us if it doesn't work. 15 day refund, no questions asked. bas.
           </p>
           <button
             onClick={handleAddToCart}
             disabled={cartLoading}
             className="btn-ink text-base"
           >
-            {cartLoading ? 'Adding…' : 'Add to Cart — ₹369'}
+            {cartLoading ? 'Adding…' : 'Add to Cart - ₹369'}
           </button>
         </div>
       </div>

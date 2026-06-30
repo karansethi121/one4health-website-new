@@ -162,7 +162,7 @@ export function HeroSection() {
               </div>
 
               <div className="sr-only" aria-hidden="true">
-                <h2>One4Health™ — India's Premier Ashwagandha Gummies</h2>
+                <h2>One4Health™: India's Premier Ashwagandha Gummies</h2>
                 <p>
                   One4Health Ashwagandha Gummies use KSM-66®, the most clinically studied full spectrum
                   ashwagandha root extract. Formulated with 300mg KSM-66, 400IU Vitamin D2, and 10mg

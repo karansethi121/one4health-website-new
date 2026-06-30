@@ -18,7 +18,7 @@ const ingredients = [
     num: '02',
     name: 'Vitamin D2',
     amount: '400 IU',
-    desc: 'Supports mood balance and healthy immune function — essential for India\'s indoor workforce.',
+    desc: 'Supports mood balance and healthy immune function, essential for India\'s indoor workforce.',
     highlight: 'Vegan sourced',
   },
   {
@@ -266,7 +266,7 @@ export function WhatsInsideSection() {
               <img
                 className="inside-img relative z-10 w-full h-auto object-contain drop-shadow-2xl"
                 src="/images/whats-inside-gummies.png"
-                alt="One4Health™ gummies — strawberry flavour, no sugar"
+                alt="One4Health™ gummies, strawberry flavour, no sugar"
                 loading="lazy"
               />
             </div>

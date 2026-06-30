@@ -84,7 +84,7 @@ export function SciencePage() {
             }}
           >
             Every ingredient in our formula is carefully selected based on clinical evidence 
-            and traditional wisdom. We believe in transparency—no hidden ingredients, no compromises.
+            and traditional wisdom. We believe in transparency: no hidden ingredients, no compromises.
           </p>
         </div>
       </section>
@@ -155,7 +155,7 @@ export function SciencePage() {
                   { title: 'Full Spectrum Root', desc: 'Uses only the root, maintaining nature\'s ratios.' },
                   { title: 'Pure Extraction', desc: 'A "Green Chemistry" process without harsh solvents.' },
                   { title: 'Certified Safe', desc: '24+ clinical studies verifying safety and efficacy.' },
-                  { title: 'Clinical Dosing', desc: '300mg per serving—the exact dose used in trials.' }
+                  { title: 'Clinical Dosing', desc: '300mg per serving, the exact dose used in trials.' }
                 ].map((item) => (
                   <div 
                     key={item.title} 

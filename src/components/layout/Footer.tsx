@@ -63,13 +63,13 @@ export const Footer = memo(function Footer() {
             </em>
           </h2>
           <p style={{ color: '#F7F1E3', opacity: 0.7, fontFamily: "'DM Sans', sans-serif", fontSize: '17px' }} className="mb-10 max-w-md mx-auto">
-            Was ₹449. Ghost us if it doesn't work — 15-day refund, no questions asked.
+            Was ₹449. Ghost us if it doesn't work. 15-day refund, no questions asked.
           </p>
           <Link
             to="/product/ashwagandha-gummies-ksm66"
             className="btn-lime text-base"
           >
-            Add to Cart — ₹369
+            Add to Cart - ₹369
           </Link>
         </div>
       </div>

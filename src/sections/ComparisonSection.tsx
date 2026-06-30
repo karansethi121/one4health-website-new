@@ -16,7 +16,7 @@ const stats = [
   {
     key: 'Price',
     value: '₹369',
-    sub: 'From ₹449 — save ₹80',
+    sub: 'From ₹449, save ₹80',
     bg: '#FBF7EC',
     border: true,
     valueColor: '#FF5A6B',

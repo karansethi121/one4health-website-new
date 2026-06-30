@@ -354,7 +354,7 @@ export function CartDrawer() {
               >
                 {loading
                   ? <Loader2 className="w-4 h-4 animate-spin" />
-                  : <>Checkout — {formatPrice(totalPrice)} <ArrowRight className="w-4 h-4" /></>
+                  : <>Checkout - {formatPrice(totalPrice)} <ArrowRight className="w-4 h-4" /></>
                 }
               </button>
 

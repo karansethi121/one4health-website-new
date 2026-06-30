@@ -11,7 +11,7 @@ const sciencePoints = [
   {
     shape: 'circle',
     label: 'KSM-66®',
-    desc: 'the most clinically studied ashwagandha extract — 22+ trials, full spectrum root only.',
+    desc: 'the most clinically studied ashwagandha extract: 22+ trials, full spectrum root only.',
   },
   {
     shape: 'square',
@@ -169,7 +169,7 @@ export function ScienceSection() {
                 }}
               >
                 Ashwagandha works. The clinical evidence is overwhelming. But not all
-                ashwagandha is the same — the extract, the dose, and the standardisation matter enormously.
+                ashwagandha is the same. The extract, the dose, and the standardisation matter enormously.
               </p>
 
               {/* Science points */}

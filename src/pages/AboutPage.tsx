@@ -72,7 +72,7 @@ export function AboutPage() {
                 our internal balance is often the first thing we sacrifice.
               </p>
               <p>
-                We were constantly navigating a world of overpromise and under-delivery — where
+                We were constantly navigating a world of overpromise and under-delivery, where
                 "wellness" was either too complicated to maintain or too diluted to actually work.
               </p>
               <p>
@@ -135,7 +135,7 @@ export function AboutPage() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
             {[
               { title: 'Standard Without Compromise', body: 'We don\'t settle for "good enough" ingredients. If it\'s not clinically studied, third-party verified, and environmentally conscious, it doesn\'t make it into our jars. Quality is our baseline, not our marketing.' },
-              { title: 'Simplicity is Mastery', body: 'The most effective routines are the ones we actually stick to. We replace complexity with clarity — giving you the focus to pursue your ambitions without the mental load of a complex supplement stack.' },
+              { title: 'Simplicity is Mastery', body: 'The most effective routines are the ones we actually stick to. We replace complexity with clarity, giving you the focus to pursue your ambitions without the mental load of a complex supplement stack.' },
             ].map(item => (
               <div key={item.title} className="space-y-3">
                 <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '18px', letterSpacing: '-0.02em', color: '#F7F1E3' }}>{item.title}</p>

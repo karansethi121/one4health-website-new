@@ -414,7 +414,7 @@ export function ProductPage() {
                   ? '…'
                   : !product.inStock
                   ? 'Out of Stock'
-                  : <><span>Add to Cart — {formatPrice(selectedPack.totalPrice)}</span><ArrowRight className="w-4 h-4" /></>
+                  : <><span>Add to Cart - {formatPrice(selectedPack.totalPrice)}</span><ArrowRight className="w-4 h-4" /></>
                 }
               </button>
               <p className="flex items-center justify-center gap-1.5 mt-2.5" style={{
