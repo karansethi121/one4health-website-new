@@ -73,7 +73,7 @@ export function AboutPage() {
               <p>
                 One4Health™ began with a simple observation: in the pursuit of modern success, our internal
                 balance is often the first thing we sacrifice. We found ourselves constantly navigating
-                a world of overpromise and under-delivery—where "wellness" was either too complicated
+                a world of overpromise and under-delivery, where "wellness" was either too complicated
                 to maintain or too diluted to actually work.
               </p>
               <p>
@@ -83,7 +83,7 @@ export function AboutPage() {
                 simple habit.
               </p>
               <p>
-                That search led us to the world's most awarded Ashwagandha—KSM-66®. By combining this
+                That search led us to the world's most awarded Ashwagandha, KSM-66®. By combining this
                 clinically-mastered root extract with active Vitamin D2 and black pepper extract, we created
                 more than just a gummy; we created a ritual for resilience.
               </p>
