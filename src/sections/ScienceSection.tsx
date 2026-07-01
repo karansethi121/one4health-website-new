@@ -124,7 +124,7 @@ export function ScienceSection() {
 
               <p className="text-lg text-white/80 leading-relaxed mb-8">
                 We chose KSM-66® for a reason. It's the most clinically studied
-                full-spectrum root extract, shown to support stress response,
+                full-spectrum root extract—shown to support stress response,
                 promote relaxation, and help maintain daily balance.
               </p>
 

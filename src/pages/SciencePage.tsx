@@ -50,7 +50,7 @@ export function SciencePage() {
           </h1>
           <p className="text-lg text-charcoal-600 leading-relaxed">
             Every ingredient in our formula is carefully selected based on clinical evidence
-            and traditional wisdom. We believe in transparency: no hidden ingredients, no compromises.
+            and traditional wisdom. We believe in transparency—no hidden ingredients, no compromises.
           </p>
         </div>
       </section>

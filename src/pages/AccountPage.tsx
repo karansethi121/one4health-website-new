@@ -169,7 +169,7 @@ function OrderDetail({ order, onBack }: { order: Order; onBack: () => void }) {
             <h3 className="font-bold text-charcoal-900">Estimated Delivery</h3>
           </div>
           <p className="text-charcoal-600 text-lg font-semibold">
-            {order.estimated_delivery || '5-7 business days'}
+            {order.estimated_delivery || '5–7 business days'}
           </p>
         </div>
 
@@ -306,7 +306,7 @@ function OrderDetail({ order, onBack }: { order: Order; onBack: () => void }) {
 // ─── Main Page ──────────────────────────────────────────────────────────────
 
 export function AccountPage() {
-  useDocumentTitle('My Orders | One4Health™');
+  useDocumentTitle('My Orders — One4Health™');
 
   const { selectedOrder, loading, error, lookupOrder, setSelectedOrder, reset } = useOrders();
   const [email, setEmail] = useState('');

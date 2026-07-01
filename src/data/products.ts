@@ -52,7 +52,7 @@ export const mainProduct: Product = {
   ],
   howToUse: [
     'Take 2 gummies daily, preferably in the evening',
-    'Consistency is key: take at the same time each day',
+    'Consistency is key—take at the same time each day',
     'Allow 2-4 weeks for optimal support',
   ],
   whoItsFor: [
@@ -113,7 +113,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'How long until I notice changes?',
-    answer: 'Everyone\'s body is different. Many people report feeling more balanced within the first week, with optimal support typically experienced after 2-4 weeks of consistent daily use. Consistency is key: take your two gummies at the same time each day.',
+    answer: 'Everyone\'s body is different. Many people report feeling more balanced within the first week, with optimal support typically experienced after 2-4 weeks of consistent daily use. Consistency is key—take your two gummies at the same time each day.',
   },
   {
     question: 'Are these gummies sugar-free?',
@@ -125,7 +125,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: 'What is your return policy?',
-    answer: 'We offer a 30-day satisfaction guarantee. If you\'re not completely happy with your purchase, contact us for a full refund, no questions asked.',
+    answer: 'We offer a 30-day satisfaction guarantee. If you\'re not completely happy with your purchase, contact us for a full refund—no questions asked.',
   },
 ];
 

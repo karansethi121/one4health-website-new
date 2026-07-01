@@ -437,7 +437,7 @@ export function ProductPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-charcoal-900 text-sm lg:text-base mb-1">Daily Dosage</h4>
-                    <p className="text-charcoal-600 text-sm">Take <span className="font-semibold text-sage-700">2 gummies daily</span>: one in the morning and one in the evening/night, with or after food.</p>
+                    <p className="text-charcoal-600 text-sm">Take <span className="font-semibold text-sage-700">2 gummies daily</span> — one in the morning and one in the evening/night, with or after food.</p>
                   </div>
                 </div>
 
